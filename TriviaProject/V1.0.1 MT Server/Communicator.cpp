@@ -91,6 +91,27 @@ void Communicator::acceptClient()
 	tr.detach();
 }
 
+int binaryToDecimal(int n)
+{
+	int dec_value = 0;
+	int base = 1;
+	int num = n;
+	int last_digit = 0;
+
+	int temp = num;
+	while (temp) 
+	{
+		last_digit = temp % 10;
+		temp = temp / 10;
+
+		dec_value += last_digit * base;
+
+		base = base * 2;
+	}
+
+	return dec_value;
+}
+
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	try
@@ -105,13 +126,16 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE, buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1));
 		std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.end());
 
-		std::string str = std::string(size.begin(), size.end());
-		int sizeOfJson = std::stoi(str);
-		std::cout << "size of json: " << str << std::endl;
+		std::string codeStr = std::string(code.begin(), code.end());
+		int codeId = binaryToDecimal(std::stoi(codeStr));
+
+		std::string sizeStr = std::string(size.begin(), size.end());
+		int sizeOfJson = binaryToDecimal(std::stoi(sizeStr));
+		std::cout << "size of json: " << binaryToDecimal(sizeOfJson) << std::endl;
 
 		//Setup the request's info
 		RequestInfo request;
-		//request.id = int(code - '0');
+		request.id = codeId;
 		request.buffer = actualBuffer;
 		request.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
@@ -119,7 +143,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 		if (!handler.isRequestRelevant(request))
 		{
-			std::cout << "o";
+			std::cout << "not relevant request" << std::endl;
 			closesocket(clientSocket);
 			throw std::exception(__FUNCTION__ " - not relevant request");
 		}
