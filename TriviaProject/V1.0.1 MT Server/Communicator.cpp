@@ -1,10 +1,19 @@
-#include "Communicator.h"
+#include "JsonRequestPacketDeserializer.h"
+#include "JsonResponsePacketSerializer.h"
 #include "LoginRequestHandler.h"
+#include "Communicator.h"
+
 #include <exception>
 #include <iostream>
 #include <string>
 #include <thread>
 #include <mutex>
+
+#define LOG_IN_REQUEST 1
+#define SIGN_UP_REQUEST 2
+
+#define BYTE_SIZE 8
+#define AMOUNT_OF_SIZE_BYTES 5
 
 // using static const instead of macros 
 static const unsigned short PORT = 42069;
@@ -91,13 +100,41 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		int iResult = recv(clientSocket, (char*)buffer.data(), buffer.size(), 0);
 		if (iResult == SOCKET_ERROR)
 			throw std::exception(__FUNCTION__);
-		unsigned char code = buffer[0];
-		std::vector<unsigned char> size = { buffer[1], buffer[2], buffer[3], buffer[4] };
+		
+		std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + BYTE_SIZE);
+		std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE, buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1));
+		std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.end());
+
 		std::string str = std::string(size.begin(), size.end());
 		int sizeOfJson = std::stoi(str);
-		std::cout << "size of json: " << sizeOfJson << std::endl;
-		
-		
+		std::cout << "size of json: " << str << std::endl;
+
+		//Setup the request's info
+		RequestInfo request;
+		//request.id = int(code - '0');
+		request.buffer = actualBuffer;
+		request.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+		LoginRequestHandler handler;
+
+		if (!handler.isRequestRelevant(request))
+		{
+			std::cout << "o";
+			closesocket(clientSocket);
+			throw std::exception(__FUNCTION__ " - not relevant request");
+		}
+
+		//switch (code)
+		//{
+		//case LOG_IN_REQUEST:
+		//	JsonRequestPacketDeserializer::deserializeLoginRequest(actualBuffer);
+		//case SIGN_UP_REQUEST:
+		//	JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
+		//}
+
+
+
+
 		// Closing the socket (in the level of the TCP protocol)
 		closesocket(clientSocket);
 	}

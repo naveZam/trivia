@@ -1,4 +1,4 @@
 ﻿  Communicator.cpp
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\V1.0.1 MT Server\Communicator.cpp(91,74): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\V1.0.1 MT Server\Communicator.cpp(104,31): warning C4101: 'e': unreferenced local variable
-  V1.0.1 MT Server.vcxproj -> C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\x64\Debug\V1.0.1 MT Server.exe
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1.0.2\trivia_group2\TriviaProject\V1.0.1 MT Server\Communicator.cpp(100,74): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1.0.2\trivia_group2\TriviaProject\V1.0.1 MT Server\Communicator.cpp(141,31): warning C4101: 'e': unreferenced local variable
+  V1.0.1 MT Server.vcxproj -> C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1.0.2\trivia_group2\TriviaProject\x64\Debug\V1.0.1 MT Server.exe
