@@ -14,7 +14,7 @@ int main()
 		// NOTICE at the end of this block the WSA will be closed 
 		WSAInitializer wsa_init;
 		Server md_server;
-		md_server.serve(8876);
+		md_server.run();
 	}
 	catch (const std::exception& e)
 	{
