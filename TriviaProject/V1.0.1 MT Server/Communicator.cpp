@@ -124,14 +124,15 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		
 		std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + BYTE_SIZE);
 		std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE, buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1));
-		std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.end());
 
 		std::string codeStr = std::string(code.begin(), code.end());
 		int codeId = binaryToDecimal(std::stoi(codeStr));
 
 		std::string sizeStr = std::string(size.begin(), size.end());
 		int sizeOfJson = binaryToDecimal(std::stoi(sizeStr));
-		std::cout << "size of json: " << binaryToDecimal(sizeOfJson) << std::endl;
+		std::cout << "size of json: " << sizeOfJson << std::endl;
+
+		std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
 
 		//Setup the request's info
 		RequestInfo request;
