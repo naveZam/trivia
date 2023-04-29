@@ -1,10 +1,5 @@
-﻿  Communicator.cpp
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1.0.2\trivia_group2\TriviaProject\V1.0.1 MT Server\Communicator.cpp(90,44): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1.0.2\trivia_group2\TriviaProject\V1.0.1 MT Server\Communicator.cpp(100,31): warning C4101: 'e': unreferenced local variable
-  IRequestHandler.cpp
+﻿  JsonRequestPacketDeserializer.cpp
+  JsonResponsePacketSerializer.cpp
   LoginRequestHandler.cpp
-  Server.cpp
-  Source.cpp
   Generating Code...
-  LINK : C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1.0.2\trivia_group2\TriviaProject\x64\Debug\V1.0.1 MT Server.exe not found or not built by the last incremental link; performing full link
   V1.0.1 MT Server.vcxproj -> C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1.0.2\trivia_group2\TriviaProject\x64\Debug\V1.0.1 MT Server.exe
