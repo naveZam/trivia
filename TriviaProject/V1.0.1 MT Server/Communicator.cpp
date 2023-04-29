@@ -86,14 +86,18 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	try
 	{
-		std::string s = "Hello";
-		send(clientSocket, s.c_str(), s.size(), 0);  // last parameter: flag. for us will be 0.
-
-		char m[6];
-		recv(clientSocket, m, 5, 0);
-		m[5] = 0;
-		std::cout << "Client message is: " << m << std::endl;
-
+		//reseve the request from the client 
+		std::vector<unsigned char> buffer(4096);
+		int iResult = recv(clientSocket, (char*)buffer.data(), buffer.size(), 0);
+		if (iResult == SOCKET_ERROR)
+			throw std::exception(__FUNCTION__);
+		unsigned char code = buffer[0];
+		std::vector<unsigned char> size = { buffer[1], buffer[2], buffer[3], buffer[4] };
+		std::string str = std::string(size.begin(), size.end());
+		int sizeOfJson = std::stoi(str);
+		std::cout << "size of json: " << sizeOfJson << std::endl;
+		
+		
 		// Closing the socket (in the level of the TCP protocol)
 		closesocket(clientSocket);
 	}
