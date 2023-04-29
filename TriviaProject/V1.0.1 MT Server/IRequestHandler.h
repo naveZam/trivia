@@ -9,10 +9,13 @@ struct RequestInfo
 };
 struct RequestResult
 {
-	IRequestHandler newHandler;
+	IRequestHandler* newHandler;
 	std::vector<unsigned char> response;
 };
 class IRequestHandler
 {
+public:
+	virtual bool isRequestRelevant(RequestInfo info) = 0;
+	virtual RequestResult handleRequest(RequestInfo info) = 0;
 };
 
