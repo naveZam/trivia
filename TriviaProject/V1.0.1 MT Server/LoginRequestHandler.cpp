@@ -1,15 +1,19 @@
 #include "LoginRequestHandler.h"
 
-#define SIGN_UP_REQUEST 1
+#define LOG_IN_REQUEST 1
 
 bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 {
-    if (info.id == SIGN_UP_REQUEST)
+    if (info.id == LOG_IN_REQUEST)
         return true;
     return false;
 }
 
 RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 {
-    return RequestResult();
+	
+	RequestResult result;
+	result.newHandler = this;
+	result.response = info.buffer;
+	return result;
 }
