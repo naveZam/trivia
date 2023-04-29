@@ -13,6 +13,7 @@ public:
 
 private:
 
+	void bindAndListen(int port);
 	void acceptClient();
 	void clientHandler(SOCKET clientSocket);
 

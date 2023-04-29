@@ -9,15 +9,19 @@ int main()
 {
 	try
 	{
-		WSAInitializer wsaInit;
-		Server myServer;
+		std::cout << "Starting..." << std::endl;
 
-		myServer.serve(8876);
+		// NOTICE at the end of this block the WSA will be closed 
+		WSAInitializer wsa_init;
+		Server md_server;
+		md_server.serve(8876);
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
-		std::cout << "Error occured: " << e.what() << std::endl;
+		std::cout << "Exception was thrown in function: " << e.what() << std::endl;
 	}
-	system("PAUSE");
-	return 0;
+	catch (...)
+	{
+		std::cout << "Unknown exception in main !" << std::endl;
+	}
 }

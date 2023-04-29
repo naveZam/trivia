@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <mutex>
 
 Server::Server()
 {
@@ -28,44 +29,54 @@ Server::~Server()
 
 void Server::serve(int port)
 {
-	
-	struct sockaddr_in sa = { 0 };
-	
-	sa.sin_port = htons(port); // port that server will listen for
-	sa.sin_family = AF_INET;   // must be AF_INET
-	sa.sin_addr.s_addr = INADDR_ANY;    // when there are few ip's for the machine. We will use always "INADDR_ANY"
+	bindAndListen(port);
 
-	// Connects between the socket and the configuration (port and etc..)
-	if (bind(_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR)
-		throw std::exception(__FUNCTION__ " - bind");
-	
-	// Start listening for incoming requests of clients
-	if (listen(_serverSocket, SOMAXCONN) == SOCKET_ERROR)
-		throw std::exception(__FUNCTION__ " - listen");
-	std::cout << "Listening on port " << port << std::endl;
+	// create new thread for handling message
+	//std::thread tr(&Server::handleReceivedMessages, this);
+	//tr.detach();
 
 	while (true)
 	{
 		// the main thread is only accepting clients 
 		// and add then to the list of handlers
-		std::cout << "Waiting for client connection request" << std::endl;
+		std::cout << "Waiting for client connection request..." << std::endl;
 		acceptClient();
 	}
 }
 
 
+// listen to connecting requests from clients
+// accept them, and create thread for each client
+void Server::bindAndListen(int port)
+{
+	struct sockaddr_in sa = { 0 };
+
+	sa.sin_port = htons(port);
+	sa.sin_family = AF_INET;
+	sa.sin_addr.s_addr = INADDR_ANY;
+
+	// again stepping out to the global namespace
+	if (::bind(_serverSocket, (struct sockaddr*)&sa, sizeof(sa)) == SOCKET_ERROR)
+		throw std::exception(__FUNCTION__ " - bind");
+	std::cout << "binded" << std::endl;
+
+	if (::listen(_serverSocket, SOMAXCONN) == SOCKET_ERROR)
+		throw std::exception(__FUNCTION__ " - listen");
+	std::cout << "listening..." << std::endl;
+}
+
+
 void Server::acceptClient()
 {
-
-	// this accepts the client and create a specific socket from server to this client
-	// the process will not continue until a client connects to the server
 	SOCKET client_socket = accept(_serverSocket, NULL, NULL);
 	if (client_socket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__);
 
-	std::cout << "Client accepted. Server and client can speak" << std::endl;
-	// the function that handle the conversation with the client
-	clientHandler(client_socket);
+	std::cout << "Client accepted !" << std::endl;
+
+	// create new thread for client	and detach from it
+	std::thread tr(&Server::clientHandler, this, client_socket);
+	tr.detach();
 }
 
 
@@ -73,16 +84,13 @@ void Server::clientHandler(SOCKET clientSocket)
 {
 	try
 	{
-		std::string s = "Welcome! What is your name (4 bytes)? ";
+		std::string s = "Hello";
 		send(clientSocket, s.c_str(), s.size(), 0);  // last parameter: flag. for us will be 0.
 
-		char m[5];
-		recv(clientSocket, m, 4, 0);
-		m[4] = 0;
-		std::cout << "Client name is: " << m << std::endl;
-
-		s = "Bye";
-		send(clientSocket, s.c_str(), s.size(), 0);
+		char m[6];
+		recv(clientSocket, m, 5, 0);
+		m[5] = 0;
+		std::cout << "Client message is: " << m << std::endl;
 		
 		// Closing the socket (in the level of the TCP protocol)
 		closesocket(clientSocket); 
@@ -91,7 +99,4 @@ void Server::clientHandler(SOCKET clientSocket)
 	{
 		closesocket(clientSocket);
 	}
-
-
 }
-
