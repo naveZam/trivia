@@ -1,4 +1,5 @@
 #include "Communicator.h"
+#include "LoginRequestHandler.h"
 #include <exception>
 #include <iostream>
 #include <string>
@@ -6,7 +7,7 @@
 #include <mutex>
 
 // using static const instead of macros 
-static const unsigned short PORT = 69420;
+static const unsigned short PORT = 42069;
 
 Communicator::Communicator()
 {
@@ -71,6 +72,10 @@ void Communicator::acceptClient()
 		throw std::exception(__FUNCTION__);
 
 	std::cout << "Client accepted !" << std::endl;
+
+	LoginRequestHandler* newLoginReq = new LoginRequestHandler();
+
+	m_clients.insert(std::pair<SOCKET, IRequestHandler*>(client_socket, newLoginReq));
 
 	// create new thread for client	and detach from it
 	std::thread tr(&Communicator::handleNewClient, this, client_socket);
