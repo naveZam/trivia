@@ -135,30 +135,35 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
 
 		//Setup the request's info
-		RequestInfo request;
-		request.id = codeId;
-		request.buffer = actualBuffer;
-		request.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+		RequestInfo info;
+		info.id = codeId;
+		info.buffer = actualBuffer;
+		info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
 		LoginRequestHandler handler;
 
-		if (!handler.isRequestRelevant(request))
+		if (!handler.isRequestRelevant(info))
 		{
+			//TODO: sent error response
 			std::cout << "not relevant request" << std::endl;
 			closesocket(clientSocket);
 			throw std::exception(__FUNCTION__ " - not relevant request");
 		}
+		RequestResult result = handler.handleRequest(info);
+		
+		//requests struct type
+		LoginRequest login;
+		SignupRequest signup;
 
-		//switch (code)
-		//{
-		//case LOG_IN_REQUEST:
-		//	JsonRequestPacketDeserializer::deserializeLoginRequest(actualBuffer);
-		//case SIGN_UP_REQUEST:
-		//	JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
-		//}
-
-
-
+		switch (codeId)
+		{
+		case LOG_IN_REQUEST:
+			login = JsonRequestPacketDeserializer::deserializeLoginRequest(actualBuffer);
+			break;
+		case SIGN_UP_REQUEST:
+			signup = JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
+			break;
+		}
 
 		// Closing the socket (in the level of the TCP protocol)
 		closesocket(clientSocket);
