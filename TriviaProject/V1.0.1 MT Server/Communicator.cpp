@@ -126,6 +126,14 @@ std::string decimalToBinary(unsigned int decimal)
 void sendMessageToUser(SOCKET clientSocket, RequestResult result, bool isRelavent)
 {
 	std::string size = decimalToBinary(result.response.size());
+	std::string sizeBuffer = "";
+
+	while (AMOUNT_OF_SIZE_BYTES * BYTE_SIZE - size.size())
+	{
+		sizeBuffer += "0";
+	}
+
+	sizeBuffer += size;
 	std::string code = "";
 
 	if (isRelavent)
@@ -137,7 +145,7 @@ void sendMessageToUser(SOCKET clientSocket, RequestResult result, bool isRelaven
 		code = "100101100"; //code 300
 	}
 
-	std::string message = code + size + std::string(result.response.begin(), result.response.end());
+	std::string message = code + sizeBuffer + std::string(result.response.begin(), result.response.end());
 	send(clientSocket, message.c_str(), message.size(), 0);
 }
 
