@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <bitset>
 #include <mutex>
 
 #define LOG_IN_REQUEST 1
@@ -112,6 +113,32 @@ int binaryToDecimal(int n)
 	return dec_value;
 }
 
+std::string decimalToBinary(unsigned int decimal) 
+{
+	std::string binaryString = std::bitset<32>(decimal).to_string();
+	binaryString.erase(0, binaryString.find_first_not_of('0')); // remove leading zeros
+
+	return binaryString;
+}
+
+void sendMessageToUser(SOCKET clientSocket, RequestResult result, bool isRelavent)
+{
+	std::string size = decimalToBinary(result.response.size());
+	std::string code = "";
+
+	if (isRelavent)
+	{
+		code = "111110100"; //code 500
+	}
+	else
+	{
+		code = "100101100"; //code 300
+	}
+
+	std::string message = code + size + std::string(result.response.begin(), result.response.end());
+	send(clientSocket, message.c_str(), message.size(), 0);
+}
+
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	try
@@ -155,7 +182,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		SignupRequest signup;
 
 		switch (codeId)
-		{
+		{//can work with it later
 		case LOG_IN_REQUEST:
 			login = JsonRequestPacketDeserializer::deserializeLoginRequest(actualBuffer);
 			break;
@@ -163,6 +190,8 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			signup = JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
 			break;
 		}
+
+		sendMessageToUser(clientSocket, result, handler.isRequestRelevant(info));
 		
 		// Closing the socket (in the level of the TCP protocol)
 		closesocket(clientSocket);
