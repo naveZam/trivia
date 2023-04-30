@@ -16,6 +16,8 @@
 #define BYTE_SIZE 8
 #define AMOUNT_OF_SIZE_BYTES 5
 
+#define DISCONNECT_ID 200
+
 // using static const instead of macros 
 static const unsigned short PORT = 42069;
 
@@ -143,55 +145,64 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	try
 	{
-		//reseve the request from the client 
-		std::vector<unsigned char> buffer(4096);
-		int iResult = recv(clientSocket, (char*)buffer.data(), buffer.size(), 0);
-		if (iResult == SOCKET_ERROR)
-			throw std::exception(__FUNCTION__);
-		
-		std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + BYTE_SIZE);
-		std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE, buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1));
-
-		std::string codeStr = std::string(code.begin(), code.end());
-		int codeId = binaryToDecimal(std::stoi(codeStr));
-
-		std::string sizeStr = std::string(size.begin(), size.end());
-		int sizeOfJson = binaryToDecimal(std::stoi(sizeStr));
-		std::cout << "size of json: " << sizeOfJson << std::endl;
-
-		std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
-
-		//Setup the request's info
-		RequestInfo info;
-		info.id = codeId;
-		info.buffer = actualBuffer;
-		info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-
-		LoginRequestHandler handler;
-
-		if (!handler.isRequestRelevant(info))
+		int codeId = 0;
+		do
 		{
-			std::cout << "not relevant request" << std::endl;
-			closesocket(clientSocket);
-			throw std::exception(__FUNCTION__ " - not relevant request");
-		}
-		RequestResult result = handler.handleRequest(info);
-		
-		//requests struct type
-		LoginRequest login;
-		SignupRequest signup;
 
-		switch (codeId)
-		{//can work with it later
-		case LOG_IN_REQUEST:
-			login = JsonRequestPacketDeserializer::deserializeLoginRequest(actualBuffer);
-			break;
-		case SIGN_UP_REQUEST:
-			signup = JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
-			break;
-		}
+			//reseve the request from the client 
+			std::vector<unsigned char> buffer(4096);
+			int iResult = 0;
+			while (iResult == 0)
+			{
+				iResult = recv(clientSocket, (char*)buffer.data(), buffer.size(), 0);
+				if (iResult == SOCKET_ERROR)
+					throw std::exception(__FUNCTION__);
+			}
 
-		sendMessageToUser(clientSocket, result, handler.isRequestRelevant(info));
+			std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + BYTE_SIZE);
+			std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE, buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1));
+
+			std::string codeStr = std::string(code.begin(), code.end());
+			codeId = binaryToDecimal(std::stoi(codeStr));
+
+			std::string sizeStr = std::string(size.begin(), size.end());
+			int sizeOfJson = binaryToDecimal(std::stoi(sizeStr));
+			std::cout << "size of json: " << sizeOfJson << std::endl;
+
+			std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
+
+			//Setup the request's info
+			RequestInfo info;
+			info.id = codeId;
+			info.buffer = actualBuffer;
+			info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+			LoginRequestHandler handler;
+
+			if (!handler.isRequestRelevant(info))
+			{
+				std::cout << "not relevant request" << std::endl;
+				closesocket(clientSocket);
+				throw std::exception(__FUNCTION__ " - not relevant request");
+			}
+			RequestResult result = handler.handleRequest(info);
+
+			//requests struct type
+			LoginRequest login;
+			SignupRequest signup;
+
+			switch (codeId)
+			{//can work with it later
+			case LOG_IN_REQUEST:
+				login = JsonRequestPacketDeserializer::deserializeLoginRequest(actualBuffer);
+				break;
+			case SIGN_UP_REQUEST:
+				signup = JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
+				break;
+			}
+
+			sendMessageToUser(clientSocket, result, handler.isRequestRelevant(info));
+		} while (codeId != DISCONNECT_ID);
 		
 		// Closing the socket (in the level of the TCP protocol)
 		closesocket(clientSocket);

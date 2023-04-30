@@ -42,8 +42,7 @@ def main():
     data = s.recv(MAX_SIZE)
     print('Received', repr(data))
     s.close()
-   
-    time.sleep(10)
+    
     
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   
     s.connect((HOST, PORT))
