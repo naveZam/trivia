@@ -144,7 +144,6 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 		if (!handler.isRequestRelevant(info))
 		{
-			//TODO: sent error response
 			std::cout << "not relevant request" << std::endl;
 			closesocket(clientSocket);
 			throw std::exception(__FUNCTION__ " - not relevant request");
@@ -164,7 +163,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			signup = JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
 			break;
 		}
-
+		
 		// Closing the socket (in the level of the TCP protocol)
 		closesocket(clientSocket);
 	}

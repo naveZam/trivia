@@ -31,7 +31,8 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vecto
 	std::string charString = "";
 
 	//from bits to string
-	for (std::size_t i = 0; i < binaryString.size(); i += 8) {
+	for (std::size_t i = 0; i < binaryString.size(); i += 8) 
+	{
 		bits = std::bitset<8>(binaryString.substr(i, 8));
 		charString += static_cast<char>(bits.to_ulong());
 	}
