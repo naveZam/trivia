@@ -2,6 +2,7 @@
 #include <iostream>
 class IDatabase
 {
+public:
 	virtual bool open() = 0;
 	virtual bool close() = 0;
 	virtual int doesUserExist(std::string username) = 0;

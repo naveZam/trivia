@@ -1,10 +1,11 @@
 #pragma once
 #include "LoggedUser.h"
-#include "IDatabase.h"
+#include "SqliteDataBase.h"
 #include <vector>
 class LoginManager
 {
 public:
+	LoginManager(IDatabase* database);
 	void signup(std::string username, std::string password, std::string email);
 	void login(std::string username, std::string password);
 	void logout(std::string username);
