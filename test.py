@@ -1,5 +1,5 @@
 import socket
-
+import time
 
 # config
 PORT = 42069
@@ -10,14 +10,49 @@ UTF = 'utf-8'
 
 
 def main():
+    signup = '{"username": "user1", "password": "1234", "mail": "user1@gmail.com"}'
+    login = '{"username": "user1", "password": "1234"}'
+    #convert the signup and login to binary with 8 bits per byte
+    binSignup = ''.join('{0:08b}'.format(ord(x), 'b') for x in signup)
+    binLogin = ''.join('{0:08b}'.format(ord(x), 'b') for x in login)
+
+    #get the len of the binSignup and make it 5 bytes and in binary fill with 0 to the left
+    binSignupLen = len(binSignup)
+    binSignupLen = bin(binSignupLen)
+    binSignupLen = binSignupLen[2:]
+    binSignupLen = binSignupLen.zfill(5 * 8)
+
+
+    #get the len of the binLogin and make it 5 bytes and in binary
+    binLoginLen = len(binLogin)
+    binLoginLen = bin(binLoginLen)
+    binLoginLen = binLoginLen[2:]
+    binLoginLen = binLoginLen.zfill(5 * 8)
+
+
+
+    loginmsg = '00000001'+binLoginLen + binLogin
+    signupmsg = '00000010'+binSignupLen + binSignup
+
+
+
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
-    m = b'00000001' + b'0000000000000000000000000000000101101000'
+    s.sendall(bytes(signupmsg, UTF))
+    data = s.recv(MAX_SIZE)
+    print('Received', repr(data))
+    s.close()
+   
+    time.sleep(10)
     
-    s.send(m + b'011110110010001001110101011100110110010101110010011011100110000101101101011001010010001000111010001000000010001001001010011011110110100001101110001000100010000000101100001000000010001001110000011000010111001101110011011101110110111101110010011001000010001000111010001000000010001000110001001100100011001100110100001101010011011000110111001110000010001001111101')
-    msg = s.recv(MAX_SIZE)
-    print(msg.decode(UTF))
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   
+    s.connect((HOST, PORT))
+    s.sendall(bytes(loginmsg, UTF))
+    data = s.recv(MAX_SIZE)
+    print('Received', repr(data))
+    s.close()
+
+
 
 if __name__ == "__main__":
     main()
-
