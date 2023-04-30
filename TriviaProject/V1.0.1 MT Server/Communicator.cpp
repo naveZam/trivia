@@ -1,10 +1,22 @@
-#include "Communicator.h"
+#include "JsonRequestPacketDeserializer.h"
+#include "JsonResponsePacketSerializer.h"
 #include "LoginRequestHandler.h"
+#include "Communicator.h"
+
 #include <exception>
 #include <iostream>
 #include <string>
 #include <thread>
+#include <bitset>
 #include <mutex>
+
+#define LOG_IN_REQUEST 1
+#define SIGN_UP_REQUEST 2
+
+#define BYTE_SIZE 8
+#define AMOUNT_OF_SIZE_BYTES 5
+
+#define DISCONNECT_ID 200
 
 // using static const instead of macros 
 static const unsigned short PORT = 42069;
@@ -82,18 +94,116 @@ void Communicator::acceptClient()
 	tr.detach();
 }
 
+int binaryToDecimal(int n)
+{
+	int dec_value = 0;
+	int base = 1;
+	int num = n;
+	int last_digit = 0;
+
+	int temp = num;
+	while (temp) 
+	{
+		last_digit = temp % 10;
+		temp = temp / 10;
+
+		dec_value += last_digit * base;
+
+		base = base * 2;
+	}
+
+	return dec_value;
+}
+
+std::string decimalToBinary(unsigned int decimal) 
+{
+	std::string binaryString = std::bitset<32>(decimal).to_string();
+	binaryString.erase(0, binaryString.find_first_not_of('0')); // remove leading zeros
+
+	return binaryString;
+}
+
+void sendMessageToUser(SOCKET clientSocket, RequestResult result, bool isRelavent)
+{
+	std::string size = decimalToBinary(result.response.size());
+	std::string code = "";
+
+	if (isRelavent)
+	{
+		code = "111110100"; //code 500
+	}
+	else
+	{
+		code = "100101100"; //code 300
+	}
+
+	std::string message = code + size + std::string(result.response.begin(), result.response.end());
+	send(clientSocket, message.c_str(), message.size(), 0);
+}
+
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	try
 	{
-		std::string s = "Hello";
-		send(clientSocket, s.c_str(), s.size(), 0);  // last parameter: flag. for us will be 0.
+		int codeId = 0;
+		do
+		{
 
-		char m[6];
-		recv(clientSocket, m, 5, 0);
-		m[5] = 0;
-		std::cout << "Client message is: " << m << std::endl;
+			//reseve the request from the client 
+			std::vector<unsigned char> buffer(4096);
+			int iResult = 0;
+			while (iResult == 0)
+			{
+				iResult = recv(clientSocket, (char*)buffer.data(), buffer.size(), 0);
+				if (iResult == SOCKET_ERROR)
+					throw std::exception(__FUNCTION__);
+			}
 
+			std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + BYTE_SIZE);
+			std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE, buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1));
+
+			std::string codeStr = std::string(code.begin(), code.end());
+			codeId = binaryToDecimal(std::stoi(codeStr));
+
+			std::string sizeStr = std::string(size.begin(), size.end());
+			int sizeOfJson = binaryToDecimal(std::stoi(sizeStr));
+			std::cout << "size of json: " << sizeOfJson << std::endl;
+
+			std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
+
+			//Setup the request's info
+			RequestInfo info;
+			info.id = codeId;
+			info.buffer = actualBuffer;
+			info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+			LoginRequestHandler handler;
+
+			if (!handler.isRequestRelevant(info))
+			{
+				std::cout << "not relevant request" << std::endl;
+				closesocket(clientSocket);
+				throw std::exception(__FUNCTION__ " - not relevant request");
+			}
+			RequestResult result = handler.handleRequest(info);
+
+			//requests struct type
+			LoginRequest login;
+			SignupRequest signup;
+
+			switch (codeId)
+			{//can work with it later
+			case LOG_IN_REQUEST:
+				login = JsonRequestPacketDeserializer::deserializeLoginRequest(actualBuffer);
+				break;
+			case SIGN_UP_REQUEST:
+				signup = JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
+				break;
+			}
+
+			sendMessageToUser(clientSocket, result, handler.isRequestRelevant(info));
+		} while (codeId != DISCONNECT_ID);
+		
 		// Closing the socket (in the level of the TCP protocol)
 		closesocket(clientSocket);
 	}
