@@ -17,6 +17,7 @@ private:
 	void handleNewClient(SOCKET clientSocket);
 
 	SOCKET m_serverSocket;
+	RequestHandlerFactory& m_handlerFactory;
 	std::map<SOCKET, IRequestHandler*> m_clients;
 };
 

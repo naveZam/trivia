@@ -28,3 +28,10 @@ void LoginManager::logout(std::string username)
 		}
 	}
 }
+
+bool LoginManager::isUserLogged(std::string username)
+{
+	if (m_database->doesUserExist(username))
+		return true;
+	return false;
+}
