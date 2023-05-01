@@ -1,5 +1,6 @@
 #pragma comment (lib, "ws2_32.lib")
 
+#include "RequestHandlerFactory.h"
 #include "WSAInitializer.h"
 #include "Server.h"
 #include <iostream>
@@ -12,8 +13,9 @@ int main()
 		std::cout << "Starting..." << std::endl;
 
 		// NOTICE at the end of this block the WSA will be closed 
+		RequestHandlerFactory factory;//PAIN
 		WSAInitializer wsa_init;
-		Server md_server;
+		Server md_server(factory);
 		md_server.run();
 	}
 	catch (const std::exception& e)

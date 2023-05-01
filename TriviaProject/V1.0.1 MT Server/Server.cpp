@@ -5,7 +5,7 @@
 #include <thread>
 #include <mutex>
 
-Server::Server()
+Server::Server(RequestHandlerFactory& handlerFactory) : m_communicator(handlerFactory)
 {
 }
 

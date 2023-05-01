@@ -21,7 +21,7 @@
 // using static const instead of macros 
 static const unsigned short PORT = 42069;
 
-Communicator::Communicator()
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
 {
 	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
 	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
@@ -29,6 +29,7 @@ Communicator::Communicator()
 
 	if (m_serverSocket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__ " - socket");
+
 }
 
 Communicator::~Communicator()
@@ -85,7 +86,7 @@ void Communicator::acceptClient()
 
 	std::cout << "Client accepted !" << std::endl;
 
-	LoginRequestHandler* newLoginReq = new LoginRequestHandler();
+	LoginRequestHandler* newLoginReq = new LoginRequestHandler(m_handlerFactory);
 
 	m_clients.insert(std::pair<SOCKET, IRequestHandler*>(client_socket, newLoginReq));
 
@@ -185,7 +186,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			info.buffer = actualBuffer;
 			info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-			LoginRequestHandler handler;
+			LoginRequestHandler handler(m_handlerFactory);
 
 			if (!handler.isRequestRelevant(info))
 			{

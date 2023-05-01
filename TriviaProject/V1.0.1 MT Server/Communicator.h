@@ -1,5 +1,7 @@
 #pragma once
 #include "IRequestHandler.h"
+#include "RequestHandlerFactory.h"
+
 #include <WinSock2.h>
 #include <Windows.h>
 #include <map>
@@ -7,7 +9,7 @@
 class Communicator
 {
 public:
-	Communicator();
+	Communicator(RequestHandlerFactory& handlerFactory);
 	~Communicator();
 	void startHandleRequests();
 

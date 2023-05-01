@@ -8,6 +8,10 @@
 #define LOG_IN_REQUEST 1
 #define SIGN_UP_REQUEST 2
 
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
+{
+}
+
 bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 {
     if (info.id == LOG_IN_REQUEST || info.id == SIGN_UP_REQUEST)
@@ -18,7 +22,7 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new LoginRequestHandler;
+	result.newHandler = new LoginRequestHandler(m_handlerFactory);
 
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
