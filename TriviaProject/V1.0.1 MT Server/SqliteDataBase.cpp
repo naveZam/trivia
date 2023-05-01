@@ -1,5 +1,10 @@
 #include "SqliteDataBase.h"
 
+SqliteDataBase::SqliteDataBase()
+{
+	open();
+}
+
 bool SqliteDataBase::open()
 {
 	if (sqlite3_open(DATABASE_NAME, &db) == SQLITE_OK)

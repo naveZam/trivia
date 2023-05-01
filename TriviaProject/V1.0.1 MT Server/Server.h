@@ -9,7 +9,7 @@
 class Server
 {
 public:
-	Server(RequestHandlerFactory& handlerFactory);
+	Server(RequestHandlerFactory& handlerFactory, IDatabase* database);
 	~Server();
 	void run();
 

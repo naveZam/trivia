@@ -9,7 +9,7 @@
 class Communicator
 {
 public:
-	Communicator(RequestHandlerFactory& handlerFactory);
+	Communicator(RequestHandlerFactory& handlerFactory, IDatabase* database);
 	~Communicator();
 	void startHandleRequests();
 

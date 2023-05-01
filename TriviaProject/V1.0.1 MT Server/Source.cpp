@@ -2,6 +2,7 @@
 
 #include "RequestHandlerFactory.h"
 #include "WSAInitializer.h"
+#include "SqliteDataBase.h"
 #include "Server.h"
 #include <iostream>
 #include <exception>
@@ -13,9 +14,10 @@ int main()
 		std::cout << "Starting..." << std::endl;
 
 		// NOTICE at the end of this block the WSA will be closed 
-		RequestHandlerFactory factory;//PAIN
+		IDatabase* db = new SqliteDataBase();
+		RequestHandlerFactory factory(db);//PAIN
 		WSAInitializer wsa_init;
-		Server md_server(factory);
+		Server md_server(factory, db);
 		md_server.run();
 	}
 	catch (const std::exception& e)

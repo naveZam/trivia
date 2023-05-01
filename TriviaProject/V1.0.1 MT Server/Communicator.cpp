@@ -21,7 +21,7 @@
 // using static const instead of macros 
 static const unsigned short PORT = 42069;
 
-Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
+Communicator::Communicator(RequestHandlerFactory& handlerFactory, IDatabase* database) : m_handlerFactory(handlerFactory)
 {
 	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
 	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
@@ -128,10 +128,12 @@ void sendMessageToUser(SOCKET clientSocket, RequestResult result, bool isRelaven
 {
 	std::string size = decimalToBinary(result.response.size());
 	std::string sizeBuffer = "";
+	int i = 0;
 
-	while (AMOUNT_OF_SIZE_BYTES * BYTE_SIZE - size.size())
+	while (i < AMOUNT_OF_SIZE_BYTES * BYTE_SIZE - size.size())
 	{
 		sizeBuffer += "0";
+		i++;
 	}
 
 	sizeBuffer += size;
@@ -155,9 +157,9 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	try
 	{
 		int codeId = 0;
+		bool isConnected = false;
 		do
 		{
-
 			//reseve the request from the client 
 			std::vector<unsigned char> buffer(4096);
 			int iResult = 0;
@@ -188,13 +190,15 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 			LoginRequestHandler handler(m_handlerFactory);
 
-			if (!handler.isRequestRelevant(info))
+			RequestResult result = handler.handleRequest(info);
+
+			if (!handler.isRequestRelevant(info) || (isConnected != false && (codeId != LOG_IN_REQUEST || codeId != SIGN_UP_REQUEST)))
 			{
 				std::cout << "not relevant request" << std::endl;
-				closesocket(clientSocket);
-				throw std::exception(__FUNCTION__ " - not relevant request");
+				sendMessageToUser(clientSocket, result, handler.isRequestRelevant(info));
+				continue;
 			}
-			RequestResult result = handler.handleRequest(info);
+			
 
 			//requests struct type
 			LoginRequest login;
@@ -209,6 +213,8 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				signup = JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
 				break;
 			}
+
+			isConnected = true;
 
 			sendMessageToUser(clientSocket, result, handler.isRequestRelevant(info));
 		} while (codeId != DISCONNECT_ID);
