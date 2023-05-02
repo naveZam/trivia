@@ -55,7 +55,7 @@ def main():
     print('Received', repr(data))
     s.close()
     
-    #try two times same signup
+    #try two times same login
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   
     s.connect((HOST, PORT))
     s.sendall(bytes(signupmsg, UTF))
@@ -66,7 +66,7 @@ def main():
     #non-existent user
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   
     s.connect((HOST, PORT))
-    s.sendall(bytes(signupmsg, UTF))
+    s.sendall(bytes(loginmsg2, UTF))
     data = s.recv(MAX_SIZE)
     print('Received', repr(data))
     s.close()

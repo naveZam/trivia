@@ -9,9 +9,17 @@ bool SqliteDataBase::open()
 {
 	if (sqlite3_open(DATABASE_NAME, &db) == SQLITE_OK)
 	{
-		return true;
+		//create table if it doesn't exist
+		std::string sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, email TEXT);";
+		sqlite3_stmt* stmt;
+		if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
+		{
+			if (sqlite3_step(stmt) == SQLITE_DONE)
+			{
+				return true;
+			}
+		}
 	}
-	return false;
 }
 
 bool SqliteDataBase::close()

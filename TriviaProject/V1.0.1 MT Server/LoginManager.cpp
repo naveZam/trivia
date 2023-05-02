@@ -17,9 +17,16 @@ void LoginManager::signup(std::string username, std::string password, std::strin
 
 void LoginManager::login(std::string username, std::string password)
 {
-
-	if(this->m_database->doesPasswordMatch(username, password));
-		this->m_loggedUsers.push_back(LoggedUser(username));
+	if (this->m_database->doesUserExist(username))
+	{
+		if (this->m_database->doesPasswordMatch(username, password));
+		{
+			this->m_loggedUsers.push_back(LoggedUser(username));
+		}
+	}
+		
+			
+			
 	
 }
 
