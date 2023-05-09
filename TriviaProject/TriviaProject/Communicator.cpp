@@ -84,7 +84,7 @@ void Communicator::acceptClient()
 	if (client_socket == INVALID_SOCKET)
 		throw std::exception(__FUNCTION__);
 
-	std::cout << "Client accepted !" << std::endl;
+	std::cout << "New Client Connection" << std::endl;
 
 	LoginRequestHandler* newLoginReq = new LoginRequestHandler(m_handlerFactory);
 
@@ -152,6 +152,28 @@ void sendMessageToUser(SOCKET clientSocket, RequestResult result, bool isRelaven
 	send(clientSocket, message.c_str(), message.size(), 0);
 }
 
+RequestInfo GetMessageInfo(std::vector<unsigned char> buffer, int codeId)
+{
+	std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + BYTE_SIZE);
+	std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE, buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1));
+
+	std::string codeStr = std::string(code.begin(), code.end());
+	codeId = binaryToDecimal(std::stoi(codeStr));
+
+	std::string sizeStr = std::string(size.begin(), size.end());
+	int sizeOfJson = binaryToDecimal(std::stoi(sizeStr));
+
+	std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
+
+	//Setup the request's info
+	RequestInfo info;
+	info.id = codeId;
+	info.buffer = actualBuffer;
+	info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+	return info;
+}
+
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	try
@@ -170,31 +192,17 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 					throw std::exception(__FUNCTION__);
 			}
 
-			std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + BYTE_SIZE);
-			std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE, buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1));
+			RequestInfo info = GetMessageInfo(buffer, codeId);
 
-			std::string codeStr = std::string(code.begin(), code.end());
-			codeId = binaryToDecimal(std::stoi(codeStr));
-
-			std::string sizeStr = std::string(size.begin(), size.end());
-			int sizeOfJson = binaryToDecimal(std::stoi(sizeStr));
-			std::cout << "size of json: " << sizeOfJson << std::endl;
-
-			std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
-
-			//Setup the request's info
-			RequestInfo info;
-			info.id = codeId;
-			info.buffer = actualBuffer;
-			info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+			std::vector<unsigned char> actualBuffer = info.buffer;
 
 			LoginRequestHandler handler(m_handlerFactory);
 
 			RequestResult result = handler.handleRequest(info);
 
-			if (!handler.isRequestRelevant(info) || (isConnected != false && (codeId != LOG_IN_REQUEST || codeId != SIGN_UP_REQUEST)))
+			if (!handler.isRequestRelevant(info) || isConnected != false)
 			{
-				std::cout << "not relevant request" << std::endl;
+				std::cout << "Request not relevant" << std::endl;
 				sendMessageToUser(clientSocket, result, handler.isRequestRelevant(info));
 				continue;
 			}
