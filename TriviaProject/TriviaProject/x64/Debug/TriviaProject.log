@@ -1,6 +1,15 @@
 ﻿  Communicator.cpp
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(129,59): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(152,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(190,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(233,31): warning C4101: 'e': unreferenced local variable
-  TriviaProject.vcxproj -> C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V2.0.0\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(129,59): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V2.0.0\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(152,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V2.0.0\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(190,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V2.0.0\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(233,31): warning C4101: 'e': unreferenced local variable
+  JsonRequestPacketDeserializer.cpp
+  JsonResponsePacketSerializer.cpp
+  LoginRequestHandler.cpp
+  Room.cpp
+  Server.cpp
+  WSAInitializer.cpp
+  Generating Code...
+  sqlite3.c
+  LINK : C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V2.0.0\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe not found or not built by the last incremental link; performing full link
+  TriviaProject.vcxproj -> C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V2.0.0\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe
