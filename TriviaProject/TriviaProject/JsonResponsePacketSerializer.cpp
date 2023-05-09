@@ -75,12 +75,27 @@ std::string JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse r
 std::string JsonResponsePacketSerializer::serializeResponse(getHighScoreResponse response)
 {
 	std::string usersStats = "";
+	std::string scores = "";
 	nlohmann::json j;
 
 	for (auto it = response.statistics.begin(); it != response.statistics.end(); it++)
 	{
-		usersStats;
+		usersStats += it->at(0);
 		usersStats += ", ";
+
+		usersStats += it->at(1);
+		usersStats += ", ";
+
+		usersStats += it->at(2);
+		usersStats += ", ";
+
+		usersStats += it->at(3);
+
+		scores += it->at(4);
+		scores += ", ";
 	}
-	return std::string();
+
+	j["UserStatistics"] = usersStats;
+	j["HighScores"] = scores;
+	return j.dump();
 }
