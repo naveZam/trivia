@@ -11,11 +11,11 @@ public:
 	static std::string serializeResponse(LoginResponse loginResponse);
 	static std::string serializeResponse(SignupResponse signupResponse);
 
-	/*static std::string serializeResponse(LogoutResponse);
-	static std::string serializeResponse(GetRoomsResponse);
-	static std::string serializerResponse(GetPlayersInRoomResponse);
-	static std::string serializeResponse(JoinRoomResponse);
-	static std::string serializeResponse(CreateRoomResponse);
-	static std::string serializeResponse(getHighScoreResponse);
-	static std::string serializeResponse(getPersonalStatsResponse);*/
+	static std::string serializeResponse(LogoutResponse response);
+	static std::string serializeResponse(GetRoomsResponse response);
+	static std::string serializerResponse(GetPlayersInRoomResponse response);
+	static std::string serializeResponse(JoinRoomResponse response);
+	static std::string serializeResponse(CreateRoomResponse response);
+	static std::string serializeResponse(getHighScoreResponse response);
+	static std::string serializeResponse(getPersonalStatsResponse response);
 };
