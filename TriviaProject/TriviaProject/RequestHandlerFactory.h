@@ -3,6 +3,8 @@
 #include "MenuRequestHandler.h"
 #include "LoginManager.h"
 #include "IDatabase.h"
+
+class MenuRequestHandler;
 class LoginRequestHandler;
 
 class RequestHandlerFactory
@@ -10,7 +12,7 @@ class RequestHandlerFactory
 public:
 	RequestHandlerFactory(IDatabase* database);
 	LoginRequestHandler* createLoginRequestHandler();
-	MenuRequestHandler* createMenuRequestHandler();
+	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
 	LoginManager& getLoginManager();
 
 private:
