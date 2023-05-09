@@ -51,3 +51,13 @@ std::vector<std::string> Room::getAllUsers()
 	}
 	return allUsers;
 }
+
+bool Room::getState()
+{
+	return m_metadata.isActive;
+}
+
+RoomData& Room::getRoomData()
+{
+	return m_metadata;
+}

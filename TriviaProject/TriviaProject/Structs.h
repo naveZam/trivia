@@ -38,3 +38,5 @@ struct RoomData
 	unsigned int timePerQuestion;
 	unsigned int isActive;
 };
+
+typedef unsigned int roomID;
