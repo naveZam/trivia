@@ -28,15 +28,40 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vecto
 
 GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(std::vector<unsigned char> buffer)
 {
-	return GetPlayersInRoomRequest();
+	//parsing the info
+	nlohmann::json j = nlohmann::json::parse(buffer);
+
+	//sorting the info to SignupRequest
+	GetPlayersInRoomRequest getPlayersInRoomRequest;
+	getPlayersInRoomRequest.roomId = j["roomId"];
+
+	return getPlayersInRoomRequest;
 }
 
 JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(std::vector<unsigned char> buffer)
 {
-	return JoinRoomRequest();
+	//parsing the info
+	nlohmann::json j = nlohmann::json::parse(buffer);
+
+	//sorting the info to SignupRequest
+	JoinRoomRequest joinRoomRequest;
+	joinRoomRequest.roomId = j["roomId"];
+
+	return joinRoomRequest;
 }
 
 CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(std::vector<unsigned char> buffer)
 {
-	return CreateRoomRequest();
+	//parsing the info
+	nlohmann::json j = nlohmann::json::parse(buffer);
+
+	//sorting the info to SignupRequest
+	CreateRoomRequest createRoomRequest;
+
+	createRoomRequest.answerTimeout = j["answerTimeout"];
+	createRoomRequest.maxUsers = j["maxUsers"];
+	createRoomRequest.questionCount = j["questionCount"];
+	createRoomRequest.roomName = j["roomName"];
+
+	return createRoomRequest;
 }

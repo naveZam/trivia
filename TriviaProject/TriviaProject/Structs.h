@@ -81,12 +81,12 @@ struct CreateRoomResponse
 
 struct GetPlayersInRoomRequest
 {
-	unsigned int status;
+	unsigned int roomId;
 };
 
 struct JoinRoomRequest
 {
-	unsigned int status;
+	unsigned int roomId;
 };
 
 struct CreateRoomRequest
