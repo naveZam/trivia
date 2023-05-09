@@ -15,12 +15,14 @@ public:
 	int doesPasswordMatch(std::string username, std::string password);
 	int addNewUser(std::string username, std::string password, std::string email);
 	Question getQuestions(int questionsNo);
-	float getAverageAnswerTime();
-	int getNumOfCorrectAnswers();
-	int getNumOfTotalAnswers();
-	int getNumOfPlayerGames();
-	int getPlayerScore();
-	std::vector<std::string> getBestScores();
+	float getAverageAnswerTime(std::string name);
+	int getNumOfCorrectAnswers(std::string name);
+	int getNumOfTotalAnswers(std::string name);
+	int getNumOfPlayerGames(std::string name);
+	int getPlayerScore(std::string name);
+	std::vector<std::string> getBestScores(std::string name);
+	void addGame(int id, std::string name, int correctAnswers, int wrongAnswers, float averageAnswerTime, int score);
+	void addQuestions();
 	
 
 private:
