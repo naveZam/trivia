@@ -1,5 +1,7 @@
 #include "RoomManager.h"
 
+unsigned int RoomManager::m_newId = 1;
+
 RoomManager::RoomManager()
 {
     m_rooms.clear();

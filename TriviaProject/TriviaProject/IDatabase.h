@@ -16,5 +16,5 @@ public:
 	virtual int getNumOfTotalAnswers(std::string name) = 0;
 	virtual int getNumOfPlayerGames(std::string name) = 0;
 	virtual int getPlayerScore(std::string name) = 0;
-	virtual std::vector<std::string> getBestScores(std::string name) = 0;
+	virtual std::vector<std::string> getBestScores() = 0;
 };

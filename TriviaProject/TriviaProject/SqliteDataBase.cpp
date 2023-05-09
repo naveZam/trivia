@@ -163,9 +163,9 @@ int SqliteDataBase::getPlayerScore(std::string name)
 	}
 }
 
-std::vector<std::string> SqliteDataBase::getBestScores(std::string name)
+std::vector<std::string> SqliteDataBase::getBestScores()
 {
-	std::string sql = "SELECT username, SUM(score) FROM stats JOIN users ON stats.user_id = users.id GROUP BY username ORDER BY SUM(score) DESC LIMIT 3;";
+	std::string sql = "SELECT username, SUM(score) FROM stats JOIN users ON stats.user_id = users.id GROUP BY username ORDER BY SUM(score) DESC LIMIT 5;";
 	sqlite3_stmt* stmt;
 	std::vector<std::string> bestScores;
 	if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)

@@ -17,4 +17,3 @@ private:
 	std::map<roomID, Room> m_rooms;
 };
 
-unsigned int RoomManager::m_newId = 1;

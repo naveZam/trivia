@@ -20,7 +20,7 @@ public:
 	int getNumOfTotalAnswers(std::string name);
 	int getNumOfPlayerGames(std::string name);
 	int getPlayerScore(std::string name);
-	std::vector<std::string> getBestScores(std::string name);
+	std::vector<std::string> getBestScores();
 	void addGame(int id, std::string name, int correctAnswers, int wrongAnswers, float averageAnswerTime, int score);
 	void addQuestions();
 	
