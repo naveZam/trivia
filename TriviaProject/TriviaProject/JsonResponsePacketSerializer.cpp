@@ -28,9 +28,19 @@ std::string JsonResponsePacketSerializer::serializeResponse(LogoutResponse respo
 	return j.dump();
 }
 
-std::string JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse response)
+std::string JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse Response)
 {
-	return std::string();
+	std::string retString = "";
+	nlohmann::json j;
+
+	for (auto it = Response.rooms.begin(); it != Response.rooms.end(); it++)
+	{
+		retString += it->name;
+		retString += " ";
+	}
+
+	j["rooms"] = retString;
+	return j.dump();
 }
 
 std::string JsonResponsePacketSerializer::serializerResponse(GetPlayersInRoomResponse response)
