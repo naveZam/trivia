@@ -1,2 +1,24 @@
-﻿  TriviaProject.cpp
-  TriviaProject.vcxproj -> C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1.0.3\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe
+﻿  Communicator.cpp
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(129,59): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(152,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(168,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(225,31): warning C4101: 'e': unreferenced local variable
+  IDatabase.cpp
+  IRequestHandler.cpp
+  JsonRequestPacketDeserializer.cpp
+  JsonResponsePacketSerializer.cpp
+  LoggedUser.cpp
+  LoginManager.cpp
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\LoginManager.cpp(22,63): warning C4390: ';': empty controlled statement found; is this the intent?
+  LoginRequestHandler.cpp
+  MenuRequestHandler.cpp
+  RequestHandlerFactory.cpp
+  Server.cpp
+  Source.cpp
+  SqliteDataBase.cpp
+  WSAInitializer.cpp
+  Generating Code...
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(23): warning C4715: 'SqliteDataBase::open': not all control paths return a value
+  sqlite3.c
+  LINK : C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe not found or not built by the last incremental link; performing full link
+  TriviaProject.vcxproj -> C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V1\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe
