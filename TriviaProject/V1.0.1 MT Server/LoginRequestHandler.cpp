@@ -1,10 +1,16 @@
 #include "LoginRequestHandler.h"
 #include "JsonResponsePacketSerializer.h"
+#include "JsonRequestPacketDeserializer.h"
 
 #include "bitset"
+#include <vector>
 
 #define LOG_IN_REQUEST 1
 #define SIGN_UP_REQUEST 2
+
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
+{
+}
 
 bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 {
@@ -16,7 +22,10 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new LoginRequestHandler;
+	result.newHandler = new LoginRequestHandler(m_handlerFactory);
+
+	std::string notErrorrRespond = "1";
+	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
 
 	LoginResponse loginRes;
 	SignupResponse SignupRes;
@@ -26,11 +35,25 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 	switch(info.id)
 	{
 	case LOG_IN_REQUEST:
-		Respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
+		if (login(info).response != nonError)
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		}
+		else
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
+		}
 		break;
 
 	case SIGN_UP_REQUEST:
-		Respones = JsonResponsePacketSerializer::serializeResponse(SignupRes);
+		if (signup(info).response != nonError)
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		}
+		else
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(SignupRes);
+		}
 		break;
 
 	default:
@@ -48,5 +71,42 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 	std::vector<unsigned char> binaryChars(binaryString.begin(), binaryString.end());
 
 	result.response = binaryChars;
+	return result;
+}
+
+RequestResult LoginRequestHandler::login(RequestInfo info)
+{
+	RequestResult result;
+	std::string respond = "";
+	LoginRequest user = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
+	m_handlerFactory.getLoginManager().login(user.username, user.password);
+
+	//make sure the user logged
+	if (m_handlerFactory.getLoginManager().isUserLogged(user.username))
+	{
+		std::cout << "User successfully logged" << std::endl;
+		respond = "1";
+	}
+	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
+
+	return result;
+}
+
+RequestResult LoginRequestHandler::signup(RequestInfo info)
+{
+	RequestResult result;
+	std::string respond = "";
+	SignupRequest user = JsonRequestPacketDeserializer::deserializeSignupRequest(info.buffer);
+
+	m_handlerFactory.getLoginManager().signup(user.username, user.password, user.email);
+
+	//make sure the user logged
+	if (m_handlerFactory.getLoginManager().isUserLogged(user.username))
+	{
+		std::cout << "User successfully logged" << std::endl;
+		respond = "1";
+	}
+	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
+
 	return result;
 }
