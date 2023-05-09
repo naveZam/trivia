@@ -1,19 +1,7 @@
 #pragma once
 
 #include "JsonResponsePacketSerializer.h"
-
-struct LoginRequest
-{
-	std::string username;
-	std::string password;
-};
-
-struct SignupRequest
-{
-	std::string username;
-	std::string password;
-	std::string email;
-};
+#include "Structs.h"
 
 class JsonRequestPacketDeserializer
 {

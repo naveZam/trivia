@@ -2,21 +2,7 @@
 
 #include <iostream>
 #include "json.hpp"
-
-struct LoginResponse
-{
-	unsigned int status = 1;
-};
-
-struct SignupResponse
-{
-	unsigned int status = 1;
-};
-
-struct ErrorResponse
-{
-	std::string message;
-};
+#include "Structs.h"
 
 class JsonResponsePacketSerializer
 {
