@@ -28,15 +28,15 @@ std::string JsonResponsePacketSerializer::serializeResponse(LogoutResponse respo
 	return j.dump();
 }
 
-std::string JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse Response)
+std::string JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse response)
 {
 	std::string retString = "";
 	nlohmann::json j;
 
-	for (auto it = Response.rooms.begin(); it != Response.rooms.end(); it++)
+	for (auto it = response.rooms.begin(); it != response.rooms.end(); it++)
 	{
 		retString += it->name;
-		retString += " ";
+		retString += ", ";
 	}
 
 	j["rooms"] = retString;
@@ -45,8 +45,16 @@ std::string JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse Res
 
 std::string JsonResponsePacketSerializer::serializerResponse(GetPlayersInRoomResponse response)
 {
+	std::string usersString = "";
 	nlohmann::json j;
-	j["status"] = response.status;
+
+	for (auto it = response.players.begin(); it != response.players.end(); it++)
+	{
+		usersString += it->c_str();
+		usersString += ", ";
+	}
+
+	j["PlayersInRoom"] = usersString;
 	return j.dump();
 }
 
@@ -66,10 +74,13 @@ std::string JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse r
 
 std::string JsonResponsePacketSerializer::serializeResponse(getHighScoreResponse response)
 {
-	return std::string();
-}
+	std::string usersStats = "";
+	nlohmann::json j;
 
-std::string JsonResponsePacketSerializer::serializeResponse(getPersonalStatsResponse response)
-{
+	for (auto it = response.statistics.begin(); it != response.statistics.end(); it++)
+	{
+		usersStats;
+		usersStats += ", ";
+	}
 	return std::string();
 }
