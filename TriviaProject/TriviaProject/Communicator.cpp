@@ -13,7 +13,6 @@
 #define LOG_IN_REQUEST 1
 #define SIGN_UP_REQUEST 2
 
-#define BYTE_SIZE 8
 #define AMOUNT_OF_SIZE_BYTES 5
 
 #define DISCONNECT_ID 200
@@ -95,75 +94,46 @@ void Communicator::acceptClient()
 	tr.detach();
 }
 
-int binaryToDecimal(int n)
-{
-	int dec_value = 0;
-	int base = 1;
-	int num = n;
-	int last_digit = 0;
-
-	int temp = num;
-	while (temp) 
-	{
-		last_digit = temp % 10;
-		temp = temp / 10;
-
-		dec_value += last_digit * base;
-
-		base = base * 2;
-	}
-
-	return dec_value;
-}
-
-std::string decimalToBinary(unsigned int decimal) 
-{
-	std::string binaryString = std::bitset<32>(decimal).to_string();
-	binaryString.erase(0, binaryString.find_first_not_of('0')); // remove leading zeros
-
-	return binaryString;
-}
-
 void sendMessageToUser(SOCKET clientSocket, RequestResult result, bool isRelavent)
 {
-	std::string size = decimalToBinary(result.response.size());
+	int size = result.response.size();
 	std::string sizeBuffer = "";
 	int i = 0;
 
-	while (i < AMOUNT_OF_SIZE_BYTES * BYTE_SIZE - size.size())
+	while (i < AMOUNT_OF_SIZE_BYTES - size)
 	{
 		sizeBuffer += "0";
 		i++;
 	}
 
 	sizeBuffer += size;
-	std::string code = "";
+	int code = 0;
 
 	if (isRelavent)
 	{
-		code = "111110100"; //code 500
+		code = 500; //code 500
 	}
 	else
 	{
-		code = "100101100"; //code 300
+		code = 300; //code 300
 	}
 
-	std::string message = code + sizeBuffer + std::string(result.response.begin(), result.response.end());
+	std::string message = std::to_string(code) + sizeBuffer + std::string(result.response.begin(), result.response.end());
 	send(clientSocket, message.c_str(), message.size(), 0);
 }
 
 RequestInfo GetMessageInfo(std::vector<unsigned char> buffer, int codeId)
 {
-	std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + BYTE_SIZE);
-	std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE, buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1));
+	std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + 1);
+	std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + 1, buffer.begin() + (AMOUNT_OF_SIZE_BYTES + 1));
 
 	std::string codeStr = std::string(code.begin(), code.end());
-	codeId = binaryToDecimal(std::stoi(codeStr));
+	codeId = std::stoi(codeStr);
 
 	std::string sizeStr = std::string(size.begin(), size.end());
-	int sizeOfJson = binaryToDecimal(std::stoi(sizeStr));
+	int sizeOfJson = std::stoi(sizeStr);
 
-	std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + BYTE_SIZE * (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
+	std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
 
 	//Setup the request's info
 	RequestInfo info;
