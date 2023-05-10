@@ -15,7 +15,9 @@ int main()
 
 		// NOTICE at the end of this block the WSA will be closed 
 		IDatabase* db = new SqliteDataBase();
-		RequestHandlerFactory factory(db);//PAIN
+		RoomManager roomManager = RoomManager();
+		StatisticsManager StatManager = StatisticsManager(db);
+		RequestHandlerFactory factory(db, roomManager, StatManager);//PAIN
 		WSAInitializer wsa_init;
 		Server md_server(factory, db);
 		md_server.run();

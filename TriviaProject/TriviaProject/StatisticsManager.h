@@ -10,7 +10,7 @@ class LoginRequestHandler;
 class StatisticsManager
 {
 public:
-	StatisticsManager();
+	StatisticsManager(IDatabase* database);
 	std::vector<std::string> getHighScore();
 	void getUserStatistics(std::vector<std::string>& userStatistics, std::string username);
 
