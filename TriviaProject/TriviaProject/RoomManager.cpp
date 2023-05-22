@@ -1,5 +1,5 @@
 #include "RoomManager.h"
-
+RoomManager* RoomManager::instancePtr = NULL;
 unsigned int RoomManager::m_newId = 1;
 
 RoomManager::RoomManager()

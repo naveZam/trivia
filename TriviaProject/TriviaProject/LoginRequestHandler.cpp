@@ -10,6 +10,10 @@
 
 
 
+LoginRequestHandler::LoginRequestHandler()
+{
+}
+
 bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 {
     if (info.id == LOG_IN_REQUEST || info.id == SIGN_UP_REQUEST)

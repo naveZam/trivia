@@ -22,8 +22,6 @@ private:
 	RequestResult joinRoom(RequestInfo info);
 	RequestResult createRoom(RequestInfo info);
 	RequestResult getHighScore(RequestInfo info);
-	RequestResult joinRoom(RequestInfo info);
-	RequestResult createRoom(RequestInfo info);
 
 };
 

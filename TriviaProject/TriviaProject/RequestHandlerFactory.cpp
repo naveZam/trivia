@@ -1,5 +1,5 @@
 #include "RequestHandlerFactory.h"
-
+RequestHandlerFactory* RequestHandlerFactory::instancePtr = NULL;
 RequestHandlerFactory* RequestHandlerFactory::getInstance()
 {
 	if (instancePtr == NULL)
@@ -20,7 +20,7 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser user)
 {
-    return new MenuRequestHandler();
+    return new MenuRequestHandler(user);
 }
 
 

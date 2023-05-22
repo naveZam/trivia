@@ -1,5 +1,5 @@
 #include "StatisticsManager.h"
-
+StatisticsManager* StatisticsManager::instancePtr = NULL;
 StatisticsManager::StatisticsManager()
 {
 	m_database = SqliteDataBase::getInstance();
