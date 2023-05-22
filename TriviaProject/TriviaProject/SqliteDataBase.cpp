@@ -1,8 +1,17 @@
 #include "SqliteDataBase.h"
-
+SqliteDataBase* SqliteDataBase::instancePtr = NULL;
 SqliteDataBase::SqliteDataBase()
 {
 	open();
+}
+
+SqliteDataBase* SqliteDataBase::getInstance()
+{
+	if (instancePtr == NULL)
+	{
+		instancePtr = new SqliteDataBase();
+	}
+	return instancePtr;
 }
 
 bool SqliteDataBase::open()

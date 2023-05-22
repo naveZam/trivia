@@ -12,19 +12,18 @@ class LoginRequestHandler;
 class RequestHandlerFactory
 {
 public:
-	RequestHandlerFactory(IDatabase* database, RoomManager roomManager, StatisticsManager statisticsManager);
+	RequestHandlerFactory(const RequestHandlerFactory&) = delete;
+	RequestHandlerFactory& operator=(const RequestHandlerFactory&) = delete;
+	static RequestHandlerFactory* getInstance();
+	RequestHandlerFactory();
 	LoginRequestHandler* createLoginRequestHandler();
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
-	StatisticsManager& getStatisticsManager();
-	RoomManager& getRoomManager();
-	LoginManager& getLoginManager();
+
 
 private:
-	LoginManager m_loginManager;
-	IDatabase* m_database;
+	static RequestHandlerFactory* instancePtr;
 
-	RoomManager m_roomManager;
-	StatisticsManager m_StatisticsManager;
+	
 
 
 };

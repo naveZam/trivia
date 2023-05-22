@@ -16,11 +16,11 @@
 #define AMOUNT_OF_SIZE_BYTES 5
 
 #define DISCONNECT_ID 200
-
+Communicator* Communicator::instancePtr = NULL;
 // using static const instead of macros 
 static const unsigned short PORT = 42069;
 
-Communicator::Communicator(RequestHandlerFactory& handlerFactory, IDatabase* database) : m_handlerFactory(handlerFactory)
+Communicator::Communicator()
 {
 	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
 	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
@@ -59,6 +59,15 @@ void Communicator::startHandleRequests()
 	}
 }
 
+Communicator* Communicator::getInstance()
+{
+	if (instancePtr == NULL)
+	{
+		instancePtr = new Communicator();
+	}
+	return instancePtr;
+}
+
 void Communicator::bindAndListen()
 {
 	struct sockaddr_in sa = { 0 };
@@ -85,7 +94,7 @@ void Communicator::acceptClient()
 
 	std::cout << "New Client Connection" << std::endl;
 
-	LoginRequestHandler* newLoginReq = new LoginRequestHandler(m_handlerFactory);
+	LoginRequestHandler* newLoginReq = new LoginRequestHandler();
 
 	m_clients.insert(std::pair<SOCKET, IRequestHandler*>(client_socket, newLoginReq));
 
@@ -166,7 +175,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 			std::vector<unsigned char> actualBuffer = info.buffer;
 
-			LoginRequestHandler handler(m_handlerFactory);
+			LoginRequestHandler handler;
 
 			RequestResult result = handler.handleRequest(info);
 

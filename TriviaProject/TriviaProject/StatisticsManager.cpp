@@ -1,8 +1,17 @@
 #include "StatisticsManager.h"
 
-StatisticsManager::StatisticsManager(IDatabase* database)
+StatisticsManager::StatisticsManager()
 {
-    m_database = database;
+	m_database = SqliteDataBase::getInstance();
+}
+
+StatisticsManager* StatisticsManager::getInstance()
+{
+	if (instancePtr == nullptr)
+	{
+		instancePtr = new StatisticsManager();
+	}
+	return instancePtr;
 }
 
 std::vector<std::string> StatisticsManager::getHighScore()

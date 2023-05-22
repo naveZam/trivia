@@ -7,15 +7,13 @@
 class MenuRequestHandler
 {
 public:
-	MenuRequestHandler(RequestHandlerFactory& handlerFactory, std::string username, RoomManager roomManage, StatisticsManager manager);
+	MenuRequestHandler();
 	bool isRequestRelevant(RequestInfo info);
 	RequestResult handleRequest(RequestInfo info);
 
 
 private:
 	LoggedUser m_user;
-	RoomManager& m_roomManager;
-	StatisticsManager& m_statisticsManager;
-	RequestHandlerFactory& m_handlerFactory;
+
 };
 

@@ -10,11 +10,13 @@ class LoginRequestHandler;
 class StatisticsManager
 {
 public:
-	StatisticsManager(IDatabase* database);
+	static StatisticsManager* getInstance();
 	std::vector<std::string> getHighScore();
 	void getUserStatistics(std::vector<std::string>& userStatistics, std::string username);
 
 private:
+	static StatisticsManager* instancePtr;
 	IDatabase* m_database;
+	StatisticsManager();
 };
 

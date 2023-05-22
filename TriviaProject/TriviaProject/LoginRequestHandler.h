@@ -7,7 +7,7 @@ class RequestHandlerFactory;
 class LoginRequestHandler : public IRequestHandler
 {
 public:
-	LoginRequestHandler(RequestHandlerFactory& handlerFactory);
+	LoginRequestHandler();
 	bool isRequestRelevant(RequestInfo info) override;
 	RequestResult handleRequest(RequestInfo info) override;
 
@@ -15,6 +15,5 @@ private:
 	RequestResult login(RequestInfo info);
 	RequestResult signup(RequestInfo info);
 
-	RequestHandlerFactory& m_handlerFactory;
 };
 

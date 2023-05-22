@@ -7,6 +7,16 @@ RoomManager::RoomManager()
     m_rooms.clear();
 }
 
+RoomManager* RoomManager::getInstance()
+{
+	if (instancePtr == NULL)
+	{
+		instancePtr = new RoomManager();
+	}
+
+	return instancePtr;
+}
+
 void RoomManager::createRoom(LoggedUser owner, RoomData newRoomData)
 {
     Room newRoom = Room(owner, newRoomData);

@@ -7,7 +7,8 @@
 class SqliteDataBase : public IDatabase
 {
 public:
-	SqliteDataBase();
+	static SqliteDataBase* getInstance();
+	SqliteDataBase(const SqliteDataBase& obj) = delete;
 	~SqliteDataBase();
 	bool open();
 	bool close();
@@ -26,6 +27,8 @@ public:
 	
 
 private:
+	static SqliteDataBase* instancePtr;
+	SqliteDataBase();
 	sqlite3* db;
 };
 

@@ -5,7 +5,8 @@
 class RoomManager
 {
 public:
-	RoomManager();
+	static RoomManager* getInstance();
+	
 	void createRoom(LoggedUser owner, RoomData newRoomData);
 	void deleteRoom(int ID);
 	unsigned int getRoomState(int ID);
@@ -13,7 +14,10 @@ public:
 	Room& getRoom(int ID);
 
 private:
+	
+	RoomManager();
 	static unsigned int m_newId;
 	std::map<roomID, Room> m_rooms;
+	static RoomManager* instancePtr;
 };
 
