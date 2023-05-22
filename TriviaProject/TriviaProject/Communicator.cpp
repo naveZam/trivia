@@ -2,6 +2,7 @@
 #include "JsonResponsePacketSerializer.h"
 #include "LoginRequestHandler.h"
 #include "Communicator.h"
+#include "RequestHandlerFactory.h"
 
 #include <exception>
 #include <iostream>
@@ -19,28 +20,6 @@
 
 // using static const instead of macros 
 static const unsigned short PORT = 42069;
-
-Communicator::Communicator(RequestHandlerFactory& handlerFactory, IDatabase* database) : m_handlerFactory(handlerFactory)
-{
-	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
-	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
-	m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-	if (m_serverSocket == INVALID_SOCKET)
-		throw std::exception(__FUNCTION__ " - socket");
-
-}
-
-Communicator::~Communicator()
-{
-	try
-	{
-		// the only use of the destructor should be for freeing 
-		// resources that was allocated in the constructor
-		closesocket(m_serverSocket);
-	}
-	catch (...) {}
-}
 
 void Communicator::startHandleRequests()
 {
@@ -62,6 +41,13 @@ void Communicator::startHandleRequests()
 void Communicator::bindAndListen()
 {
 	struct sockaddr_in sa = { 0 };
+	
+	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
+	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
+	m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+	if (m_serverSocket == INVALID_SOCKET)
+		throw std::exception(__FUNCTION__ " - socket");
 
 	sa.sin_port = htons(PORT);
 	sa.sin_family = AF_INET;
@@ -85,7 +71,7 @@ void Communicator::acceptClient()
 
 	std::cout << "New Client Connection" << std::endl;
 
-	LoginRequestHandler* newLoginReq = new LoginRequestHandler(m_handlerFactory);
+	LoginRequestHandler* newLoginReq = new LoginRequestHandler();
 
 	m_clients.insert(std::pair<SOCKET, IRequestHandler*>(client_socket, newLoginReq));
 
@@ -166,7 +152,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 			std::vector<unsigned char> actualBuffer = info.buffer;
 
-			LoginRequestHandler handler(m_handlerFactory);
+			LoginRequestHandler handler;
 
 			RequestResult result = handler.handleRequest(info);
 

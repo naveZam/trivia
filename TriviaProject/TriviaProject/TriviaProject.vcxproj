@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomManager.h" />

@@ -2,13 +2,15 @@
 
 #include "IDatabase.h"
 #include "sqlite3.h"
+#include "Singleton.h"
+
 #define DATABASE_NAME "database.db"
 
 class SqliteDataBase : public IDatabase
 {
+	MAKE_SINGLETON_CLASS(SqliteDataBase)
+
 public:
-	SqliteDataBase();
-	~SqliteDataBase();
 	bool open();
 	bool close();
 	int doesUserExist(std::string username);

@@ -1,4 +1,34 @@
-﻿  Source.cpp
-  StatisticsManager.cpp
+﻿  Communicator.cpp
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(85,35): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(108,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(146,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(189,31): warning C4101: 'e': unreferenced local variable
+  Server.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\memory(3437,35): error C2661: 'std::tuple<void (__cdecl Communicator::* )(void),Communicator>::tuple': no overloaded function takes 2 arguments
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\thread(66): message : see reference to function template instantiation 'std::unique_ptr<_Tuple,std::default_delete<_Tuple>> std::make_unique<_Tuple,_Ty,Communicator&,0>(_Ty &&,Communicator &)' being compiled
+          with
+          [
+              _Ty=void (__cdecl Communicator::* )(void)
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\thread(89): message : see reference to function template instantiation 'void std::thread::_Start<_Ty,Communicator&>(_Fn &&,Communicator &)' being compiled
+          with
+          [
+              _Ty=void (__cdecl Communicator::* )(void),
+              _Fn=void (__cdecl Communicator::* )(void)
+          ]
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Server.cpp(10): message : see reference to function template instantiation 'std::thread::thread<void(__cdecl Communicator::* )(void),Communicator&,0>(_Fn &&,Communicator &)' being compiled
+          with
+          [
+              _Fn=void (__cdecl Communicator::* )(void)
+          ]
+  Source.cpp
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Source.cpp(17,39): error C2248: 'SqliteDataBase::SqliteDataBase': cannot access private member declared in class 'SqliteDataBase'
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.h(11): message : see declaration of 'SqliteDataBase::SqliteDataBase'
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.h(9): message : see declaration of 'SqliteDataBase'
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Source.cpp(20,61): error C2661: 'RequestHandlerFactory::RequestHandlerFactory': no overloaded function takes 3 arguments
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Source.cpp(22,31): error C2661: 'Server::Server': no overloaded function takes 2 arguments
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Source.cpp(23,17): error C2248: 'Server::run': cannot access private member declared in class 'Server'
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Server.h(13): message : see declaration of 'Server::run'
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\Singleton\trivia_group2\TriviaProject\TriviaProject\Server.h(10): message : see declaration of 'Server'
+  WSAInitializer.cpp
   Generating Code...
-  TriviaProject.vcxproj -> C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V2.0.0\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe
