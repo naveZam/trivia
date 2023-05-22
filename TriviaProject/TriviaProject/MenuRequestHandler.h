@@ -3,17 +3,27 @@
 #include "RoomManager.h"
 #include "StatisticsManager.h"
 #include "LoggedUser.h"
+#include "JsonResponsePacketSerializer.h"
 
-class MenuRequestHandler
+class MenuRequestHandler : public IRequestHandler
 {
 public:
-	MenuRequestHandler();
+	MenuRequestHandler(LoggedUser user);
 	bool isRequestRelevant(RequestInfo info);
 	RequestResult handleRequest(RequestInfo info);
-
+	
 
 private:
 	LoggedUser m_user;
+	RequestResult signout(RequestInfo info);
+	RequestResult getRooms(RequestInfo info);
+	RequestResult getPlayersInRoom(RequestInfo info);
+	RequestResult getPersonalStats(RequestInfo info);
+	RequestResult joinRoom(RequestInfo info);
+	RequestResult createRoom(RequestInfo info);
+	RequestResult getHighScore(RequestInfo info);
+	RequestResult joinRoom(RequestInfo info);
+	RequestResult createRoom(RequestInfo info);
 
 };
 
