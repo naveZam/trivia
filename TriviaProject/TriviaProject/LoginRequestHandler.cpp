@@ -8,7 +8,9 @@
 #define LOG_IN_REQUEST 1
 #define SIGN_UP_REQUEST 2
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory)
+
+
+LoginRequestHandler::LoginRequestHandler()
 {
 }
 
@@ -22,7 +24,7 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new LoginRequestHandler(m_handlerFactory);
+	result.newHandler = new LoginRequestHandler();
 
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
@@ -79,10 +81,11 @@ RequestResult LoginRequestHandler::login(RequestInfo info)
 	RequestResult result;
 	std::string respond = "";
 	LoginRequest user = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
-	m_handlerFactory.getLoginManager().login(user.username, user.password);
+	LoginManager loginManager;
+	loginManager.login(user.username, user.password);
 
 	//make sure the user logged
-	if (m_handlerFactory.getLoginManager().isUserLogged(user.username))
+	if (loginManager.isUserLogged(user.username))
 	{
 		std::cout << "User successfully logged" << std::endl;
 		respond = "1";
@@ -94,14 +97,15 @@ RequestResult LoginRequestHandler::login(RequestInfo info)
 
 RequestResult LoginRequestHandler::signup(RequestInfo info)
 {
+	LoginManager loginManager;
 	RequestResult result;
 	std::string respond = "";
 	SignupRequest user = JsonRequestPacketDeserializer::deserializeSignupRequest(info.buffer);
 
-	m_handlerFactory.getLoginManager().signup(user.username, user.password, user.email);
+	loginManager.signup(user.username, user.password, user.email);
 
 	//make sure the user logged
-	if (m_handlerFactory.getLoginManager().isUserLogged(user.username))
+	if (loginManager.isUserLogged(user.username))
 	{
 		std::cout << "User successfully logged" << std::endl;
 		respond = "1";

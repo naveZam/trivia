@@ -13,44 +13,34 @@ def main():
     signup = '{"username": "user1", "password": "1234", "mail": "user1@gmail.com"}'
     login = '{"username": "user1", "password": "1234"}'
     login2 = '{"username": "user2", "password": "1234"}'
-    #convert the signup and login to binary with 8 bits per byte
-    binSignup = ''.join('{0:08b}'.format(ord(x), 'b') for x in signup)
-    binLogin = ''.join('{0:08b}'.format(ord(x), 'b') for x in login)
-    binLogin2 = ''.join('{0:08b}'.format(ord(x), 'b') for x in login2)
 
-    #get the len of the binSignup and make it 5 bytes and in binary fill with 0 to the left
-    binSignupLen = len(binSignup)
-    binSignupLen = bin(binSignupLen)
-    binSignupLen = binSignupLen[2:]
-    binSignupLen = binSignupLen.zfill(5 * 8)
+    #get the len of the signup and make it 5 bytes and in binary fill with 0 to the left
+    SignupLen = str(len(signup))
+    SignupLen = SignupLen.zfill(5)
 
 
     #get the len of the binLogin and make it 5 bytes and in binary
-    binLoginLen = len(binLogin)
-    binLoginLen = bin(binLoginLen)
-    binLoginLen = binLoginLen[2:]
-    binLoginLen = binLoginLen.zfill(5 * 8)
+    LoginLen = str(len(login))
+    LoginLen = LoginLen.zfill(5)
     
     #get the len of the binLogin and make it 5 bytes and in binary
-    binLoginLen2 = len(binLogin2)
-    binLoginLen2 = bin(binLoginLen2)
-    binLoginLen2 = binLoginLen2[2:]
-    binLoginLen2 = binLoginLen2.zfill(5 * 8)
+    LoginLen2 = str(len(login2))
+    LoginLen2 = LoginLen2.zfill(5)
+    
 
-
-
-    loginmsg = '00000001'+binLoginLen + binLogin
-    signupmsg = '00000010'+binSignupLen + binSignup
-    loginmsg2 = '00000001'+binLoginLen2 + binLogin2
-
+    signupmsg = '2' + SignupLen + signup
+    loginmsg = '1' + LoginLen + login
+    loginmsg2 = '1' + LoginLen2 + login2
+    
+    print(signupmsg)
 
     #two login message same convo
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
-    s.sendall(bytes(signupmsg, UTF))
+    s.sendall(signupmsg.encode())
     data = s.recv(MAX_SIZE)
     print('Received', repr(data))
-    s.sendall(bytes(loginmsg, UTF))
+    s.sendall(loginmsg.encode())
     data = s.recv(MAX_SIZE)
     print('Received', repr(data))
     s.close()
@@ -58,7 +48,7 @@ def main():
     #try two times same login
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   
     s.connect((HOST, PORT))
-    s.sendall(bytes(signupmsg, UTF))
+    s.sendall(signupmsg.encode())
     data = s.recv(MAX_SIZE)
     print('Received', repr(data))
     s.close()
@@ -66,7 +56,7 @@ def main():
     #non-existent user
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   
     s.connect((HOST, PORT))
-    s.sendall(bytes(loginmsg2, UTF))
+    s.sendall(loginmsg2.encode())
     data = s.recv(MAX_SIZE)
     print('Received', repr(data))
     s.close()

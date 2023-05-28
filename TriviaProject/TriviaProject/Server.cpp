@@ -5,9 +5,8 @@
 #include <thread>
 #include <mutex>
 
-Server::Server(RequestHandlerFactory& handlerFactory, IDatabase* database) : m_communicator(handlerFactory, database), m_handlerFactory(handlerFactory)
+Server::Server()
 {
-	this->m_database = database;
 }
 
 Server::~Server()
@@ -16,7 +15,7 @@ Server::~Server()
 
 void Server::run()
 {
-	std::thread tr(&Communicator::startHandleRequests, m_communicator);
+	std::thread tr(&Communicator::startHandleRequests, Communicator::getInstance());
 	tr.detach();
 
 	std::string adminString = "";
