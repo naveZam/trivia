@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+
 struct LoginRequest
 {
 	std::string username;
@@ -94,27 +95,4 @@ struct CreateRoomRequest
 	unsigned int maxUsers;
 	unsigned int questionCount;
 	unsigned int answerTimeout;
-};
-
-struct StartGameResponse
-{
-	unsigned int status;
-};
-
-struct CloseRoomResponce
-{
-	unsigned int status;
-};
-
-struct GetRoomStateResponse
-{
-	unsigned int status;
-	bool hasGameBegun;
-	std::vector<std::string> players;
-	unsigned int questionCount;
-	unsigned int answerTimeOut;
-};
-struct LeaveRoomResponse
-{
-	unsigned int status;
 };
