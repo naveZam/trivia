@@ -3,19 +3,28 @@
 #include "MenuRequestHandler.h"
 #include "LoginManager.h"
 #include "IDatabase.h"
+#include "StatisticsManager.h"
+#include "RoomManager.h"
+
+class MenuRequestHandler;
 class LoginRequestHandler;
 
 class RequestHandlerFactory
 {
 public:
-	RequestHandlerFactory(IDatabase* database);
+	RequestHandlerFactory(const RequestHandlerFactory&) = delete;
+	RequestHandlerFactory& operator=(const RequestHandlerFactory&) = delete;
+	static RequestHandlerFactory* getInstance();
+	RequestHandlerFactory();
 	LoginRequestHandler* createLoginRequestHandler();
-	MenuRequestHandler* createMenuRequestHandler();
-	LoginManager& getLoginManager();
+	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
+
 
 private:
-	LoginManager m_loginManager;
-	IDatabase* m_database;
+	static RequestHandlerFactory* instancePtr;
+
+	
+
 
 };
 

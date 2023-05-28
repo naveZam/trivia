@@ -3,18 +3,7 @@
 
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<unsigned char> buffer)
 {
-	std::string binaryString(buffer.begin(), buffer.end());
-	std::bitset<8> bits;
-	std::string charString = "";
-
-	//from bits to string
-	for (std::size_t i = 0; i < binaryString.size(); i += 8) {
-		bits = std::bitset<8>(binaryString.substr(i, 8));
-		charString += static_cast<char>(bits.to_ulong());
-	}
-
-	//parsing the info
-	nlohmann::json j = nlohmann::json::parse(charString);
+	nlohmann::json j = nlohmann::json::parse(buffer);
 
 	//sorting the info to LoginRequest
 	LoginRequest loginRequest;
@@ -26,19 +15,8 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<
 
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vector<unsigned char> buffer)
 {
-	std::string binaryString(buffer.begin(), buffer.end());
-	std::bitset<8> bits;
-	std::string charString = "";
-
-	//from bits to string
-	for (std::size_t i = 0; i < binaryString.size(); i += 8) 
-	{
-		bits = std::bitset<8>(binaryString.substr(i, 8));
-		charString += static_cast<char>(bits.to_ulong());
-	}
-
 	//parsing the info
-	nlohmann::json j = nlohmann::json::parse(charString);
+	nlohmann::json j = nlohmann::json::parse(buffer);
 
 	//sorting the info to SignupRequest
 	SignupRequest signupRequest;
@@ -46,4 +24,44 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vecto
 	signupRequest.password = j["password"];
 	signupRequest.email = j["mail"];
 	return signupRequest;
+}
+
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(std::vector<unsigned char> buffer)
+{
+	//parsing the info
+	nlohmann::json j = nlohmann::json::parse(buffer);
+
+	//sorting the info to SignupRequest
+	GetPlayersInRoomRequest getPlayersInRoomRequest;
+	getPlayersInRoomRequest.roomId = j["roomId"];
+
+	return getPlayersInRoomRequest;
+}
+
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(std::vector<unsigned char> buffer)
+{
+	//parsing the info
+	nlohmann::json j = nlohmann::json::parse(buffer);
+
+	//sorting the info to SignupRequest
+	JoinRoomRequest joinRoomRequest;
+	joinRoomRequest.roomId = j["roomId"];
+
+	return joinRoomRequest;
+}
+
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(std::vector<unsigned char> buffer)
+{
+	//parsing the info
+	nlohmann::json j = nlohmann::json::parse(buffer);
+
+	//sorting the info to SignupRequest
+	CreateRoomRequest createRoomRequest;
+
+	createRoomRequest.answerTimeout = j["answerTimeout"];
+	createRoomRequest.maxUsers = j["maxUsers"];
+	createRoomRequest.questionCount = j["questionCount"];
+	createRoomRequest.roomName = j["roomName"];
+
+	return createRoomRequest;
 }

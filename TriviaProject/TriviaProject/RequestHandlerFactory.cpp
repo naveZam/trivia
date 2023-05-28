@@ -1,21 +1,26 @@
 #include "RequestHandlerFactory.h"
-
-RequestHandlerFactory::RequestHandlerFactory(IDatabase* database) : m_loginManager(database)
+RequestHandlerFactory* RequestHandlerFactory::instancePtr = NULL;
+RequestHandlerFactory* RequestHandlerFactory::getInstance()
 {
-    this->m_database = database;
+	if (instancePtr == NULL)
+	{
+		instancePtr = new RequestHandlerFactory();
+	}
+	return instancePtr;
+}
+
+RequestHandlerFactory::RequestHandlerFactory()
+{
 }
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-    return new LoginRequestHandler(*this);
+    return new LoginRequestHandler();
 }
 
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser user)
 {
-    return new MenuRequestHandler;
+    return new MenuRequestHandler(user);
 }
 
-LoginManager& RequestHandlerFactory::getLoginManager()
-{
-    return m_loginManager;
-}
+

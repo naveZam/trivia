@@ -14,10 +14,12 @@ int main()
 		std::cout << "Starting..." << std::endl;
 
 		// NOTICE at the end of this block the WSA will be closed 
-		IDatabase* db = new SqliteDataBase();
-		RequestHandlerFactory factory(db);//PAIN
+		IDatabase* db = SqliteDataBase::getInstance();
+		RoomManager* roomManager = RoomManager::getInstance();
+		StatisticsManager* StatManager = StatisticsManager::getInstance();
+		RequestHandlerFactory* factory = RequestHandlerFactory::getInstance();
 		WSAInitializer wsa_init;
-		Server md_server(factory, db);
+		Server md_server;
 		md_server.run();
 	}
 	catch (const std::exception& e)
