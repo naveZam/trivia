@@ -31,6 +31,7 @@
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomAdminRequestHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomAdminRequestHandler.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="StatisticsManager.h" />
     <ClInclude Include="Structs.h" />
