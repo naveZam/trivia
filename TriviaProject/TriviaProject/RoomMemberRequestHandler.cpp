@@ -6,7 +6,7 @@ RoomMemberRequestHandler::RoomMemberRequestHandler(Room room, LoggedUser user) :
 
 bool RoomMemberRequestHandler::isRequestRelevant(RequestInfo info)
 {
-	if (info.id == RoomMemberRequestHandlerCode)
+	if (info.id == RoomMemberRequestHandlerCode || info.id == LeaveRoomRequest || info.id == GetRoomStateRequest)
 		return true;
 	return false;
 }

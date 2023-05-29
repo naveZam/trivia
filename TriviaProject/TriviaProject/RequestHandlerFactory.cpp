@@ -28,4 +28,9 @@ RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(Lo
 	return new RoomAdminRequestHandler(room, user);
 }
 
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser user, Room room)
+{
+	return new RoomMemberRequestHandler(room, user);
+}
+
 

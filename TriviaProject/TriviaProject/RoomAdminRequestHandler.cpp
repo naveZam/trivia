@@ -6,7 +6,7 @@ RoomAdminRequestHandler::RoomAdminRequestHandler(Room room, LoggedUser user) : m
 
 bool RoomAdminRequestHandler::isRequestRelevant(RequestInfo info)
 {
-    if (info.id == RoomAdminRequest)
+    if (info.id == RoomAdminRequest || info.id == CloseRoomRequest || info.id == StartGameRequest || info.id == GetRoomStateRequest)
         return true;
     return false;
 }

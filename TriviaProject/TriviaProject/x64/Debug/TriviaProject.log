@@ -3,10 +3,12 @@ C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\Triv
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(130,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(168,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(211,31): warning C4101: 'e': unreferenced local variable
+  IRequestHandler.cpp
   LoginRequestHandler.cpp
   MenuRequestHandler.cpp
   RequestHandlerFactory.cpp
   RoomAdminRequestHandler.cpp
+  RoomMemberRequestHandler.cpp
   Server.cpp
   Source.cpp
   Generating Code...
