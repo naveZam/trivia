@@ -4,7 +4,7 @@
 #include "IRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 
-class RoomAdminRequestHandler : IRequestHandler
+class RoomAdminRequestHandler : public IRequestHandler
 {
 public:
 	RoomAdminRequestHandler(Room room, LoggedUser user);

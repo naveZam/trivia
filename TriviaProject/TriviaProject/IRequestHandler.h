@@ -1,7 +1,7 @@
 #pragma once
 #include <time.h>
 #include <vector>
-enum requestCodes { LogInRequest = 1, SignUpRequest = 2, CloseRoomRequest = 3, StartGameRequest = 4, GetRoomStateRequest = 5, LeaveRoomRequest = 6, RoomAdminRequest = 420};
+enum requestCodes { LogInRequest = 1, SignUpRequest = 2, CloseRoomRequest = 3, StartGameRequest = 4, GetRoomStateRequest = 5, LeaveRoomRequest = 6, RoomMemberRequestHandlerCode = 7, RoomAdminRequest = 420};
 struct RequestInfo
 {
 	unsigned int id;
