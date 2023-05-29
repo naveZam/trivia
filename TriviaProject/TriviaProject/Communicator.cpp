@@ -14,7 +14,7 @@
 #define AMOUNT_OF_SIZE_BYTES 5
 
 #define DISCONNECT_ID 200
-enum codes{LogInRequest = 1, SignUpRequest = 2, CloseRoomRequest = 3, StartGameRequest = 4, GetRoomStateRequest = 5, LeaveRoomRequest = 6};
+
 Communicator* Communicator::instancePtr = NULL;
 // using static const instead of macros 
 static const unsigned short PORT = 42069;
@@ -192,10 +192,10 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 			switch (codeId)
 			{//can work with it later
-			case codes(LogInRequest):
+			case requestCodes(LogInRequest):
 				login = JsonRequestPacketDeserializer::deserializeLoginRequest(actualBuffer);
 				break;
-			case codes(SignUpRequest):
+			case requestCodes(SignUpRequest):
 				signup = JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
 				break;
 			}

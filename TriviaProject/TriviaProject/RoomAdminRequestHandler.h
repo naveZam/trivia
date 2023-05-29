@@ -2,9 +2,12 @@
 #include "Room.h"
 #include "LoggedUser.h"
 #include "IRequestHandler.h"
+#include "JsonRequestPacketDeserializer.h"
+
 class RoomAdminRequestHandler : IRequestHandler
 {
 public:
+	RoomAdminRequestHandler(Room room, LoggedUser user);
 	bool isRequestRelevant(RequestInfo info);
 	RequestResult handleRequest(RequestInfo info) override;
 
