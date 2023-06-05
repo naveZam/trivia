@@ -47,3 +47,78 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 	return result;
 }
+
+RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
+{
+	RequestResult result;
+	result.newHandler = this;
+	std::string notErrorrRespond = "1";
+	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
+	if (info.id == CloseRoomRequest)
+	{
+		LeaveRoomResponse LeaveRes = LeaveRoomResponse();
+		LeaveRes.status = 1;
+		std::string Respones = JsonResponsePacketSerializer::serializeResponse(LeaveRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+		return result;
+	}
+	else
+	{
+		ErrorResponse ErrorRes;
+		std::string Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+		return result;
+	}
+}
+
+RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
+{
+	RequestResult result;
+	result.newHandler = this;
+	std::string notErrorrRespond = "1";
+	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
+	if (info.id == StartGameRequest)
+	{
+		StartGameResponse StartRes = StartGameResponse();
+		StartRes.status = 1;
+		std::string Respones = JsonResponsePacketSerializer::serializeResponse(StartRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+		return result;
+	}
+	else
+	{
+		ErrorResponse ErrorRes;
+		std::string Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+		return result;
+	}
+}
+
+RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
+{
+	RequestResult result;
+	result.newHandler = this;
+	std::string notErrorrRespond = "1";
+	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
+	if (info.id == GetRoomStateRequest)
+	{
+		GetRoomStateResponse GetRoomRes = GetRoomStateResponse();
+		RoomData roomData = m_room.getRoomData();
+		GetRoomRes.status = 1;
+		GetRoomRes.players = m_room.getAllUsers();
+		GetRoomRes.questionCount = roomData.numOfQuestionsInGame;
+		GetRoomRes.answerTimeOut = roomData.timePerQuestion;
+		GetRoomRes.hasGameBegun = roomData.isActive;
+		
+		std::string Respones = JsonResponsePacketSerializer::serializeResponse(GetRoomRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+		return result;
+	}
+	else
+	{
+		ErrorResponse ErrorRes;
+		std::string Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+		return result;
+	}
+}
