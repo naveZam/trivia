@@ -3,6 +3,7 @@
 #include "LoggedUser.h"
 #include "IRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
+#include "RoomManager.h"
 
 class RoomAdminRequestHandler : public IRequestHandler
 {

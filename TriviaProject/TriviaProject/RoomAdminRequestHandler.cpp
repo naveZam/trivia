@@ -18,15 +18,26 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
 
-	LoginResponse loginRes;
-	SignupResponse SignupRes;
+	StartGameResponse StartRes = StartGameResponse();
+	LeaveRoomResponse LeaveRes = LeaveRoomResponse();
 	ErrorResponse ErrorRes;
+
+	StartRes.status = 1;
+	LeaveRes.status = 1;
+
 	std::string Respones;
 
 	switch (info.id)
 	{
-	case 420:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+	case CloseRoomRequest:
+		Respones = JsonResponsePacketSerializer::serializeResponse(LeaveRes);
+		break;
+
+	case StartGameRequest:
+		Respones = JsonResponsePacketSerializer::serializeResponse(StartRes);
+		break;
+
+	case GetRoomStateRequest:
 		break;
 
 	default:
