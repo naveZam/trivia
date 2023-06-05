@@ -20,10 +20,12 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 
 	StartGameResponse StartRes = StartGameResponse();
 	LeaveRoomResponse LeaveRes = LeaveRoomResponse();
+	GetRoomStateResponse GetRoomRes = GetRoomStateResponse();
 	ErrorResponse ErrorRes;
 
 	StartRes.status = 1;
 	LeaveRes.status = 1;
+	GetRoomRes.status = 1;
 
 	std::string Respones;
 
@@ -38,6 +40,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 		break;
 
 	case GetRoomStateRequest:
+		Respones = JsonResponsePacketSerializer::serializeResponse(GetRoomRes);
 		break;
 
 	default:

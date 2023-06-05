@@ -28,6 +28,9 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info)
 	case RoomMemberRequestHandlerCode:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 		break;
+	case LeaveRoomRequest:
+		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		break;
 
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
