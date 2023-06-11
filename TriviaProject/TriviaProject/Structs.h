@@ -42,7 +42,7 @@ typedef unsigned int roomID;
 
 struct LogoutResponse
 {
-	unsigned int status;
+	unsigned int status = 1;
 };
 
 struct GetRoomsResponse
@@ -51,7 +51,7 @@ struct GetRoomsResponse
 	std::vector<RoomData> rooms;
 };
 
-struct GetPlayersInRoomResponse
+struct GetPlayersInRoomResponse //amongus
 {
 	std::vector<std::string> players;
 };

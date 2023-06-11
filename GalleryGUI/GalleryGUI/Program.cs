@@ -1,3 +1,5 @@
+using System.Net.Sockets;
+
 namespace GalleryGUI
 {
     internal static class Program

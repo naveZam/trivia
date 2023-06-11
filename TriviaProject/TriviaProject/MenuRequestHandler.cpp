@@ -16,7 +16,7 @@ bool MenuRequestHandler::isRequestRelevant(RequestInfo info)
 RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new MenuRequestHandler(m_user);
+	
 
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
@@ -24,13 +24,61 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 	LoginResponse loginRes;
 	SignupResponse SignupRes;
 	ErrorResponse ErrorRes;
+	LogoutResponse logoutRes;
+	GetRoomsResponse getRoomsRes;
+	GetPlayersInRoomResponse getPlayersInRoomRes;
+	getHighScoreResponse getHighScoreRes;
 	std::string Respones;
 
 	switch (info.id)
 	{
-	case 69:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+	case SignOutRequest:
+		result = signout(info);
+		if (result.response != nonError)
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		}
+		else
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(logoutRes);
+		}
 		break;
+	case GetRoomsRequest:
+		result = getRooms(info);
+		if (result.response != nonError)
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		}
+		else
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(getRoomsRes);
+		}
+		break;
+	case GetPlayersInRoomRequestCode:
+		result = getPlayersInRoom(info);
+		if (result.response != nonError)
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		}
+		else
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomRes);
+		}
+		break;
+	case JoinRoomRequestCode:
+		result = joinRoom(info);
+		if (result.response != nonError)
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		}
+		else
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
+		}
+		break;
+	case CreateRoomRequestCode:
+		result = createRoom(info);
+		
 
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
@@ -43,182 +91,111 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 RequestResult MenuRequestHandler::signout(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new LoginRequestHandler();
-	std::string notErrorrRespond = "1";
-	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-
-	LoginResponse loginRes;
-	SignupResponse SignupRes;
-	ErrorResponse ErrorRes;
-	std::string Respones;
-
-	switch (info.id)
+	LoginManager loginManager;
+	std::string respond = "";
+	loginManager.logout(m_user.getUsername());
+	if (!loginManager.isUserLogged(m_user.getUsername()))
 	{
-	case 69:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		break;
-
-	default:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		std::cout << "User successfully unlogged" << std::endl;
+		respond = "1";
+		delete result.newHandler;
+		result.newHandler = nullptr;
 	}
-
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }
 
 RequestResult MenuRequestHandler::getRooms(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new MenuRequestHandler(m_user);
-	std::string notErrorrRespond = "1";
-	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-
-	LoginResponse loginRes;
-	SignupResponse SignupRes;
-	ErrorResponse ErrorRes;
-	std::string Respones;
-
-	switch (info.id)
+	RoomManager* manager = RoomManager::getInstance();
+	std::vector<RoomData> data = manager->getRooms();
+	for (RoomData& room : data)
 	{
-	case 69:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		break;
-
-	default:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		result.response.push_back(room.id);
 	}
-
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 	return result;
 }
 
 RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new MenuRequestHandler(m_user);
-	std::string notErrorrRespond = "1";
-	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-
-	LoginResponse loginRes;
-	SignupResponse SignupRes;
-	ErrorResponse ErrorRes;
-	std::string Respones;
-
-	switch (info.id)
+	RoomManager* manager = RoomManager::getInstance();
+	std::string respond = "";
+	std::vector<RoomData> data = manager->getRooms();
+	std::string text;
+	int roomID = 0;
+	for (int i = 0; i < info.buffer.size(); i++)
 	{
-	case 69:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		break;
-
-	default:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		roomID *= 10;
+		roomID += info.buffer[i];
 	}
-
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+	std::vector<std::string> temp = manager->getRoom(roomID).getAllUsers();
+	for (std::string& user : temp)
+	{
+		respond += user + ",";
+	}
+	respond.pop_back();
+	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }
 
 RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new MenuRequestHandler(m_user);
-	std::string notErrorrRespond = "1";
-	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-
-	LoginResponse loginRes;
-	SignupResponse SignupRes;
-	ErrorResponse ErrorRes;
-	std::string Respones;
-
-	switch (info.id)
-	{
-	case 69:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		break;
-
-	default:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-	}
-
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+	LoginManager loginManager;
+	std::string respond = "";
+	SqliteDataBase* db = SqliteDataBase::getInstance();
+	respond += std::to_string(db->getNumOfCorrectAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfTotalAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfPlayerGames(m_user.getUsername()));//reminder to maybe add more to here
+	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
+	
+	
 }
 
 RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new MenuRequestHandler(m_user);
-	std::string notErrorrRespond = "1";
-	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-
-	LoginResponse loginRes;
-	SignupResponse SignupRes;
-	ErrorResponse ErrorRes;
-	std::string Respones;
-
-	switch (info.id)
+	RoomManager* manager = RoomManager::getInstance();
+	std::string respond = "";
+	std::vector<RoomData> data = manager->getRooms();
+	int roomID = 0;
+	for (int i = 0; i < info.buffer.size(); i++)
 	{
-	case 69:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		break;
-
-	default:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		roomID *= 10;
+		roomID += info.buffer[i];
 	}
-
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+	manager->getRoom(roomID).addUser(m_user.getUsername());
+	delete result.newHandler;
+	result.newHandler = RequestHandlerFactory::getInstance()->createRoomMemberRequestHandler(m_user, manager->getRoom(roomID));
+	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }
 
 RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new MenuRequestHandler(m_user);
-	std::string notErrorrRespond = "1";
-	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-
-	LoginResponse loginRes;
-	SignupResponse SignupRes;
-	ErrorResponse ErrorRes;
-	std::string Respones;
-
-	switch (info.id)
-	{
-	case 69:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		break;
-
-	default:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-	}
-
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+	RoomManager* manager = RoomManager::getInstance();
+	std::string respond = "";
+	manager->createRoom(m_user.getUsername(), RoomData());
+	delete result.newHandler;
+	result.newHandler = RequestHandlerFactory::getInstance()->createRoomAdminRequestHandler(m_user, manager->getRoom(manager->getRooms().size()));
+	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }
 
 RequestResult MenuRequestHandler::getHighScore(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new MenuRequestHandler(m_user);
-	std::string notErrorrRespond = "1";
-	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-
-	LoginResponse loginRes;
-	SignupResponse SignupRes;
-	ErrorResponse ErrorRes;
-	std::string Respones;
-
-	switch (info.id)
+	SqliteDataBase* db = SqliteDataBase::getInstance();
+	std::string respond = "";
+	std::vector<std::string> data = db->getBestScores();
+	for (std::string& score : data)
 	{
-	case 69:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		break;
-
-	default:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		respond += score + ",";
 	}
-
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+	respond.pop_back();
+	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }
 

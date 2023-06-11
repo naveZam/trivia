@@ -46,7 +46,6 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 	}
-
 	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 	return result;
 }
@@ -125,3 +124,4 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
 		return result;
 	}
 }
+

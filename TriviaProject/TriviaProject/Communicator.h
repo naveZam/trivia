@@ -14,13 +14,14 @@ public:
 	~Communicator();
 	void startHandleRequests();
 	static Communicator* getInstance();
-
+	std::map<SOCKET, IRequestHandler*> getClients();
 private:
 	Communicator();
 	static Communicator* instancePtr;
 	void bindAndListen();
 	void acceptClient();
 	void handleNewClient(SOCKET clientSocket);
+	int getMessageId(std::vector<unsigned char> buffer);
 	SOCKET m_serverSocket;
 	std::map<SOCKET, IRequestHandler*> m_clients;
 };

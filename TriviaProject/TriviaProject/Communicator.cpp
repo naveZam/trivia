@@ -67,6 +67,11 @@ Communicator* Communicator::getInstance()
 	return instancePtr;
 }
 
+std::map<SOCKET, IRequestHandler*> Communicator::getClients()
+{
+	return m_clients;
+}
+
 void Communicator::bindAndListen()
 {
 	struct sockaddr_in sa = { 0 };
@@ -102,7 +107,7 @@ void Communicator::acceptClient()
 	tr.detach();
 }
 
-void sendMessageToUser(SOCKET clientSocket, RequestResult result, bool isRelavent)
+void sendMessageToUser(SOCKET clientSocket, RequestResult result, int code)
 {
 	int size = result.response.size();
 	std::string sizeBuffer = "";
@@ -115,16 +120,6 @@ void sendMessageToUser(SOCKET clientSocket, RequestResult result, bool isRelaven
 	}
 
 	sizeBuffer += size;
-	int code = 0;
-
-	if (isRelavent)
-	{
-		code = 500; //code 500
-	}
-	else
-	{
-		code = 300; //code 300
-	}
 
 	std::string message = std::to_string(code) + sizeBuffer + std::string(result.response.begin(), result.response.end());
 	send(clientSocket, message.c_str(), message.size(), 0);
@@ -157,7 +152,6 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	try
 	{
 		int codeId = 0;
-		bool isConnected = false;
 		do
 		{
 			//reseve the request from the client 
@@ -169,40 +163,25 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				if (iResult == SOCKET_ERROR)
 					throw std::exception(__FUNCTION__);
 			}
-
+			codeId = getMessageId(buffer);
 			RequestInfo info = GetMessageInfo(buffer, codeId);
 
-			std::vector<unsigned char> actualBuffer = info.buffer;
+			IRequestHandler* handler = this->m_clients[clientSocket];
 
-			LoginRequestHandler handler;
-
-			RequestResult result = handler.handleRequest(info);
-
-			if (!handler.isRequestRelevant(info) || isConnected != false)
+			
+			if (!handler->isRequestRelevant(info))
 			{
+				RequestResult error;
+				std::string shem = JsonResponsePacketSerializer::serializeResponse(ErrorResponse());
+				error.response = std::vector<unsigned char>(shem.begin(), shem.end());
 				std::cout << "Request not relevant" << std::endl;
-				sendMessageToUser(clientSocket, result, handler.isRequestRelevant(info));
+				sendMessageToUser(clientSocket, error, handler->isRequestRelevant(info));
 				continue;
 			}
-			
-
-			//requests struct type
-			LoginRequest login;
-			SignupRequest signup;
-
-			switch (codeId)
-			{//can work with it later
-			case requestCodes(LogInRequest):
-				login = JsonRequestPacketDeserializer::deserializeLoginRequest(actualBuffer);
-				break;
-			case requestCodes(SignUpRequest):
-				signup = JsonRequestPacketDeserializer::deserializeSignupRequest(actualBuffer);
-				break;
-			}
-
-			isConnected = true;
-
-			sendMessageToUser(clientSocket, result, handler.isRequestRelevant(info));
+			RequestResult result = handler->handleRequest(info);
+			delete this->m_clients[clientSocket];
+			this->m_clients[clientSocket] = result.newHandler;
+			sendMessageToUser(clientSocket, result, handler->isRequestRelevant(info));
 		} while (codeId != DISCONNECT_ID);
 		
 		// Closing the socket (in the level of the TCP protocol)
@@ -212,4 +191,9 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	{
 		closesocket(clientSocket);
 	}
+}
+
+int Communicator::getMessageId(std::vector<unsigned char> buffer)
+{
+	return buffer[0];
 }

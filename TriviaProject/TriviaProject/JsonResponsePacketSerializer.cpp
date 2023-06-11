@@ -43,7 +43,7 @@ std::string JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse res
 	return j.dump();
 }
 
-std::string JsonResponsePacketSerializer::serializerResponse(GetPlayersInRoomResponse response)
+std::string JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse response)
 {
 	std::string usersString = "";
 	nlohmann::json j;
