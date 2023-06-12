@@ -125,21 +125,31 @@ void sendMessageToUser(SOCKET clientSocket, RequestResult result, int code)
 	send(clientSocket, message.c_str(), message.size(), 0);
 }
 
+int strToInt(std::string str)
+{
+	int i = 0;
+	int val = 0;
+	for (i = 0; i < str.size(); i++)
+	{
+		val += str[i];
+	}
+
+	return val;
+}
+
 RequestInfo GetMessageInfo(std::vector<unsigned char> buffer, int codeId)
 {
+	RequestInfo info;
 	std::vector<unsigned char> code = std::vector<unsigned char>(buffer.begin(), buffer.begin() + 1);
 	std::vector<unsigned char> size = std::vector<unsigned char>(buffer.begin() + 1, buffer.begin() + (AMOUNT_OF_SIZE_BYTES + 1));
 
-	std::string codeStr = std::string(code.begin(), code.end());
-	codeId = std::stoi(codeStr);
-
 	std::string sizeStr = std::string(size.begin(), size.end());
-	int sizeOfJson = std::stoi(sizeStr);
+	int sizeOfJson = strToInt(sizeStr);
 
 	std::vector<unsigned char> actualBuffer = std::vector<unsigned char>(buffer.begin() + (AMOUNT_OF_SIZE_BYTES + 1), buffer.begin() + (AMOUNT_OF_SIZE_BYTES + 1) + sizeOfJson);
 
 	//Setup the request's info
-	RequestInfo info;
+	
 	info.id = codeId;
 	info.buffer = actualBuffer;
 	info.receivalTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -156,6 +166,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		{
 			//reseve the request from the client 
 			std::vector<unsigned char> buffer(4096);
+			std::cout << "new" << std::endl;
 			int iResult = 0;
 			while (iResult == 0)
 			{
@@ -181,7 +192,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			RequestResult result = handler->handleRequest(info);
 			delete this->m_clients[clientSocket];
 			this->m_clients[clientSocket] = result.newHandler;
-			sendMessageToUser(clientSocket, result, handler->isRequestRelevant(info));
+			sendMessageToUser(clientSocket, result, 1);
 		} while (codeId != DISCONNECT_ID);
 		
 		// Closing the socket (in the level of the TCP protocol)

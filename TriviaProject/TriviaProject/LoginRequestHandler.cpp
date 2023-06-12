@@ -24,7 +24,7 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 {
 	RequestResult result;
-	
+	std::cout << "handle" << std::endl;
 
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
@@ -63,15 +63,8 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 	}
-	std::string binaryString = "";
 
-	for (char c : Respones) 
-	{
-		std::bitset<8> bits(static_cast<unsigned char>(c));
-		binaryString += bits.to_string();
-	}
-
-	std::vector<unsigned char> binaryChars(binaryString.begin(), binaryString.end());
+	std::vector<unsigned char> binaryChars(Respones.begin(), Respones.end());
 
 	result.response = binaryChars;
 	return result;
@@ -79,6 +72,7 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 
 RequestResult LoginRequestHandler::login(RequestInfo info)
 {
+	std::cout << "login" << std::endl;
 	RequestResult result;
 	std::string respond = "";
 	LoginRequest user = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
@@ -100,6 +94,7 @@ RequestResult LoginRequestHandler::login(RequestInfo info)
 
 RequestResult LoginRequestHandler::signup(RequestInfo info)
 {
+	std::cout << "signup" << std::endl;
 	LoginManager loginManager;
 	RequestResult result;
 	std::string respond = "";

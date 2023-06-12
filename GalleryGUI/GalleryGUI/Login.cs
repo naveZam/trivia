@@ -26,6 +26,14 @@ namespace GalleryGUI
         {
             Program.location = this.Location;
             Program.name = this.textBox1.Text;
+            string password = this.textBox2.Text;
+            LoginMessage message = new LoginMessage(Program.name, password);
+            Program.communicator.Send(message, 1);
+            Response response = Program.communicator.Receive();
+            if (response.ID == 0)
+            {
+                throw new Exception("Error Logging in");
+            }
             MainMenu menu = new MainMenu();
             this.Hide();
             menu.ShowDialog();

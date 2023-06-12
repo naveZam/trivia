@@ -10,12 +10,12 @@ namespace GalleryGUI
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            communicator = new Communicator();
             ApplicationConfiguration.Initialize();
             Application.Run(new Login());
         }
-        public static string name;
+        public static string? name;
         public static Point location;
+        public static Communicator? communicator;
     }
 }

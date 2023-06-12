@@ -28,16 +28,16 @@ namespace GalleryGUI
             this.Location = Program.location;
 
             this.label1.Text = "Welcome " + Program.name;
-            if (!isSongLoaded)
-            {
-                using (player = new System.Media.SoundPlayer("C:\\Users\\test0\\OneDrive\\שולחן העבודה\\projects c++\\GalleryGUI\\resources\\songs\\xina.wav"))
-                {
+            //if (!isSongLoaded)
+            //{
+            //    using (player = new System.Media.SoundPlayer("C:\\Users\\test0\\OneDrive\\שולחן העבודה\\projects c++\\GalleryGUI\\resources\\songs\\xina.wav"))
+            //    {
 
-                    isSongLoaded = true;
-                    player.Play();
-                    player.PlayLooping();
-                }
-            }
+            //        isSongLoaded = true;
+            //        player.Play();
+            //        player.PlayLooping();
+            //    }
+            //}
         }
         private void button1_Click_1(object sender, EventArgs e)
         {
