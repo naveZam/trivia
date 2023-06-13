@@ -154,3 +154,8 @@ struct GetGameResultsResponse
 	unsigned int status;
 	std::vector<PlayerResults> results;
 };
+
+struct SubmitAnswerRequest
+{
+	unsigned int answerId;
+};

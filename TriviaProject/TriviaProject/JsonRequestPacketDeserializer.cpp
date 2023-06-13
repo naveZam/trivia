@@ -1,5 +1,4 @@
 #include "JsonRequestPacketDeserializer.h"
-#include <bitset>
 
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<unsigned char> buffer)
 {
@@ -53,7 +52,7 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(std::v
 CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(std::vector<unsigned char> buffer)
 {
 	//parsing the info
-	nlohmann::json j = nlohmann::json::parse(buffer);
+	nlohmann::json j = nlohmann::json::parse(buffer);	
 
 	//sorting the info to SignupRequest
 	CreateRoomRequest createRoomRequest;
@@ -64,4 +63,17 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(st
 	createRoomRequest.roomName = j["roomName"];
 
 	return createRoomRequest;
+}
+
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(std::vector<unsigned char> buffer)
+{
+	//parsing the info
+	nlohmann::json j = nlohmann::json::parse(buffer);
+
+	//sorting the info to SignupRequest
+	SubmitAnswerRequest submitAnswerRequest;
+
+	submitAnswerRequest.answerId = j["answerId"];
+
+	return submitAnswerRequest;
 }
