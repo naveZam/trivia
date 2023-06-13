@@ -141,3 +141,10 @@ std::string JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse re
 	return j.dump();
 }
 
+std::string JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse response)
+{
+	nlohmann::json j;
+	j["status"] = response.status;
+	return j.dump();
+}
+

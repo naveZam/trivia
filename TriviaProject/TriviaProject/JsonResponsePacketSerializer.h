@@ -22,4 +22,9 @@ public:
 	static std::string serializeResponse(StartGameResponse response);
 	static std::string serializeResponse(GetRoomStateResponse response);
 	static std::string serializeResponse(LeaveRoomResponse response);
+
+	static std::string serializeResponse(GetGameResultsResponse response);
+	static std::string serializeResponse(SubmitAnswerResponse response);
+	static std::string serializeResponse(GetQuestionResponse response);
+	static std::string serializeResponse(LeaveGameResponse response);
 };
