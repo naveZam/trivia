@@ -143,6 +143,35 @@ std::string JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse re
 	return j.dump();
 }
 
+std::string serializePlayer(PlayerResults response)
+{
+	nlohmann::json j;
+
+	j["username"] = response.username;
+	j["averageAnswerTime"] = response.averageAnswerTime;
+	j["correctAnswerCount"] = response.correctAnswerCount;
+	j["stwrongAnswerCountatus"] = response.wrongAnswerCount;
+
+	return j.dump();
+}
+
+std::string JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse response)
+{
+	nlohmann::json j;
+
+	std::string results;
+	j["status"] = response.status;
+
+	for (auto it = response.results.begin(); it != response.results.end(); it++)
+	{
+		results += serializePlayer(*it);
+		results += ", ";
+	}
+
+	j["results"] = results;
+	return j.dump();
+}
+
 std::string JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse response)
 {
 	nlohmann::json j;
