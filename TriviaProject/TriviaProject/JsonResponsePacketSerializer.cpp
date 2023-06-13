@@ -125,11 +125,13 @@ std::string JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse
 	std::string players;
 	j["status"] = response.status;
 	j["hasGameBegun"] = response.hasGameBegun;
+
 	for (auto it = response.players.begin(); it != response.players.end(); it++)
 	{
 		players += ",";
 		players += it->at(0);
 	}
+
 	j["players"] = players;
 	return j.dump();
 }
@@ -138,6 +140,24 @@ std::string JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse re
 {
 	nlohmann::json j;
 	j["status"] = response.status;
+	return j.dump();
+}
+
+std::string JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse response)
+{
+	nlohmann::json j;
+	std::string answers;
+	j["status"] = response.status;
+	j["question"] = response.question;
+
+	for (auto it = response.answers.begin(); it != response.answers.end(); it++)
+	{
+		answers += it->first + ": ";
+		answers += '"' + it->second + '"';
+		answers += ", ";
+	}
+
+	j["answers"] = answers;
 	return j.dump();
 }
 
