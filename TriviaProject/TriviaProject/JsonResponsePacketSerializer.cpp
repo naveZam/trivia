@@ -143,6 +143,14 @@ std::string JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse re
 	return j.dump();
 }
 
+std::string JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse response)
+{
+	nlohmann::json j;
+	j["status"] = response.status;
+	j["correctAnswerId"] = response.correctAnswerId;
+	return j.dump();
+}
+
 std::string JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse response)
 {
 	nlohmann::json j;
