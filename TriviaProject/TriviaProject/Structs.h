@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-
 struct LoginRequest
 {
 	std::string username;
@@ -43,7 +42,7 @@ typedef unsigned int roomID;
 
 struct LogoutResponse
 {
-	unsigned int status;
+	unsigned int status = 1;
 };
 
 struct GetRoomsResponse
@@ -52,7 +51,7 @@ struct GetRoomsResponse
 	std::vector<RoomData> rooms;
 };
 
-struct GetPlayersInRoomResponse
+struct GetPlayersInRoomResponse //amongus
 {
 	std::vector<std::string> players;
 };
@@ -95,4 +94,27 @@ struct CreateRoomRequest
 	unsigned int maxUsers;
 	unsigned int questionCount;
 	unsigned int answerTimeout;
+};
+
+struct StartGameResponse
+{
+	unsigned int status;
+};
+
+struct CloseRoomResponce
+{
+	unsigned int status;
+};
+
+struct GetRoomStateResponse
+{
+	unsigned int status;
+	bool hasGameBegun;
+	std::vector<std::string> players;
+	unsigned int questionCount;
+	unsigned int answerTimeOut;
+};
+struct LeaveRoomResponse
+{
+	unsigned int status;
 };

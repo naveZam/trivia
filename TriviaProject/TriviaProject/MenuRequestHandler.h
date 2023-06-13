@@ -4,7 +4,7 @@
 #include "StatisticsManager.h"
 #include "LoggedUser.h"
 #include "JsonResponsePacketSerializer.h"
-
+#include "IDatabase.h"
 class MenuRequestHandler : public IRequestHandler
 {
 public:

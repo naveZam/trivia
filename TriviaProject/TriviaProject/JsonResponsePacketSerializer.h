@@ -13,9 +13,13 @@ public:
 
 	static std::string serializeResponse(LogoutResponse response);
 	static std::string serializeResponse(GetRoomsResponse response);
-	static std::string serializerResponse(GetPlayersInRoomResponse response);
+	static std::string serializeResponse(GetPlayersInRoomResponse response);
 	static std::string serializeResponse(JoinRoomResponse response);
 	static std::string serializeResponse(CreateRoomResponse response);
 	static std::string serializeResponse(getHighScoreResponse response);
 	static std::string serializeResponse(getPersonalStatsResponse response);
+	static std::string serializeResponse(CloseRoomResponce response);
+	static std::string serializeResponse(StartGameResponse response);
+	static std::string serializeResponse(GetRoomStateResponse response);
+	static std::string serializeResponse(LeaveRoomResponse response);
 };
