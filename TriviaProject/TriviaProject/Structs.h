@@ -1,5 +1,8 @@
 #pragma once
 #include <iostream>
+#include <map>
+#include <vector>
+
 struct LoginRequest
 {
 	std::string username;
@@ -114,7 +117,45 @@ struct GetRoomStateResponse
 	unsigned int questionCount;
 	unsigned int answerTimeOut;
 };
+
 struct LeaveRoomResponse
 {
 	unsigned int status;
+};
+
+struct LeaveGameResponse
+{
+	unsigned int status;
+};
+
+struct GetQuestionResponse
+{
+	unsigned int status;
+	std::string question;
+	std::map<unsigned int, std::string> answers;
+};
+
+struct SubmitAnswerResponse
+{
+	unsigned int status;
+	unsigned int correctAnswerId;
+};
+
+struct PlayerResults
+{
+	std::string username;
+	unsigned int correctAnswerCount;
+	unsigned int wrongAnswerCount;
+	unsigned int averageAnswerTime;
+};
+
+struct GetGameResultsResponse
+{
+	unsigned int status;
+	std::vector<PlayerResults> results;
+};
+
+struct SubmitAnswerRequest
+{
+	unsigned int answerId;
 };
