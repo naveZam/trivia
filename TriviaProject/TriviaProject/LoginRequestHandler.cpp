@@ -24,7 +24,7 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = new LoginRequestHandler();
+	std::cout << "handle" << std::endl;
 
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
@@ -37,7 +37,8 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 	switch(info.id)
 	{
 	case LOG_IN_REQUEST:
-		if (login(info).response != nonError)
+		result = login(info);
+		if (result.response != nonError)
 		{
 			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 		}
@@ -46,9 +47,10 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 			Respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
 		}
 		break;
-
+	
 	case SIGN_UP_REQUEST:
-		if (signup(info).response != nonError)
+		result = signup(info);
+		if ( result.response!= nonError)
 		{
 			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 		}
@@ -62,15 +64,7 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 	}
 
-	std::string binaryString = "";
-
-	for (char c : Respones) 
-	{
-		std::bitset<8> bits(static_cast<unsigned char>(c));
-		binaryString += bits.to_string();
-	}
-
-	std::vector<unsigned char> binaryChars(binaryString.begin(), binaryString.end());
+	std::vector<unsigned char> binaryChars(Respones.begin(), Respones.end());
 
 	result.response = binaryChars;
 	return result;
@@ -78,37 +72,43 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 
 RequestResult LoginRequestHandler::login(RequestInfo info)
 {
+	std::cout << "login" << std::endl;
 	RequestResult result;
 	std::string respond = "";
 	LoginRequest user = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
 	LoginManager loginManager;
 	loginManager.login(user.username, user.password);
-
+	result.newHandler = RequestHandlerFactory::getInstance()->createMenuRequestHandler(LoggedUser(user.username));
 	//make sure the user logged
 	if (loginManager.isUserLogged(user.username))
 	{
 		std::cout << "User successfully logged" << std::endl;
 		respond = "1";
+		delete result.newHandler;
+		result.newHandler = nullptr;
 	}
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
-
+	
 	return result;
 }
 
 RequestResult LoginRequestHandler::signup(RequestInfo info)
 {
+	std::cout << "signup" << std::endl;
 	LoginManager loginManager;
 	RequestResult result;
 	std::string respond = "";
 	SignupRequest user = JsonRequestPacketDeserializer::deserializeSignupRequest(info.buffer);
 
 	loginManager.signup(user.username, user.password, user.email);
-
+	result.newHandler = RequestHandlerFactory::getInstance()->createMenuRequestHandler(LoggedUser(user.username));
 	//make sure the user logged
 	if (loginManager.isUserLogged(user.username))
 	{
 		std::cout << "User successfully logged" << std::endl;
 		respond = "1";
+		delete result.newHandler;
+		result.newHandler = nullptr;
 	}
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 

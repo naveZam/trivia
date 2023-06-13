@@ -15,14 +15,14 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(std::vector<
 
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(std::vector<unsigned char> buffer)
 {
+	SignupRequest signupRequest;
 	//parsing the info
 	nlohmann::json j = nlohmann::json::parse(buffer);
 
 	//sorting the info to SignupRequest
-	SignupRequest signupRequest;
 	signupRequest.username = j["username"];
 	signupRequest.password = j["password"];
-	signupRequest.email = j["mail"];
+	signupRequest.email = j["email"];
 	return signupRequest;
 }
 
