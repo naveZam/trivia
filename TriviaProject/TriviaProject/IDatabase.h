@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <vector>
-#include "OriQuestion.h"
 #include "Question.h"
 
 class IDatabase

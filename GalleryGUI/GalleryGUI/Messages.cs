@@ -35,12 +35,23 @@ namespace GalleryGUI
     }
     partial class Response
     {
-        public string data;
-        public int ID;
-        public Response(string data, int ID)
+        public int ID { get; set; }
+        public Response(int ID)
         {
-            this.data = data;
             this.ID = ID;
+        }
+    }
+    partial class StatsResponse : Response
+    {
+        public int NumOfCorrectAnswers { get; set; }
+        public int NumOfTotalAnswers { get; set; }
+        public int getNumOfPlayerGames { get; set; }
+        
+        public StatsResponse(int ID, int correct, int total, int games) : base(ID)
+        {
+            this.NumOfCorrectAnswers = correct;
+            this.NumOfTotalAnswers = total;
+            this.getNumOfPlayerGames = games;
         }
     }
 }

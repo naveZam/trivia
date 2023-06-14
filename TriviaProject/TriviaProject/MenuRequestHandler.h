@@ -23,6 +23,8 @@ private:
 	RequestResult joinRoom(RequestInfo info);
 	RequestResult createRoom(RequestInfo info);
 	RequestResult getHighScore(RequestInfo info);
-
+	GetRoomsResponse transformToRooms(RequestResult info);
+	GetPlayersInRoomResponse transformToPlayers(RequestResult info);
+	getHighScoreResponse transformToScore(RequestResult info);
 };
 

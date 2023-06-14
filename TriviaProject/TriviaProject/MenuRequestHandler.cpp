@@ -19,7 +19,10 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 	
 
 	std::string notErrorrRespond = "1";
+	std::string errorResponse = "0";
+	
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
+	std::vector<unsigned char> error = std::vector<unsigned char>(errorResponse.begin(), errorResponse.end());
 
 	LoginResponse loginRes;
 	SignupResponse SignupRes;
@@ -45,13 +48,14 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 		break;
 	case GetRoomsRequest:
 		result = getRooms(info);
-		if (result.response != nonError)
+		
+		if (result.response == error)
 		{
 			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 		}
 		else
 		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(getRoomsRes);
+			Respones = JsonResponsePacketSerializer::serializeResponse(transformToRooms(result));
 		}
 		break;
 	case GetPlayersInRoomRequestCode:
@@ -62,7 +66,7 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 		}
 		else
 		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomRes);
+			Respones = JsonResponsePacketSerializer::serializeResponse(transformToPlayers(result));
 		}
 		break;
 	case JoinRoomRequestCode:
@@ -78,7 +82,26 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 		break;
 	case CreateRoomRequestCode:
 		result = createRoom(info);
-		
+		if (result.response != nonError)
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		}
+		else
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
+		}
+		break;
+	case getHighScoreResponseCode:
+		result = getHighScore(info);
+		if (result.response != nonError)
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		}
+		else
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(transformToScore(result));
+		}
+		break;
 
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
@@ -197,5 +220,56 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo info)
 	respond.pop_back();
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
+}
+
+GetRoomsResponse MenuRequestHandler::transformToRooms(RequestResult info)
+{
+	GetRoomsResponse response;
+	RoomManager* manager = RoomManager::getInstance();
+	for(unsigned char id : info.response)
+	{
+		response.rooms.push_back(manager->getRoom(id).getRoomData());
+	}
+	return response;
+}
+
+GetPlayersInRoomResponse MenuRequestHandler::transformToPlayers(RequestResult info)
+{
+	GetPlayersInRoomResponse response;
+	std::string temp = "";
+	for (unsigned char c : info.response)
+	{
+		if (c == ',')
+		{
+			response.players.push_back(temp);
+			temp = "";
+		}
+		else
+		{
+			temp += c;
+		}
+	}
+	return response;
+}
+
+getHighScoreResponse MenuRequestHandler::transformToScore(RequestResult info)
+{
+	getHighScoreResponse response;
+	std::string temp = "";
+	for (unsigned char c : info.response)
+	{
+		if (c == ',')
+		{
+			response.statistics.push_back(temp);
+			temp = "";
+		}
+		else
+		{
+			temp += c;
+		}
+	}
+	if (temp != "")
+		response.statistics.push_back(temp);
+	return response;
 }
 

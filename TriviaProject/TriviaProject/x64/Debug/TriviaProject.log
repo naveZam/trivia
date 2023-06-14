@@ -1,20 +1,6 @@
-﻿  Communicator.cpp
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\factory and handlers\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(112,35): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\factory and handlers\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(125,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\factory and handlers\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(173,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\factory and handlers\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(201,31): warning C4101: 'e': unreferenced local variable
-  GameManager.cpp
-  IDatabase.cpp
-  LoginManager.cpp
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\factory and handlers\trivia_group2\TriviaProject\TriviaProject\LoginManager.cpp(19,76): warning C4390: ';': empty controlled statement found; is this the intent?
-  LoginRequestHandler.cpp
-  MenuRequestHandler.cpp
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\factory and handlers\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(182,141): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+﻿  MenuRequestHandler.cpp
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(205,141): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   RequestHandlerFactory.cpp
-  Server.cpp
-  Source.cpp
-  SqliteDataBase.cpp
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\factory and handlers\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(104,67): error C2661: 'Question::Question': no overloaded function takes 6 arguments
-C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\factory and handlers\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(118,32): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   StatisticsManager.cpp
   Generating Code...
+  TriviaProject.vcxproj -> C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe

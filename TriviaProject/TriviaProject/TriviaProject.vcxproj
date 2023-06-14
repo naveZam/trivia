@@ -50,7 +50,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameRequestHandler.h" />
-    <ClInclude Include="OriQuestion.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomAdminRequestHandler.h" />

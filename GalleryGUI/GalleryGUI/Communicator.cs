@@ -38,8 +38,12 @@ namespace GalleryGUI
             Array.Copy(data, 1, length, 0, 5);
             int len = BitConverter.ToInt32(length, 0);
             byte[] message = new byte[len];
-            Array.Copy(data, 6, message, 0, len);
-            string str = deserializer.deserialize(message);
+            string str = "";
+            if (data.Length > 14)
+            {
+                Array.Copy(data, 6, message, 0, len);
+                str = deserializer.deserialize(message);
+            }
             Response response = new Response(str, ID);
             return response;
         }

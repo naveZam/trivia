@@ -101,7 +101,12 @@ Question SqliteDataBase::getQuestions(int questionsNo)
 			std::string ans3 = (char*)sqlite3_column_text(stmt, 4);
 			std::string ans4 = (char*)sqlite3_column_text(stmt, 5);
 			//create a question object
-			Question q(questionsNo, question, correct_ans, ans2, ans3, ans4);
+			std::vector<std::string> answers;
+			answers.push_back(correct_ans);
+			answers.push_back(ans2);
+			answers.push_back(ans3);
+			answers.push_back(ans4);
+			Question q = Question(question, answers, 0);
 			return q;
 		}
 	}

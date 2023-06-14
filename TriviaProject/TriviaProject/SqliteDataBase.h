@@ -2,7 +2,9 @@
 
 #include "IDatabase.h"
 #include "sqlite3.h"
+#include <string>
 #define DATABASE_NAME "database.db"
+
 
 class SqliteDataBase : public IDatabase
 {

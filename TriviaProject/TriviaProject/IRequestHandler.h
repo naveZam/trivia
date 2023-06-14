@@ -21,7 +21,8 @@ enum requestCodes
 	LeaveGameRequestCode = 14,
 	GetQuestionRequestCode = 15,
 	SubmitAnswerRequestCode = 16,
-	GetGameResultRequestCode = 17
+	GetGameResultRequestCode = 17,
+	getHighScoreResponseCode = 18
 };
 
 struct RequestInfo
