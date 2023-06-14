@@ -15,26 +15,36 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info)
 {
 	RequestResult result;
 	result.newHandler = this;
-	std::string notErrorrRespond = "1";
-	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
+	std::string errorResponse = "1";
+	std::vector<unsigned char> error = std::vector<unsigned char>(errorResponse.begin(), errorResponse.end());
 
 	LoginResponse loginRes;
 	SignupResponse SignupRes;
 	ErrorResponse ErrorRes;
 	std::string Respones;
-
+	RequestResult request;
+	
 	switch (info.id)
 	{
-	case RoomMemberRequestHandlerCode:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+	case LeaveGameRequestCode:
+	
+		result = leaveRoom(info);
+		if (result.response == error)
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		else
+			Respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
 		break;
-	case LeaveRoomRequest:
-		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+	case GetRoomStateRequest:
+		result = getRoomState(info);
+		if (result.response == error)
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		else
+			Respones = JsonResponsePacketSerializer::serializeResponse(getRoomStateResponse(result));
 		break;
-
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 	}
+
 
 	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 	return result;
@@ -68,20 +78,23 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
 	result.newHandler = this;
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-	if (info.id == GetRoomStateRequest)
-	{
-		GetRoomStateResponse getRoomStateRes;
-		getRoomStateRes.status = m_room.getRoomData().isActive;
-		getRoomStateRes.players = m_room.getAllUsers();
-		std::string Respones = JsonResponsePacketSerializer::serializeResponse(getRoomStateRes);
-		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
-		return result;
-	}
-	else
-	{
-		ErrorResponse ErrorRes;
-		std::string Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
-		return result;
-	}
+
+	GetRoomStateResponse getRoomStateRes;
+	result.response.push_back(m_room.getRoomData().id);
+
+	return result;
+	
+
+}
+
+GetRoomStateResponse RoomMemberRequestHandler::getRoomStateResponse(RequestResult result)
+{
+	GetRoomStateResponse getRoomStateRes;
+	RoomManager* manager = RoomManager::getInstance();
+	RoomData roomData = m_room.getRoomData();
+	getRoomStateRes.status = roomData.id;
+	getRoomStateRes.players = m_room.getAllUsers();
+	getRoomStateRes.questionCount = roomData.numOfQuestionsInGame;
+	getRoomStateRes.hasGameBegun = roomData.isActive;
+	return getRoomStateRes;
 }
