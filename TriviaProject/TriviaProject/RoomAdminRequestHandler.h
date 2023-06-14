@@ -18,5 +18,6 @@ private:
 	RequestResult closeRoom(RequestInfo info);
 	RequestResult startGame(RequestInfo info);
 	RequestResult getRoomState(RequestInfo info);
+	GetRoomStateResponse getRoomStateResponse(RequestResult info);
 };
 

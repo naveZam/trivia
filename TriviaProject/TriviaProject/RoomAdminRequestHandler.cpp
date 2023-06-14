@@ -15,8 +15,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 {
     RequestResult result;
     result.newHandler = this;
-	std::string notErrorrRespond = "1";
-	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
+	std::string errorResponse = "0";
+	std::vector<unsigned char> error = std::vector<unsigned char>(errorResponse.begin(), errorResponse.end());
 
 	StartGameResponse StartRes = StartGameResponse();
 	LeaveRoomResponse LeaveRes = LeaveRoomResponse();
@@ -28,19 +28,31 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 	GetRoomRes.status = 1;
 
 	std::string Respones;
-
+	RequestResult request;
 	switch (info.id)
 	{
 	case CloseRoomRequest:
-		Respones = JsonResponsePacketSerializer::serializeResponse(LeaveRes);
+		request = closeRoom(info);
+		if (request.response == error)
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		else
+			Respones = JsonResponsePacketSerializer::serializeResponse(LeaveRes);
 		break;
 
 	case StartGameRequest:
-		Respones = JsonResponsePacketSerializer::serializeResponse(StartRes);
+		request = startGame(info);
+		if (request.response == error)
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		else
+			Respones = JsonResponsePacketSerializer::serializeResponse(StartRes);
 		break;
 
 	case GetRoomStateRequest:
-		Respones = JsonResponsePacketSerializer::serializeResponse(GetRoomRes);
+		request = getRoomState(info);
+		if (request.response == error)
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		else
+			Respones = JsonResponsePacketSerializer::serializeResponse(getRoomStateResponse(request));
 		break;
 
 	default:
@@ -123,5 +135,17 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
 		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 		return result;
 	}
+}
+
+GetRoomStateResponse RoomAdminRequestHandler::getRoomStateResponse(RequestResult info)
+{
+	GetRoomStateResponse GetRoomRes = GetRoomStateResponse();
+	RoomData roomData = m_room.getRoomData();
+	GetRoomRes.status = 1;
+	GetRoomRes.players = m_room.getAllUsers();
+	GetRoomRes.questionCount = roomData.numOfQuestionsInGame;
+	GetRoomRes.answerTimeOut = roomData.timePerQuestion;
+	GetRoomRes.hasGameBegun = roomData.isActive;
+	return GetRoomRes;
 }
 
