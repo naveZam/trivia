@@ -9,3 +9,8 @@ std::string LoggedUser::getUsername()
 {
     return username;
 }
+
+bool LoggedUser::operator<(const LoggedUser& other) const
+{
+    return false;
+}
