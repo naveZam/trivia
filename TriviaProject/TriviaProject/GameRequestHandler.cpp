@@ -8,3 +8,28 @@ bool GameRequestHandler::isRequestRelevant(RequestInfo info)
     }
     return false;
 }
+
+RequestResult GameRequestHandler::handleRequest(RequestInfo info)
+{
+    RequestResult result;
+
+    std::string notErrorrRespond = "1";
+    std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
+
+    switch (info.id)
+    {
+    case LeaveGameRequestCode:
+        break;
+
+    case GetQuestionRequestCode:
+        break;
+
+    case SubmitAnswerRequestCode:
+        break;
+
+    case GetGameResultRequestCode:
+        break;
+    }
+
+    return RequestResult();
+}

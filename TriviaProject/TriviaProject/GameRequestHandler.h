@@ -1,5 +1,8 @@
 #pragma once
+
+#include "RoomManager.h"
 #include "IRequestHandler.h"
+#include "JsonResponsePacketSerializer.h"
 
 class GameRequestHandler : public IRequestHandler
 {
@@ -12,6 +15,8 @@ private:
 	RequestResult submitAnswer(RequestInfo info);
 	RequestResult getGameResults(RequestInfo info);
 	RequestResult leaveGame(RequestInfo info);
+
+	LoggedUser m_user;
 
 };
 

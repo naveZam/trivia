@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "Question.h"
 
 struct LoginRequest
 {
@@ -158,4 +159,12 @@ struct GetGameResultsResponse
 struct SubmitAnswerRequest
 {
 	unsigned int answerId;
+};
+
+struct GameData
+{
+	Question currentQuestion;
+	unsigned int correctAnswerCount;
+	unsigned int wrongAnswerCount;
+	unsigned int averangeAnswerTime;
 };

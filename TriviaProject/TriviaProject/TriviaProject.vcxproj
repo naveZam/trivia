@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameRequestHandler.cpp" />
     <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
@@ -29,6 +31,7 @@
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="MenuRequestHandler.cpp" />
+    <ClCompile Include="OriQuestion.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="Room.cpp" />
@@ -44,7 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameRequestHandler.h" />
+    <ClInclude Include="OriQuestion.h" />
     <ClInclude Include="Question.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomAdminRequestHandler.h" />

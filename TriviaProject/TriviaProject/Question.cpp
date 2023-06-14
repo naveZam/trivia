@@ -1,41 +1,23 @@
 #include "Question.h"
 
-Question::Question(int id, std::string question, std::string correctAnswer, std::string answer2, std::string answer3, std::string answer4)
+Question::Question(std::string question, std::vector<std::string> possibleAnswers, int correctAnswerId)
 {
-	this->_id = id;
-	this->_question = question;
-	this->_correctAnswer = correctAnswer;
-	this->_answer2 = answer2;
-	this->_answer3 = answer3;
-	this->_answer4 = answer4;
-}
-
-int Question::getId()
-{
-	return this->_id;
+    m_possibleAnswers = possibleAnswers;
+    m_question = question;
+    m_correctAnswerId = correctAnswerId;
 }
 
 std::string Question::getQuestion()
 {
-	return this->_question;
+    return m_question;
 }
 
-std::string Question::getCorrectAnswer()
+std::vector<std::string> Question::getPossibleAnswers()
 {
-	return this->_correctAnswer;
+    return m_possibleAnswers;
 }
 
-std::string Question::getAnswer2()
+int Question::getCorrectAnswerId()
 {
-	return this->_answer2;
-}
-
-std::string Question::getAnswer3()
-{
-	return this->_answer3;
-}
-
-std::string Question::getAnswer4()
-{
-	return this->_answer4;
+    return m_correctAnswerId;
 }
