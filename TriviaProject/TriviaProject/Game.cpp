@@ -18,6 +18,9 @@ Question Game::getQuestionForUser(LoggedUser user)
             return it->second.currentQuestion;
         }
     }
+    std::string s = "error";
+    std::vector<std::string> v;
+    return Question(s, v, NULL);
 }
 
 void Game::submitAnswer(LoggedUser user, int ansId)

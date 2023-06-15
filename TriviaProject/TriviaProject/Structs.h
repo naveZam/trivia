@@ -75,12 +75,12 @@ struct getPersonalStatsResponse
 
 struct JoinRoomResponse
 {
-	unsigned int status;
+	unsigned int status = 1;
 };
 
 struct CreateRoomResponse
 {
-	unsigned int status;
+	unsigned int status = 1;
 };
 
 struct GetPlayersInRoomRequest
@@ -103,12 +103,12 @@ struct CreateRoomRequest
 
 struct StartGameResponse
 {
-	unsigned int status;
+	unsigned int status = 1;
 };
 
 struct CloseRoomResponce
 {
-	unsigned int status;
+	unsigned int status = 1;
 };
 
 struct GetRoomStateResponse
@@ -122,12 +122,12 @@ struct GetRoomStateResponse
 
 struct LeaveRoomResponse
 {
-	unsigned int status;
+	unsigned int status = 1;
 };
 
 struct LeaveGameResponse
 {
-	unsigned int status;
+	unsigned int status = 1;
 };
 
 struct GetQuestionResponse
