@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GalleryGUI
@@ -48,12 +49,15 @@ namespace GalleryGUI
         public int totalGames { get; set; }
         public int averageAnswerTime { get; set; }
 
-        public StatsResponse(int ID, int correct, int total, int games, int time) : base(ID)
+        // Deserialization constructor
+        [JsonConstructor]
+        public StatsResponse(int ID, int correctAnswerCount, int totalAnswerCount, int totalGames, int averageAnswerTime)
+            : base(ID)
         {
-            this.correctAnswerCount = correct;
-            this.totalAnswerCount = total;
-            this.totalGames = games;
-            this.averageAnswerTime = time;
+            this.correctAnswerCount = correctAnswerCount;
+            this.totalAnswerCount = totalAnswerCount;
+            this.totalGames = totalGames;
+            this.averageAnswerTime = averageAnswerTime;
         }
     }
     partial class GenericResponse : Response

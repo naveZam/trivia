@@ -6,7 +6,7 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser user) : m_user(user)
 
 bool MenuRequestHandler::isRequestRelevant(RequestInfo info)
 {
-	if (info.id == 69)
+	if (info.id == 69 || info.id == SignOutRequest || info.id == GetRoomsRequest || info.id == GetPlayersInRoomRequestCode || info.id == JoinRoomRequestCode || info.id == CreateRoomRequestCode || info.id == getHighScoreResponseCode || info.id == GetPersonalStatsRequest)
 	{
 		return true;
 	}
@@ -104,20 +104,12 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 		break;
 	case GetPersonalStatsRequest:
 		result = getPersonalStats(info);
-		if (result.response != nonError)
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		}
-		else
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(transformToStats(result));
-		}
 		break;
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 	}
 
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+	//result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 	return result;
 }
 
@@ -176,14 +168,32 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info)
 {
 	RequestResult result;
-	LoginManager loginManager;
-	std::string respond = "";
+	ErrorResponse ErrorRes;
+	getHighScoreResponse getHighScoreRes;
+	std::string Respones = "";
 	SqliteDataBase* db = SqliteDataBase::getInstance();
-	respond += std::to_string(db->getNumOfCorrectAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfTotalAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfPlayerGames(m_user.getUsername() + "," + std::to_string(db->getAverageAnswerTime(m_user.getUsername()))));//reminder to maybe add more to here
-	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
+
+	getHighScoreRes.statistics.push_back(std::to_string(db->getNumOfCorrectAnswers(m_user.getUsername())));
+	getHighScoreRes.statistics.push_back(std::to_string(db->getNumOfTotalAnswers(m_user.getUsername())));
+	getHighScoreRes.statistics.push_back(std::to_string(db->getNumOfPlayerGames(m_user.getUsername())));
+	getHighScoreRes.statistics.push_back(std::to_string(db->getAverageAnswerTime(m_user.getUsername())));
+	getHighScoreRes.status = 1;
+
+
+	try 
+	{
+		Respones = JsonResponsePacketSerializer::serializeResponse(getHighScoreRes);
+	}
+	catch (const std::exception& e) 
+	{
+		ErrorRes.message = "Error: User have no statistics";
+		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+	}
+	//Respones += std::to_string(db->getNumOfCorrectAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfTotalAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfPlayerGames(m_user.getUsername() + "," + std::to_string(db->getAverageAnswerTime(m_user.getUsername()))));//reminder to maybe add more to here
+	
+	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+
 	return result;
-	
-	
 }
 
 RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
