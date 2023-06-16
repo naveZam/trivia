@@ -26,5 +26,6 @@ private:
 	GetRoomsResponse transformToRooms(RequestResult info);
 	GetPlayersInRoomResponse transformToPlayers(RequestResult info);
 	getHighScoreResponse transformToScore(RequestResult info);
+	getPersonalStatsResponse transformToStats(RequestResult info);
 };
 

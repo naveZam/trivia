@@ -102,7 +102,13 @@ std::string JsonResponsePacketSerializer::serializeResponse(getHighScoreResponse
 
 std::string JsonResponsePacketSerializer::serializeResponse(getPersonalStatsResponse response)
 {
-	return std::string();
+	nlohmann::json j;
+	j["status"] = response.status;
+	j["correctAnswerCount"] = response.statistics.at(0);
+	j["totalAnswerCount"] = response.statistics.at(1);
+	j["totalGames"] = response.statistics.at(2);
+	j["averageAnswerTime"] = response.statistics.at(3);
+	return j;
 }
 
 std::string JsonResponsePacketSerializer::serializeResponse(CloseRoomResponce response)
@@ -150,7 +156,7 @@ std::string serializePlayer(PlayerResults response)
 	j["username"] = response.username;
 	j["averageAnswerTime"] = response.averageAnswerTime;
 	j["correctAnswerCount"] = response.correctAnswerCount;
-	j["stwrongAnswerCountatus"] = response.wrongAnswerCount;
+	j["wrongAnswerCount"] = response.wrongAnswerCount;
 
 	return j.dump();
 }

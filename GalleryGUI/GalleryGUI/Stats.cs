@@ -26,10 +26,18 @@ namespace GalleryGUI
             this.Close();
 
         }
-
+        
         private void Stats_Load(object sender, EventArgs e)
         {
             this.Location = Program.location;
+
+            Program.communicator.Send(new Messages(), 11);
+            StatsResponse response = Program.communicator.transform(Program.communicator.Receive());
+            this.label1.Text = response.totalAnswerCount.ToString();
+            this.label2.Text = response.correctAnswerCount.ToString();
+            this.label3.Text = response.averageAnswerTime.ToString() + "miliseconds";
+            this.label2.Text = response.totalGames.ToString();
+
         }
     }
 }

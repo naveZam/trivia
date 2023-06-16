@@ -78,14 +78,13 @@ RequestResult LoginRequestHandler::login(RequestInfo info)
 	LoginRequest user = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
 	LoginManager loginManager;
 	loginManager.login(user.username, user.password);
-	result.newHandler = RequestHandlerFactory::getInstance()->createMenuRequestHandler(LoggedUser(user.username));
+	
 	//make sure the user logged
 	if (loginManager.isUserLogged(user.username))
 	{
 		std::cout << "User successfully logged" << std::endl;
 		respond = "1";
-		delete result.newHandler;
-		result.newHandler = nullptr;
+		result.newHandler = RequestHandlerFactory::getInstance()->createMenuRequestHandler(LoggedUser(user.username));
 	}
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	
@@ -101,14 +100,13 @@ RequestResult LoginRequestHandler::signup(RequestInfo info)
 	SignupRequest user = JsonRequestPacketDeserializer::deserializeSignupRequest(info.buffer);
 
 	loginManager.signup(user.username, user.password, user.email);
-	result.newHandler = RequestHandlerFactory::getInstance()->createMenuRequestHandler(LoggedUser(user.username));
+	
 	//make sure the user logged
 	if (loginManager.isUserLogged(user.username))
 	{
 		std::cout << "User successfully logged" << std::endl;
 		respond = "1";
-		delete result.newHandler;
-		result.newHandler = nullptr;
+		result.newHandler = RequestHandlerFactory::getInstance()->createMenuRequestHandler(LoggedUser(user.username));
 	}
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 

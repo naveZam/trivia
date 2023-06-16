@@ -102,7 +102,17 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 			Respones = JsonResponsePacketSerializer::serializeResponse(transformToScore(result));
 		}
 		break;
-
+	case GetPersonalStatsRequest:
+		result = getPersonalStats(info);
+		if (result.response != nonError)
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		}
+		else
+		{
+			Respones = JsonResponsePacketSerializer::serializeResponse(transformToStats(result));
+		}
+		break;
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 	}
@@ -169,7 +179,7 @@ RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info)
 	LoginManager loginManager;
 	std::string respond = "";
 	SqliteDataBase* db = SqliteDataBase::getInstance();
-	respond += std::to_string(db->getNumOfCorrectAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfTotalAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfPlayerGames(m_user.getUsername()));//reminder to maybe add more to here
+	respond += std::to_string(db->getNumOfCorrectAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfTotalAnswers(m_user.getUsername())) + "," + std::to_string(db->getNumOfPlayerGames(m_user.getUsername() + "," + std::to_string(db->getAverageAnswerTime(m_user.getUsername()))));//reminder to maybe add more to here
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 	
@@ -270,6 +280,25 @@ getHighScoreResponse MenuRequestHandler::transformToScore(RequestResult info)
 	}
 	if (temp != "")
 		response.statistics.push_back(temp);
+	return response;
+}
+
+getPersonalStatsResponse MenuRequestHandler::transformToStats(RequestResult info)
+{
+	getPersonalStatsResponse response;
+	std::string temp = "";
+	for (unsigned char c : info.response)
+	{
+		if (c == ',')
+		{
+			response.statistics.push_back(temp);
+			temp = "";
+		}
+		else
+		{
+			temp += c;
+		}
+	}
 	return response;
 }
 

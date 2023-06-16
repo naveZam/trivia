@@ -30,7 +30,7 @@ namespace GalleryGUI
             string email = this.textBox3.Text;
             SignupMessage message = new SignupMessage(Program.name, password, email);
             Program.communicator.Send(message, 2);
-            Response response = Program.communicator.Receive();
+            GenericResponse response = Program.communicator.Receive();
             if (response.ID == 0)
             {
                 throw new Exception("Error Signing up");

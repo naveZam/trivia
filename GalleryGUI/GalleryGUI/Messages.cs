@@ -43,15 +43,26 @@ namespace GalleryGUI
     }
     partial class StatsResponse : Response
     {
-        public int NumOfCorrectAnswers { get; set; }
-        public int NumOfTotalAnswers { get; set; }
-        public int getNumOfPlayerGames { get; set; }
-        
-        public StatsResponse(int ID, int correct, int total, int games) : base(ID)
+        public int correctAnswerCount { get; set; }
+        public int totalAnswerCount { get; set; }
+        public int totalGames { get; set; }
+        public int averageAnswerTime { get; set; }
+
+        public StatsResponse(int ID, int correct, int total, int games, int time) : base(ID)
         {
-            this.NumOfCorrectAnswers = correct;
-            this.NumOfTotalAnswers = total;
-            this.getNumOfPlayerGames = games;
+            this.correctAnswerCount = correct;
+            this.totalAnswerCount = total;
+            this.totalGames = games;
+            this.averageAnswerTime = time;
+        }
+    }
+    partial class GenericResponse : Response
+    {
+        public string message { get; set; }
+        public GenericResponse(int ID, string message) : base(ID)
+        {
+            this.message = message;
         }
     }
 }
+

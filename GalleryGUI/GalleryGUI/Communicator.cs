@@ -13,7 +13,7 @@ namespace GalleryGUI
         public Communicator()
         {
             socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            socket.Connect(ip, port);
+                socket.Connect(ip, port);
             deserializer = new Deserializer();
             serializer = new Serializer();
         }
@@ -22,7 +22,7 @@ namespace GalleryGUI
         private int port = 42069;
         private Deserializer deserializer;
         private Serializer serializer;
-        public Response Receive()
+        public GenericResponse Receive()
         {
             byte[] buffer = new byte[1024];
             //wait for data
@@ -37,14 +37,16 @@ namespace GalleryGUI
             byte[] length = new byte[5];
             Array.Copy(data, 1, length, 0, 5);
             int len = BitConverter.ToInt32(length, 0);
-            byte[] message = new byte[len];
-            string str = "";
-            if (data.Length > 14)
+            byte[] message = new byte[data.Length];
+            //put in message data from index 6 without the length
+            for (int i = 6; i < data.Length; i++)
             {
-                Array.Copy(data, 6, message, 0, len);
-                str = deserializer.deserialize(message);
+                message[i] = data[i];
             }
-            Response response = new Response(str, ID);
+            string str = "";
+            str = deserializer.deserialize(message);
+
+            GenericResponse response = new GenericResponse(ID, str);
             return response;
         }
         public void Send(Messages message, int ID)
@@ -58,6 +60,19 @@ namespace GalleryGUI
             Array.Copy(length, 0, SendData, 1, 5);
             Array.Copy(data, 0, SendData, 6, data.Length);
             socket.Send(SendData);
+        }
+        
+        public StatsResponse transform(GenericResponse info)
+        {
+            StatsResponse? response = JsonSerializer.Deserialize<StatsResponse>(info.message);
+            if (response != null)
+            {
+                return response;
+            }
+            else
+            {
+                return new StatsResponse(-1, -1, -1, -1, -1);
+            }
         }
     }
     

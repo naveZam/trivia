@@ -29,7 +29,7 @@ namespace GalleryGUI
             string password = this.textBox2.Text;
             LoginMessage message = new LoginMessage(Program.name, password);
             Program.communicator.Send(message, 1);
-            Response response = Program.communicator.Receive();
+            GenericResponse response = Program.communicator.Receive();
             if (response.ID == 0)
             {
                 throw new Exception("Error Logging in");
