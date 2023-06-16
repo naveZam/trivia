@@ -37,13 +37,13 @@ namespace GalleryGUI
             byte[] length = new byte[5];
             Array.Copy(data, 1, length, 0, 5);
 
-            int len = BitConverter.ToInt32(length, 0);
+            int len = BytesToInt(length);
 
-            byte[] message = new byte[data.Length];
+            byte[] message = new byte[data.Length - 6];
             //put in message data from index 6 without the length
             for (int i = 6; i < data.Length; i++)
             {
-                message[i] = data[i];
+                message[i - 6] = data[i];
             }
             string str = "";
             str = deserializer.deserialize(message);
@@ -51,6 +51,20 @@ namespace GalleryGUI
             GenericResponse response = new GenericResponse(ID, str);
             return response;
         }
+
+        private int BytesToInt(byte[] bytes)
+        {
+            int val = 0;
+            int length = bytes.Length;
+
+            for (int i = 0; i < length; i++)
+            {
+                val += bytes[i] * (int)Math.Pow(10, length - i - 1);
+            }
+
+            return val;
+        }
+
         public void Send(Messages message, int ID)
         {
             byte[] data = serializer.serialize(message);

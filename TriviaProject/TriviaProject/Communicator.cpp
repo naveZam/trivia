@@ -110,18 +110,21 @@ void Communicator::acceptClient()
 void sendMessageToUser(SOCKET clientSocket, RequestResult result, int code)
 {
 	int size = result.response.size();
-	std::string sizeBuffer = "";
+	std::string numberString = std::to_string(size);
+	char Id = code;
 	int i = 0;
 
-	while (i < AMOUNT_OF_SIZE_BYTES - size)
-	{
-		sizeBuffer += "0";
-		i++;
+	// Add leading zeros if necessary
+	while (numberString.length() < 5) {
+		numberString = "0" + numberString;
 	}
 
-	sizeBuffer += size;
+	for (i = 0; i < numberString.length(); i++)
+	{
+		numberString[i] -= 48;
+	}
 
-	std::string message = std::to_string(code) + sizeBuffer + std::string(result.response.begin(), result.response.end());
+	std::string message = Id + numberString + std::string(result.response.begin(), result.response.end());
 	send(clientSocket, message.c_str(), message.size(), 0);
 }
 
