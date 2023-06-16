@@ -129,9 +129,10 @@ int strToInt(std::string str)
 {
 	int i = 0;
 	int val = 0;
+
 	for (i = 0; i < str.size(); i++)
 	{
-		val += str[i];
+		val += str[i] * pow(10, AMOUNT_OF_SIZE_BYTES - i - 1);
 	}
 
 	return val;

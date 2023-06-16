@@ -1,2 +1,7 @@
-﻿  LoginRequestHandler.cpp
-  TriviaProject.vcxproj -> C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe
+﻿  Communicator.cpp
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\Client\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(112,35): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\Client\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(125,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\Client\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(135,17): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\Client\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(174,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\Client\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(202,31): warning C4101: 'e': unreferenced local variable
+  TriviaProject.vcxproj -> C:\Users\test0\OneDrive\מסמכים\Magshimim\Year 2\Trivia Project\V4\Client\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe

@@ -13,7 +13,7 @@ namespace GalleryGUI
         public Communicator()
         {
             socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-                socket.Connect(ip, port);
+            socket.Connect(ip, port);
             deserializer = new Deserializer();
             serializer = new Serializer();
         }
@@ -36,7 +36,9 @@ namespace GalleryGUI
             int ID = data[0];
             byte[] length = new byte[5];
             Array.Copy(data, 1, length, 0, 5);
+
             int len = BitConverter.ToInt32(length, 0);
+
             byte[] message = new byte[data.Length];
             //put in message data from index 6 without the length
             for (int i = 6; i < data.Length; i++)
@@ -54,11 +56,15 @@ namespace GalleryGUI
             byte[] data = serializer.serialize(message);
             byte[] length = new byte[5];
             byte[] temp = BitConverter.GetBytes(data.Length);
+
             Array.Copy(temp, length, temp.Length);
+            Array.Reverse(length);
+
             byte[] SendData = new byte[data.Length + 6];
             SendData[0] = (byte)ID;
             Array.Copy(length, 0, SendData, 1, 5);
             Array.Copy(data, 0, SendData, 6, data.Length);
+
             socket.Send(SendData);
         }
         
