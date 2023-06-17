@@ -37,70 +37,22 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 	{
 	case SignOutRequest:
 		result = signout(info);
-		if (result.response != nonError)
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		}
-		else
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(logoutRes);
-		}
 		break;
 	case GetRoomsRequest:
 		result = getRooms(info);
-		
-		if (result.response == error)
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		}
-		else
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(transformToRooms(result));
-		}
+
 		break;
 	case GetPlayersInRoomRequestCode:
 		result = getPlayersInRoom(info);
-		if (result.response != nonError)
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		}
-		else
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(transformToPlayers(result));
-		}
 		break;
 	case JoinRoomRequestCode:
 		result = joinRoom(info);
-		if (result.response != nonError)
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		}
-		else
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
-		}
 		break;
 	case CreateRoomRequestCode:
 		result = createRoom(info);
-		if (result.response != nonError)
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		}
-		else
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(loginRes);
-		}
 		break;
 	case getHighScoreResponseCode:
 		result = getHighScore(info);
-		if (result.response != nonError)
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		}
-		else
-		{
-			Respones = JsonResponsePacketSerializer::serializeResponse(transformToScore(result));
-		}
 		break;
 	case GetPersonalStatsRequest:
 		result = getPersonalStats(info);
@@ -126,6 +78,7 @@ RequestResult MenuRequestHandler::signout(RequestInfo info)
 		delete result.newHandler;
 		result.newHandler = nullptr;
 	}
+	
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }
@@ -135,10 +88,22 @@ RequestResult MenuRequestHandler::getRooms(RequestInfo info)
 	RequestResult result;
 	RoomManager* manager = RoomManager::getInstance();
 	std::vector<RoomData> data = manager->getRooms();
+	GetRoomsResponse getRoomsRes;
+	ErrorResponse ErrorRes;
 	for (RoomData& room : data)
 	{
-		result.response.push_back(room.id);
+		getRoomsRes.rooms.push_back(room);
 	}
+	std::string respond = "";
+	try
+	{
+		respond = JsonResponsePacketSerializer::serializeResponse(getRoomsRes);
+	}
+	catch (const std::exception&)
+	{
+		respond = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+	}
+	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }
 
@@ -146,6 +111,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 {
 	RequestResult result;
 	RoomManager* manager = RoomManager::getInstance();
+	ErrorResponse ErrorRes;
 	std::string respond = "";
 	std::vector<RoomData> data = manager->getRooms();
 	std::string text;
@@ -155,12 +121,22 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 		roomID *= 10;
 		roomID += info.buffer[i];
 	}
+	GetPlayersInRoomResponse getPlayersInRoomRes;
 	std::vector<std::string> temp = manager->getRoom(roomID).getAllUsers();
 	for (std::string& user : temp)
 	{
-		respond += user + ",";
+		getPlayersInRoomRes.players.push_back(user);
 	}
 	respond.pop_back();
+	try
+	{
+		respond = JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomRes);
+	}
+	catch (const std::exception& e)
+	{
+		ErrorRes.message = "Error: Room has no players";
+		respond = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+	}
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }
@@ -202,15 +178,26 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	RoomManager* manager = RoomManager::getInstance();
 	std::string respond = "";
 	std::vector<RoomData> data = manager->getRooms();
+	JoinRoomResponse joinRoomRes;
+	ErrorResponse ErrorRes;
 	int roomID = 0;
 	for (int i = 0; i < info.buffer.size(); i++)
 	{
 		roomID *= 10;
 		roomID += info.buffer[i];
 	}
-	manager->getRoom(roomID).addUser(m_user.getUsername());
-	delete result.newHandler;
-	result.newHandler = RequestHandlerFactory::getInstance()->createRoomMemberRequestHandler(m_user, manager->getRoom(roomID));
+	try
+	{
+		manager->getRoom(roomID).addUser(m_user.getUsername());
+		delete result.newHandler;
+		result.newHandler = RequestHandlerFactory::getInstance()->createRoomMemberRequestHandler(m_user, manager->getRoom(roomID));
+		respond = JsonResponsePacketSerializer::serializeResponse(joinRoomRes);
+	}
+	catch (const std::exception& e)
+	{
+		ErrorRes.message = "Error: Room is full";
+		respond = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+	}
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }
