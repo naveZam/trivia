@@ -11,7 +11,7 @@ class GameRequestHandler : public IRequestHandler
 public:
 	bool isRequestRelevant(RequestInfo info);
 	RequestResult handleRequest(RequestInfo info);
-
+	
 private:
 	RequestResult getQuestion(RequestInfo info);
 	RequestResult submitAnswer(RequestInfo info);

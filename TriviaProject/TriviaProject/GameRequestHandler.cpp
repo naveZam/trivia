@@ -31,6 +31,7 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo info)
         break;
 
     case GetGameResultRequestCode:
+		result = getGameResults(info);
         break;
     }
 
