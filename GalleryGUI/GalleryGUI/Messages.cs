@@ -68,5 +68,27 @@ namespace GalleryGUI
             this.message = message;
         }
     }
+    partial class Room
+    {
+        public int ID { get; set; }
+        public string? name { get; set; }
+        public int maxPlayers { get; set; }
+        public int timePerQuestion { get; set; }
+        public int isActive { get; set; }
+        public Queue<string>? players { get; set; }
+        public Room(int ID, string name, int maxPlayers, int timePerQuestion, int isActive, Queue<string> players)
+        {
+            this.ID = ID;
+            this.name = name;
+            this.maxPlayers = maxPlayers;
+            this.timePerQuestion = timePerQuestion;
+            this.isActive = isActive;
+            this.players = players;
+        }
+        public Room()
+        {
+
+        }
+    }
 }
 

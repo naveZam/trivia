@@ -48,20 +48,22 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 	result.newHandler = this;
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-	if (info.id == LeaveRoomRequest)
+	std::string response;
+	try
 	{
+	
 		m_room.removeUser(M_user);
 		result.response = nonError;
-		return result;
+		response = JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse());
 	}
-	else
+	catch (const std::exception&)
 	{
 		ErrorResponse ErrorRes;
-		std::string Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
-		return result;
+		response = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		
 	}
-	
+	result.response = std::vector<unsigned char>(response.begin(), response.end());
+	return result;
 }
 
 RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)

@@ -82,7 +82,7 @@ namespace GalleryGUI
             socket.Send(SendData);
         }
         
-        public StatsResponse transform(GenericResponse info)
+        public StatsResponse transformStats(GenericResponse info)
         {
             StatsResponse? response = JsonSerializer.Deserialize<StatsResponse>(info.message);
             if (response != null)
@@ -92,6 +92,17 @@ namespace GalleryGUI
             else
             {
                 return new StatsResponse(-1, -1, -1, -1, -1);
+            }
+        }
+        public Queue<Room> transform(GenericResponse info)
+        {
+            //cut info.message at "," and at " "
+            string[] rooms = info.message.Split(',');
+            Queue<Room> roomList = new Queue<Room>();
+            foreach (string room in rooms)
+            {
+                string[] roomInfo = room.Split(' ');
+                roomList.Enqueue(new Room(roomInfo[0], roomInfo[1], roomInfo[2]));
             }
         }
     }

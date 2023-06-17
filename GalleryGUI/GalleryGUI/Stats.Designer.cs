@@ -45,6 +45,7 @@
             label1.Size = new Size(373, 41);
             label1.TabIndex = 0;
             label1.Text = "Questions answered: NULL";
+            label1.Click += label1_Click;
             // 
             // label2
             // 
@@ -56,6 +57,7 @@
             label2.Size = new Size(482, 41);
             label2.TabIndex = 1;
             label2.Text = "Question answered correctly: NULL";
+            label2.Click += label2_Click;
             // 
             // label3
             // 

@@ -26,17 +26,31 @@ namespace GalleryGUI
             this.Close();
 
         }
-        
+
         private void Stats_Load(object sender, EventArgs e)
         {
             this.Location = Program.location;
 
             Program.communicator.Send(new Messages(), 11);
             StatsResponse response = Program.communicator.transform(Program.communicator.Receive());
-            this.label1.Text = response.totalAnswerCount.ToString();
-            this.label2.Text = response.correctAnswerCount.ToString();
-            this.label3.Text = response.averageAnswerTime.ToString() + "miliseconds";
-            this.label2.Text = response.totalGames.ToString();
+            if (response.totalGames > 0)
+            {
+                this.label1.Text = "Questions answerd: "+response.totalAnswerCount.ToString();
+                this.label2.Text = "Questions answerd correctly: "+response.correctAnswerCount.ToString();
+                this.label3.Text = "Average time to answer: "+ response.averageAnswerTime.ToString() + "miliseconds";
+                this.label2.Text = "Total games: "+response.totalGames.ToString();
+            }
+
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
 
         }
     }

@@ -29,6 +29,13 @@ namespace GalleryGUI
         private void JoinRoom_Load(object sender, EventArgs e)
         {
             this.Location = Program.location;
+            Program.communicator.Send(new Messages(), 9);
+            
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
