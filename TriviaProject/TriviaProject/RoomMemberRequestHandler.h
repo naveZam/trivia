@@ -16,6 +16,5 @@ private:
 	LoggedUser M_user;
 	RequestResult leaveRoom(RequestInfo info);
 	RequestResult getRoomState(RequestInfo info);
-	GetRoomStateResponse getRoomStateResponse(RequestResult result);
 };
 

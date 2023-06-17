@@ -33,26 +33,14 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 	{
 	case CloseRoomRequest:
 		request = closeRoom(info);
-		if (request.response == error)
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		else
-			Respones = JsonResponsePacketSerializer::serializeResponse(LeaveRes);
 		break;
 
 	case StartGameRequest:
 		request = startGame(info);
-		if (request.response == error)
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		else
-			Respones = JsonResponsePacketSerializer::serializeResponse(StartRes);
 		break;
 
 	case GetRoomStateRequest:
 		request = getRoomState(info);
-		if (request.response == error)
-			Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
-		else
-			Respones = JsonResponsePacketSerializer::serializeResponse(getRoomStateResponse(request));
 		break;
 
 	default:
@@ -137,15 +125,5 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
 	}
 }
 
-GetRoomStateResponse RoomAdminRequestHandler::getRoomStateResponse(RequestResult info)
-{
-	GetRoomStateResponse GetRoomRes = GetRoomStateResponse();
-	RoomData roomData = m_room.getRoomData();
-	GetRoomRes.status = 1;
-	GetRoomRes.players = m_room.getAllUsers();
-	GetRoomRes.questionCount = roomData.numOfQuestionsInGame;
-	GetRoomRes.answerTimeOut = roomData.timePerQuestion;
-	GetRoomRes.hasGameBegun = roomData.isActive;
-	return GetRoomRes;
-}
+
 

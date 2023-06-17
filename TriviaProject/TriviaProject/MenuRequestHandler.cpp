@@ -207,8 +207,18 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	RequestResult result;
 	RoomManager* manager = RoomManager::getInstance();
 	std::string respond = "";
-	manager->createRoom(m_user.getUsername(), RoomData());
-	delete result.newHandler;
+	CreateRoomResponse createRoomRes;
+	ErrorResponse ErrorRes;
+	try
+	{
+		manager->createRoom(m_user.getUsername(), RoomData());
+		delete result.newHandler;
+	}
+	catch (const std::exception& e)
+	{
+		ErrorRes.message = "Error: creating room";
+		respond = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+	}
 	result.newHandler = RequestHandlerFactory::getInstance()->createRoomAdminRequestHandler(m_user, manager->getRoom(manager->getRooms().size()));
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
@@ -220,82 +230,20 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo info)
 	SqliteDataBase* db = SqliteDataBase::getInstance();
 	std::string respond = "";
 	std::vector<std::string> data = db->getBestScores();
+	getHighScoreResponse getHighScoreRes;
 	for (std::string& score : data)
 	{
-		respond += score + ",";
+		getHighScoreRes.statistics.push_back(score);
 	}
-	respond.pop_back();
+	try
+	{
+		respond = JsonResponsePacketSerializer::serializeResponse(getHighScoreRes);
+	}
+	catch (const std::exception& e)
+	{
+		respond = JsonResponsePacketSerializer::serializeResponse(ErrorResponse());
+	}
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
-}
-
-GetRoomsResponse MenuRequestHandler::transformToRooms(RequestResult info)
-{
-	GetRoomsResponse response;
-	RoomManager* manager = RoomManager::getInstance();
-	for(unsigned char id : info.response)
-	{
-		response.rooms.push_back(manager->getRoom(id).getRoomData());
-	}
-	return response;
-}
-
-GetPlayersInRoomResponse MenuRequestHandler::transformToPlayers(RequestResult info)
-{
-	GetPlayersInRoomResponse response;
-	std::string temp = "";
-	for (unsigned char c : info.response)
-	{
-		if (c == ',')
-		{
-			response.players.push_back(temp);
-			temp = "";
-		}
-		else
-		{
-			temp += c;
-		}
-	}
-	return response;
-}
-
-getHighScoreResponse MenuRequestHandler::transformToScore(RequestResult info)
-{
-	getHighScoreResponse response;
-	std::string temp = "";
-	for (unsigned char c : info.response)
-	{
-		if (c == ',')
-		{
-			response.statistics.push_back(temp);
-			temp = "";
-		}
-		else
-		{
-			temp += c;
-		}
-	}
-	if (temp != "")
-		response.statistics.push_back(temp);
-	return response;
-}
-
-getPersonalStatsResponse MenuRequestHandler::transformToStats(RequestResult info)
-{
-	getPersonalStatsResponse response;
-	std::string temp = "";
-	for (unsigned char c : info.response)
-	{
-		if (c == ',')
-		{
-			response.statistics.push_back(temp);
-			temp = "";
-		}
-		else
-		{
-			temp += c;
-		}
-	}
-	return response;
 }
 
