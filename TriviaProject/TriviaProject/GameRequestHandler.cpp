@@ -96,9 +96,14 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo info)
     ErrorResponse ErrorRes;
     GetGameResultsResponse gameResultRes;
     std::string Respones = "";
-
-    
-
+	SqliteDataBase* db = SqliteDataBase::getInstance();
+    PlayerResults playerRes;
+	playerRes.username = m_user.getUsername();
+	playerRes.averageAnswerTime = db->getAverageAnswerTime(m_user.getUsername());
+	playerRes.correctAnswerCount = db->getNumOfCorrectAnswers(m_user.getUsername());
+	playerRes.wrongAnswerCount = db->getNumOfTotalAnswers(m_user.getUsername()) - playerRes.correctAnswerCount;
+	gameResultRes.results.push_back(playerRes);
+	Respones = JsonResponsePacketSerializer::serializeResponse(gameResultRes);
     result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
     result.newHandler = this;
     return result;

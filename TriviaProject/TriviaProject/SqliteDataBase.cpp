@@ -21,7 +21,7 @@ bool SqliteDataBase::open()
 		//create table if it doesn't exist
 		std::string sql = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, email TEXT);";
 		sql += "CREATE TABLE IF NOT EXISTS questions (id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT, correct_ans TEXT, ans2 TEXT, ans3 TEXT, ans4 TEXT);";
-		sql += "CREATE TABLE IF NOT EXISTS stats (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, score INTEGER, time INTEGER, answers INTEGER, correct_answers INTEGER, FOREIGN KEY(user_id) REFERENCES users(id));";
+		sql += "CREATE TABLE IF NOT EXISTS stats (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, time INTEGER, answers INTEGER, correct_answers INTEGER;";
 		sqlite3_stmt* stmt;
 		if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
 		{
@@ -194,9 +194,9 @@ std::vector<std::string> SqliteDataBase::getBestScores()
 	return bestScores;
 }
 
-void SqliteDataBase::addGame(int id, std::string name, int correctAnswers, int wrongAnswers, float averageAnswerTime, int score)
+void SqliteDataBase::addGame(std::string name, int correctAnswers, int wrongAnswers, float averageAnswerTime)
 {
-	std::string sql = "INSERT INTO stats (user_id, correct_answers, answers, time, score) VALUES (" + std::to_string(id) + ", " + std::to_string(correctAnswers) + ", " + std::to_string(correctAnswers + wrongAnswers) + ", " + std::to_string(averageAnswerTime) + ", " + std::to_string(score) + ");";
+	std::string sql = "INSERT INTO stats (username, correct_answers, answers, time, score) VALUES (" + name + ", " + std::to_string(correctAnswers) + ", " + std::to_string(correctAnswers + wrongAnswers) + ", " + std::to_string(averageAnswerTime) + ", " + std::to_string(correctAnswers * 5) + ");";
 	sqlite3_stmt* stmt;
 	if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK)
 	{

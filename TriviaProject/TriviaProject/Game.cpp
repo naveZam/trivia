@@ -56,3 +56,14 @@ void Game::removePlayer(LoggedUser user)
         }
     }
 }
+
+void Game::submitGameStatsToDB(GameData data)
+{
+    SqliteDataBase* db = SqliteDataBase::getInstance();
+    for (auto it = m_players.begin(); it != m_players.end(); it++)
+    {
+		LoggedUser currUser = it->first;
+		GameData currData = it->second;
+        db->addGame(currUser.getUsername(), currData.correctAnswerCount, currData.wrongAnswerCount, currData.averangeAnswerTime);
+    }
+}

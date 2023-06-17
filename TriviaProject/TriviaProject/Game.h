@@ -3,6 +3,7 @@
 #include "Structs.h"
 #include "LoggedUser.h"
 #include "Question.h"
+#include "SqliteDataBase.h"
 
 class Game
 {
@@ -13,7 +14,7 @@ public:
 	void removePlayer(LoggedUser user);
 
 private:
-	void sumitGameStatsToDB(GameData data);
+	void submitGameStatsToDB(GameData data);
 
 	std::vector<Question> m_questions;
 	std::map<LoggedUser, GameData> m_players;
