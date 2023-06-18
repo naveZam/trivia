@@ -34,6 +34,14 @@ namespace GalleryGUI
             this.email = email;
         }
     }
+    partial class PlayersMessage : Messages
+    {
+        public int roomId { get; set; }
+        public PlayersMessage(int roomId)
+        {
+            this.roomId = roomId;
+        }
+    }
     partial class Response
     {
         public int ID { get; set; }
@@ -68,6 +76,7 @@ namespace GalleryGUI
             this.message = message;
         }
     }
+
     partial class Room
     {
         public int ID { get; set; }

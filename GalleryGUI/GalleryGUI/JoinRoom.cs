@@ -30,10 +30,31 @@ namespace GalleryGUI
         {
             this.Location = Program.location;
             Program.communicator.Send(new Messages(), 9);
-            
+            this.rooms = Program.communicator.transform(Program.communicator.Receive());
+            foreach (Room room in this.rooms)
+            {
+                Program.communicator.Send(new PlayersMessage(room.ID), 10);
+                Queue<string> playerQueue = Program.communicator.transformPlayers(Program.communicator.Receive());
+                room.players = playerQueue;
+            }
+            Room tempRoom = this.rooms.Dequeue();
+            this.label1.Text = tempRoom.ID.ToString();
+            this.label2.Text = tempRoom.name;
+            string players = "";
+            foreach (string player in tempRoom.players)
+            {
+                players += player + ",";
+            }
+            this.label3.Text = players;
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+        private Queue<Room>? rooms;
+
+        private void button3_Click(object sender, EventArgs e)
         {
 
         }

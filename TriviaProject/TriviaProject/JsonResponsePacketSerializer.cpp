@@ -39,6 +39,7 @@ std::string JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse res
 		retString += " " + std::to_string(it->id);
 		retString += " " + std::to_string(it->maxPlayers);
 		retString += " " + std::to_string(it->timePerQuestion);
+		retString += " " + std::to_string(it->isActive);
 		retString += ", ";
 	}
 

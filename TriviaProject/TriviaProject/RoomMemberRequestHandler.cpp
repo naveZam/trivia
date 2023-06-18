@@ -51,7 +51,6 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 	std::string response;
 	try
 	{
-	
 		m_room.removeUser(M_user);
 		result.response = nonError;
 		response = JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse());

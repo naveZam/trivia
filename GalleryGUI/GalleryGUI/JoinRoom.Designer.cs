@@ -37,7 +37,6 @@
             label5 = new Label();
             label6 = new Label();
             button3 = new Button();
-            button4 = new Button();
             SuspendLayout();
             // 
             // button2
@@ -45,7 +44,7 @@
             button2.BackColor = Color.FromArgb(35, 35, 35);
             button2.FlatStyle = FlatStyle.Flat;
             button2.ForeColor = Color.FromArgb(87, 87, 87);
-            button2.Location = new Point(325, 238);
+            button2.Location = new Point(248, 238);
             button2.Name = "button2";
             button2.Size = new Size(150, 55);
             button2.TabIndex = 9;
@@ -137,24 +136,13 @@
             button3.BackColor = Color.FromArgb(35, 35, 35);
             button3.FlatStyle = FlatStyle.Flat;
             button3.ForeColor = Color.FromArgb(87, 87, 87);
-            button3.Location = new Point(521, 238);
+            button3.Location = new Point(452, 238);
             button3.Name = "button3";
             button3.Size = new Size(103, 55);
             button3.TabIndex = 18;
             button3.Text = "Next";
             button3.UseVisualStyleBackColor = false;
-            // 
-            // button4
-            // 
-            button4.BackColor = Color.FromArgb(35, 35, 35);
-            button4.FlatStyle = FlatStyle.Flat;
-            button4.ForeColor = Color.FromArgb(87, 87, 87);
-            button4.Location = new Point(184, 238);
-            button4.Name = "button4";
-            button4.Size = new Size(103, 55);
-            button4.TabIndex = 19;
-            button4.Text = "Before";
-            button4.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
             // 
             // JoinRoom
             // 
@@ -162,7 +150,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(17, 17, 17);
             ClientSize = new Size(800, 450);
-            Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(label6);
             Controls.Add(label5);
@@ -190,6 +177,5 @@
         private Label label5;
         private Label label6;
         private Button button3;
-        private Button button4;
     }
 }

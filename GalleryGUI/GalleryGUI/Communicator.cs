@@ -96,14 +96,29 @@ namespace GalleryGUI
         }
         public Queue<Room> transform(GenericResponse info)
         {
-            //cut info.message at "," and at " "
             string[] rooms = info.message.Split(',');
             Queue<Room> roomList = new Queue<Room>();
             foreach (string room in rooms)
             {
                 string[] roomInfo = room.Split(' ');
-                roomList.Enqueue(new Room(roomInfo[0], roomInfo[1], roomInfo[2]));
+                Room newRoom = new Room();
+                newRoom.name = roomInfo[0];
+                newRoom.ID = int.Parse(roomInfo[1]);
+                newRoom.maxPlayers = int.Parse(roomInfo[2]);
+                newRoom.timePerQuestion = int.Parse(roomInfo[3]);
+                newRoom.isActive = int.Parse(roomInfo[4]);
             }
+            return roomList;
+        }
+        public Queue<string> transformPlayers(GenericResponse info)
+        {
+            string[] players = info.message.Split(',');
+            Queue<string> response = new Queue<string>();
+            foreach (string player in players)
+            {
+                response.Enqueue(player);
+            }
+            return response;
         }
     }
     
