@@ -194,8 +194,13 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				continue;
 			}
 			RequestResult result = handler->handleRequest(info);
-			delete this->m_clients[clientSocket];
-			this->m_clients[clientSocket] = result.newHandler;
+
+			if (this->m_clients[clientSocket] != result.newHandler)
+			{
+				delete this->m_clients[clientSocket];
+				this->m_clients[clientSocket] = result.newHandler;
+			}
+			
 			sendMessageToUser(clientSocket, result, 1);
 		} while (codeId != DISCONNECT_ID);
 		

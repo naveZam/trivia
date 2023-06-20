@@ -5,6 +5,7 @@
 #include "LoggedUser.h"
 #include "JsonResponsePacketSerializer.h"
 #include "IDatabase.h"
+#include "JsonRequestPacketDeserializer.h"
 
 class MenuRequestHandler : public IRequestHandler
 {

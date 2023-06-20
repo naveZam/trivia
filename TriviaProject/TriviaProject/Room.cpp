@@ -1,7 +1,10 @@
 #include "Room.h"
-
+int Room::ID = 0;
 Room::Room(LoggedUser owner, RoomData data)
 {
+	data.id = Room::ID;
+	data.isActive = false;
+	ID++;
 	this->m_metadata = data;
 	m_users.clear();
 	this->m_users.push_back(owner); //the owner is the front

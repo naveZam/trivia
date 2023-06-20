@@ -211,15 +211,15 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	ErrorResponse ErrorRes;
 	try
 	{
-		manager->createRoom(m_user.getUsername(), RoomData());
-		delete result.newHandler;
+		
+		manager->createRoom(m_user.getUsername(), JsonRequestPacketDeserializer::deserializeRoomData(info.buffer));
 	}
 	catch (const std::exception& e)
 	{
 		ErrorRes.message = "Error: creating room";
 		respond = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
 	}
-	result.newHandler = RequestHandlerFactory::getInstance()->createRoomAdminRequestHandler(m_user, manager->getRoom(manager->getRooms().size()));
+	result.newHandler = RequestHandlerFactory::getInstance()->createRoomAdminRequestHandler(m_user, manager->getRoom(manager->getRooms().size() - 1));
 	result.response = std::vector<unsigned char>(respond.begin(), respond.end());
 	return result;
 }

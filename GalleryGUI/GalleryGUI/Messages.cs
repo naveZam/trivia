@@ -42,6 +42,29 @@ namespace GalleryGUI
             this.roomId = roomId;
         }
     }
+    partial class createRoom : Messages
+    {
+        public string roomName { get; set; }
+        public uint questionCount { get; set; }
+        public uint maxPlayers { get; set; }
+        public uint answerTimeout { get; set; }
+
+        public createRoom(string roomName, uint questionCount, uint answerTimeout, uint maxPlayers)
+        {
+            this.roomName = roomName;
+            this.questionCount = questionCount;
+            this.maxPlayers = maxPlayers;
+            this.answerTimeout = answerTimeout;
+        }
+    }
+    partial class joinRoomMessage : Messages
+    {
+        public int roomId { get; set; }
+        public joinRoomMessage(int roomId)
+        {
+            this.roomId = roomId;
+        }
+    }
     partial class Response
     {
         public int ID { get; set; }
@@ -97,6 +120,19 @@ namespace GalleryGUI
         public Room()
         {
 
+        }
+    }
+    partial class roomStateResponse : Response
+    {
+        public string players { get; set; }
+        public bool hasGameBegun { get; set; }
+        public int status { get; set; }
+
+        public roomStateResponse(string players, bool hasGameBegun, int status, int id) : base(id)
+        {
+            this.players = players;
+            this.hasGameBegun = hasGameBegun;
+            this.status = status;
         }
     }
 }

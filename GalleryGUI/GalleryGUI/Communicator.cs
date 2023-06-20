@@ -120,6 +120,11 @@ namespace GalleryGUI
             }
             return response;
         }
+
+        public roomStateResponse transformState(GenericResponse info)
+        {
+            return JsonSerializer.Deserialize<roomStateResponse>(info.message);
+        }
     }
     
 }

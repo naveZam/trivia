@@ -38,6 +38,7 @@ namespace GalleryGUI
                 room.players = playerQueue;
             }
             Room tempRoom = this.rooms.Dequeue();
+            rooms.Enqueue(tempRoom);
             this.label1.Text = tempRoom.ID.ToString();
             this.label2.Text = tempRoom.name;
             string players = "";
@@ -46,6 +47,7 @@ namespace GalleryGUI
                 players += player + ",";
             }
             this.label3.Text = players;
+
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -57,6 +59,20 @@ namespace GalleryGUI
         private void button3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Program.communicator.Send(new joinRoomMessage(int.Parse(this.label2.Text)), 11);
+            GenericResponse response = Program.communicator.Receive();
+            if (response.ID != 1)
+            {
+                throw new Exception("Error joining room");
+            }
+            Lobby menu = new Lobby();
+            this.Hide();
+            menu.ShowDialog();
+            this.Close();
         }
     }
 }

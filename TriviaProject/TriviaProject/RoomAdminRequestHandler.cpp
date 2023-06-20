@@ -31,7 +31,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 	RequestResult request;
 	switch (info.id)
 	{
-	case CloseRoomRequest:
+	case LeaveRoomRequest:
 		request = closeRoom(info);
 		break;
 
@@ -45,18 +45,19 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 	}
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
-	return result;
+	
+	return request;
 }
 
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 {
 	RequestResult result;
-	result.newHandler = this;
+	result.newHandler = RequestHandlerFactory::getInstance()->createMenuRequestHandler(M_user);
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-	if (info.id == CloseRoomRequest)
+	if (info.id == LeaveRoomRequest)
 	{
 		LeaveRoomResponse LeaveRes = LeaveRoomResponse();
 		LeaveRes.status = 1;

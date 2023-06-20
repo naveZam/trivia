@@ -68,6 +68,7 @@ namespace GalleryGUI
 
         private void button4_Click(object sender, EventArgs e)
         {
+            Program.communicator.Send(new Messages(), 8);
             this.Close();
         }
         private static bool isSongLoaded = false;

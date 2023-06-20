@@ -3,48 +3,18 @@ C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\Triv
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(128,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(138,17): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(177,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(205,31): warning C4101: 'e': unreferenced local variable
-  Game.cpp
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Game.cpp(67,109): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  GameManager.cpp
-  GameRequestHandler.cpp
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\GameRequestHandler.cpp(103,56): warning C4244: '=': conversion from 'float' to 'unsigned int', possible loss of data
-  IDatabase.cpp
-  IRequestHandler.cpp
-  JsonRequestPacketDeserializer.cpp
-  JsonResponsePacketSerializer.cpp
-  LoggedUser.cpp
-  LoginManager.cpp
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\LoginManager.cpp(19,76): warning C4390: ';': empty controlled statement found; is this the intent?
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(210,31): warning C4101: 'e': unreferenced local variable
   LoginRequestHandler.cpp
   MenuRequestHandler.cpp
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(135,31): warning C4101: 'e': unreferenced local variable
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(163,31): warning C4101: 'e': unreferenced local variable
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(196,31): warning C4101: 'e': unreferenced local variable
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(222,141): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(222,145): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(217,31): warning C4101: 'e': unreferenced local variable
 C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(242,31): warning C4101: 'e': unreferenced local variable
-  Question.cpp
   RequestHandlerFactory.cpp
-  Room.cpp
   RoomAdminRequestHandler.cpp
-  RoomManager.cpp
-  RoomMemberRequestHandler.cpp
   Server.cpp
   Source.cpp
   Generating Code...
-  Compiling...
-  SqliteDataBase.cpp
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(123,32): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  StatisticsManager.cpp
-  WSAInitializer.cpp
-  Generating Code...
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(34): warning C4715: 'SqliteDataBase::open': not all control paths return a value
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(113): warning C4715: 'SqliteDataBase::getQuestions': not all control paths return a value
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(139): warning C4715: 'SqliteDataBase::getNumOfCorrectAnswers': not all control paths return a value
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(126): warning C4715: 'SqliteDataBase::getAverageAnswerTime': not all control paths return a value
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(152): warning C4715: 'SqliteDataBase::getNumOfTotalAnswers': not all control paths return a value
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(178): warning C4715: 'SqliteDataBase::getPlayerScore': not all control paths return a value
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\SqliteDataBase.cpp(165): warning C4715: 'SqliteDataBase::getNumOfPlayerGames': not all control paths return a value
-  sqlite3.c
   TriviaProject.vcxproj -> C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe

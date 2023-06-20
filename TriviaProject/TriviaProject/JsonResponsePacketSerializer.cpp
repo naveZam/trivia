@@ -138,8 +138,8 @@ std::string JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse
 
 	for (auto it = response.players.begin(); it != response.players.end(); it++)
 	{
+		players += *it;
 		players += ",";
-		players += it->at(0);
 	}
 
 	j["players"] = players;

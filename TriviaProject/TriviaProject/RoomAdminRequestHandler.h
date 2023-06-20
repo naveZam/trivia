@@ -3,6 +3,7 @@
 #include "LoggedUser.h"
 #include "IRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
+#include "RequestHandlerFactory.h"
 #include "RoomManager.h"
 
 class RoomAdminRequestHandler : public IRequestHandler
@@ -15,6 +16,7 @@ public:
 private:
 	Room m_room;
 	LoggedUser M_user;
+
 	RequestResult closeRoom(RequestInfo info);
 	RequestResult startGame(RequestInfo info);
 	RequestResult getRoomState(RequestInfo info);

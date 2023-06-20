@@ -77,3 +77,21 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerReques
 
 	return submitAnswerRequest;
 }
+
+RoomData JsonRequestPacketDeserializer::deserializeRoomData(std::vector<unsigned char> buffer)
+{
+	//parsing the info
+	RoomData roomData;
+	nlohmann::json j = nlohmann::json::parse(buffer);
+
+	//sorting the info to SignupRequest
+	
+
+	roomData.name = j["roomName"];
+	roomData.numOfQuestionsInGame = j["questionCount"];
+	roomData.maxPlayers = j["maxPlayers"];
+	roomData.timePerQuestion = j["answerTimeout"];
+	
+
+	return roomData;
+}

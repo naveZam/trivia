@@ -32,7 +32,7 @@ namespace GalleryGUI
             this.Location = Program.location;
 
             Program.communicator.Send(new Messages(), 11);
-            StatsResponse response = Program.communicator.transform(Program.communicator.Receive());
+            StatsResponse response = Program.communicator.transformStats(Program.communicator.Receive());
             if (response.totalGames > 0)
             {
                 this.label1.Text = "Questions answerd: "+response.totalAnswerCount.ToString();

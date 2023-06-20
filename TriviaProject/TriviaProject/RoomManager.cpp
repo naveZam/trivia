@@ -43,8 +43,6 @@ unsigned int RoomManager::getRoomState(int ID)
 std::vector<RoomData> RoomManager::getRooms()
 {
     std::vector<RoomData> roomsData;
-    roomsData.clear();
-
     for (auto it = m_rooms.begin(); it != m_rooms.end(); it++)
     {
         if (!it->second.getState())
@@ -53,11 +51,19 @@ std::vector<RoomData> RoomManager::getRooms()
         }
     }
 
+    
+
     return roomsData;
 }
 
 Room& RoomManager::getRoom(int ID)
 {
-    auto it = m_rooms.find(ID);
-    return it->second;
+	for (auto it = m_rooms.begin(); it != m_rooms.end(); it++)
+	{
+        if (ID == 0)
+        {
+			return it->second;
+        }
+        ID--;
+	}
 }
