@@ -114,13 +114,9 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 	ErrorResponse ErrorRes;
 	std::string respond = "";
 	std::vector<RoomData> data = manager->getRooms();
+	nlohmann::json j = nlohmann::json::parse(info.buffer);
 	std::string text;
-	int roomID = 0;
-	for (int i = 0; i < info.buffer.size(); i++)
-	{
-		roomID *= 10;
-		roomID += info.buffer[i];
-	}
+	int roomID = j["roomId"];
 	GetPlayersInRoomResponse getPlayersInRoomRes;
 	std::vector<std::string> temp = manager->getRoom(roomID).getAllUsers();
 	for (std::string& user : temp)

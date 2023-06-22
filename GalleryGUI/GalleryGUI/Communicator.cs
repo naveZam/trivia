@@ -96,7 +96,14 @@ namespace GalleryGUI
         }
         public Queue<Room> transform(GenericResponse info)
         {
-            string[] rooms = info.message.Split(',');
+            if (info.message.Length < 15)
+            {
+                return new Queue<Room>();
+            }
+            string str = info.message.Substring(10);
+            //cut 5 from the end
+            str = str.Substring(0, str.Length - 4);
+            string[] rooms = str.Split(',');
             Queue<Room> roomList = new Queue<Room>();
             foreach (string room in rooms)
             {
@@ -107,6 +114,7 @@ namespace GalleryGUI
                 newRoom.maxPlayers = int.Parse(roomInfo[2]);
                 newRoom.timePerQuestion = int.Parse(roomInfo[3]);
                 newRoom.isActive = int.Parse(roomInfo[4]);
+                roomList.Enqueue(newRoom);
             }
             return roomList;
         }

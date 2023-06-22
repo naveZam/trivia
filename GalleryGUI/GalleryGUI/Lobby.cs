@@ -22,6 +22,7 @@ namespace GalleryGUI
             Program.location = this.Location;
             MainMenu menu = new MainMenu();
             Program.communicator.Send(new Messages(), 6);
+            GenericResponse response = Program.communicator.Receive();
             this.Hide();
             menu.ShowDialog();
             this.Close();
