@@ -1,8 +1,2 @@
-﻿  MenuRequestHandler.cpp
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(131,31): warning C4101: 'e': unreferenced local variable
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(159,31): warning C4101: 'e': unreferenced local variable
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(192,31): warning C4101: 'e': unreferenced local variable
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(218,145): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(213,31): warning C4101: 'e': unreferenced local variable
-C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(238,31): warning C4101: 'e': unreferenced local variable
+﻿  RoomMemberRequestHandler.cpp
   TriviaProject.vcxproj -> C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe

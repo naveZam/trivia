@@ -103,7 +103,7 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
 	result.newHandler = this;
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-	if (info.id == GetRoomStateRequest)
+	try
 	{
 		GetRoomStateResponse GetRoomRes = GetRoomStateResponse();
 		RoomData roomData = m_room.getRoomData();
@@ -117,7 +117,7 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
 		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 		return result;
 	}
-	else
+	catch (...)
 	{
 		ErrorResponse ErrorRes;
 		std::string Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);

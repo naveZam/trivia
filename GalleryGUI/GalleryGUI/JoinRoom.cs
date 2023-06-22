@@ -39,14 +39,14 @@ namespace GalleryGUI
             }
             Room tempRoom = this.rooms.Dequeue();
             rooms.Enqueue(tempRoom);
-            this.label1.Text = tempRoom.ID.ToString();
-            this.label2.Text = tempRoom.name;
+            this.label2.Text = tempRoom.ID.ToString();
+            this.label5.Text = tempRoom.name;
             string players = "";
             foreach (string player in tempRoom.players)
             {
                 players += player + ",";
             }
-            this.label3.Text = players;
+            this.label6.Text = players;
 
         }
 
@@ -63,7 +63,7 @@ namespace GalleryGUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Program.communicator.Send(new joinRoomMessage(int.Parse(this.label2.Text)), 11);
+            Program.communicator.Send(new joinRoomMessage(int.Parse(this.label2.Text)), 12);
             GenericResponse response = Program.communicator.Receive();
             if (response.ID != 1)
             {

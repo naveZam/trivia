@@ -35,10 +35,11 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info)
 		break;
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 	}
 
 
-	result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+	
 	return result;
 }
 
@@ -71,25 +72,27 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
 	result.newHandler = this;
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-	std::string response;
-	GetRoomStateResponse getRoomStateRes;
-	RoomData roomData = m_room.getRoomData();
-	getRoomStateRes.answerTimeOut = roomData.timePerQuestion;
-	getRoomStateRes.hasGameBegun = roomData.isActive;
-	getRoomStateRes.players = m_room.getAllUsers();
-	getRoomStateRes.questionCount = roomData.numOfQuestionsInGame;
-	getRoomStateRes.status = 1;
 	try
 	{
-		response = JsonResponsePacketSerializer::serializeResponse(getRoomStateRes);
+		GetRoomStateResponse GetRoomRes = GetRoomStateResponse();
+		RoomData roomData = m_room.getRoomData();
+		GetRoomRes.status = 1;
+		GetRoomRes.players = m_room.getAllUsers();
+		GetRoomRes.questionCount = roomData.numOfQuestionsInGame;
+		GetRoomRes.answerTimeOut = roomData.timePerQuestion;
+		GetRoomRes.hasGameBegun = roomData.isActive;
+
+		std::string Respones = JsonResponsePacketSerializer::serializeResponse(GetRoomRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+		return result;
 	}
-	catch (const std::exception&)
+	catch (...)
 	{
 		ErrorResponse ErrorRes;
-		response = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		std::string Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+		return result;
 	}
-	result.response = std::vector<unsigned char>(response.begin(), response.end());
-	return result;
 	
 
 }

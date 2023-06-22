@@ -16,7 +16,7 @@ bool MenuRequestHandler::isRequestRelevant(RequestInfo info)
 RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 {
 	RequestResult result;
-	
+	result.newHandler = nullptr;
 
 	std::string notErrorrRespond = "1";
 	std::string errorResponse = "0";
@@ -32,7 +32,6 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 	GetPlayersInRoomResponse getPlayersInRoomRes;
 	getHighScoreResponse getHighScoreRes;
 	std::string Respones;
-
 	switch (info.id)
 	{
 	case SignOutRequest:
@@ -59,9 +58,10 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 		break;
 	default:
 		Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
+		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 	}
 
-	//result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
+	
 	return result;
 }
 
@@ -86,6 +86,7 @@ RequestResult MenuRequestHandler::signout(RequestInfo info)
 RequestResult MenuRequestHandler::getRooms(RequestInfo info)
 {
 	RequestResult result;
+	result.newHandler = nullptr;
 	RoomManager* manager = RoomManager::getInstance();
 	std::vector<RoomData> data = manager->getRooms();
 	GetRoomsResponse getRoomsRes;
@@ -110,6 +111,7 @@ RequestResult MenuRequestHandler::getRooms(RequestInfo info)
 RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 {
 	RequestResult result;
+	result.newHandler = nullptr;
 	RoomManager* manager = RoomManager::getInstance();
 	ErrorResponse ErrorRes;
 	std::string respond = "";
@@ -123,7 +125,6 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 	{
 		getPlayersInRoomRes.players.push_back(user);
 	}
-	respond.pop_back();
 	try
 	{
 		respond = JsonResponsePacketSerializer::serializeResponse(getPlayersInRoomRes);
@@ -140,6 +141,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info)
 {
 	RequestResult result;
+	result.newHandler = nullptr;
 	ErrorResponse ErrorRes;
 	getHighScoreResponse getHighScoreRes;
 	std::string Respones = "";
@@ -176,16 +178,11 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	std::vector<RoomData> data = manager->getRooms();
 	JoinRoomResponse joinRoomRes;
 	ErrorResponse ErrorRes;
-	int roomID = 0;
-	for (int i = 0; i < info.buffer.size(); i++)
-	{
-		roomID *= 10;
-		roomID += info.buffer[i];
-	}
+	nlohmann::json j = nlohmann::json::parse(info.buffer);
+	int roomID = j["roomId"];
 	try
 	{
 		manager->getRoom(roomID).addUser(m_user.getUsername());
-		delete result.newHandler;
 		result.newHandler = RequestHandlerFactory::getInstance()->createRoomMemberRequestHandler(m_user, manager->getRoom(roomID));
 		respond = JsonResponsePacketSerializer::serializeResponse(joinRoomRes);
 	}
@@ -223,6 +220,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 RequestResult MenuRequestHandler::getHighScore(RequestInfo info)
 {
 	RequestResult result;
+	result.newHandler = nullptr;
 	SqliteDataBase* db = SqliteDataBase::getInstance();
 	std::string respond = "";
 	std::vector<std::string> data = db->getBestScores();

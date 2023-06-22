@@ -120,7 +120,9 @@ namespace GalleryGUI
         }
         public Queue<string> transformPlayers(GenericResponse info)
         {
-            string[] players = info.message.Split(',');
+            string str = info.message.Substring(18);
+            str = str.Substring(0, str.Length - 4);
+            string[] players = str.Split(',');
             Queue<string> response = new Queue<string>();
             foreach (string player in players)
             {

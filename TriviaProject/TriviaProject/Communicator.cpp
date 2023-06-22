@@ -195,7 +195,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			}
 			RequestResult result = handler->handleRequest(info);
 
-			if (this->m_clients[clientSocket] != result.newHandler)
+			if (this->m_clients[clientSocket] != result.newHandler && result.newHandler != nullptr)
 			{
 				delete this->m_clients[clientSocket];
 				this->m_clients[clientSocket] = result.newHandler;
