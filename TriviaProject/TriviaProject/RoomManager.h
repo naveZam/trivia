@@ -12,9 +12,10 @@ public:
 	unsigned int getRoomState(int ID);
 	std::vector<RoomData> getRooms();
 	Room& getRoom(int ID);
+	Room& getRoomById(int ID);
 
 private:
-	
+	 
 	RoomManager();
 	static unsigned int m_newId;
 	std::map<roomID, Room> m_rooms;

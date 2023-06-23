@@ -57,15 +57,28 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 	result.newHandler = RequestHandlerFactory::getInstance()->createMenuRequestHandler(M_user);
 	std::string notErrorrRespond = "1";
 	std::vector<unsigned char> nonError = std::vector<unsigned char>(notErrorrRespond.begin(), notErrorrRespond.end());
-	if (info.id == LeaveRoomRequest)
+	try
 	{
+		std::map<SOCKET, IRequestHandler*>& m_clients = Communicator::getInstance()->m_clients;
+		for (auto& client : m_clients)
+		{
+			RoomMemberRequestHandler* handler = dynamic_cast<RoomMemberRequestHandler*>(client.second);
+			if (handler != nullptr)
+			{
+				if (handler->getRoom().getRoomData().id == m_room.getRoomData().id)
+					client.second = RequestHandlerFactory::getInstance()->createMenuRequestHandler(handler->getUser());
+					
+			}
+		}
+		m_room.close();
+		
 		LeaveRoomResponse LeaveRes = LeaveRoomResponse();
 		LeaveRes.status = 1;
 		std::string Respones = JsonResponsePacketSerializer::serializeResponse(LeaveRes);
 		result.response = std::vector<unsigned char>(Respones.begin(), Respones.end());
 		return result;
 	}
-	else
+	catch(...)
 	{
 		ErrorResponse ErrorRes;
 		std::string Respones = JsonResponsePacketSerializer::serializeResponse(ErrorRes);
@@ -99,6 +112,7 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 
 RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
 {
+	this->m_room = RoomManager::getInstance()->getRoomById(m_room.getRoomData().id);
 	RequestResult result;
 	result.newHandler = this;
 	std::string notErrorrRespond = "1";
@@ -107,7 +121,7 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
 	{
 		GetRoomStateResponse GetRoomRes = GetRoomStateResponse();
 		RoomData roomData = m_room.getRoomData();
-		GetRoomRes.status = 1;
+		GetRoomRes.status = m_room.getStatus();
 		GetRoomRes.players = m_room.getAllUsers();
 		GetRoomRes.questionCount = roomData.numOfQuestionsInGame;
 		GetRoomRes.answerTimeOut = roomData.timePerQuestion;

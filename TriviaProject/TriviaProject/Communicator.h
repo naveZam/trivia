@@ -14,7 +14,8 @@ public:
 	~Communicator();
 	void startHandleRequests();
 	static Communicator* getInstance();
-	std::map<SOCKET, IRequestHandler*> getClients();
+	std::map<SOCKET, IRequestHandler*> m_clients;
+	
 private:
 	Communicator();
 	static Communicator* instancePtr;
@@ -23,6 +24,6 @@ private:
 	void handleNewClient(SOCKET clientSocket);
 	int getMessageId(std::vector<unsigned char> buffer);
 	SOCKET m_serverSocket;
-	std::map<SOCKET, IRequestHandler*> m_clients;
+	
 };
 

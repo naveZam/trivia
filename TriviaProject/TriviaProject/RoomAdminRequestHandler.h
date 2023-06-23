@@ -5,7 +5,9 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "RequestHandlerFactory.h"
 #include "RoomManager.h"
-
+#include "Communicator.h"
+#include <WinSock2.h>
+#include <typeinfo>
 class RoomAdminRequestHandler : public IRequestHandler
 {
 public:

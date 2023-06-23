@@ -8,6 +8,7 @@ Room::Room(LoggedUser owner, RoomData data)
 	this->m_metadata = data;
 	m_users.clear();
 	this->m_users.push_back(owner); //the owner is the front
+	this->status = 1;
 }
 
 void Room::addUser(LoggedUser user)

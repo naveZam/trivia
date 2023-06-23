@@ -108,6 +108,10 @@ namespace GalleryGUI
             foreach (string room in rooms)
             {
                 string[] roomInfo = room.Split(' ');
+                if (roomInfo[0] == "")
+                {
+                    roomInfo = roomInfo.Skip(1).ToArray();
+                }
                 Room newRoom = new Room();
                 newRoom.name = roomInfo[0];
                 newRoom.ID = int.Parse(roomInfo[1]);

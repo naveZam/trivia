@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Threading;
 namespace GalleryGUI
 {
     public partial class JoinRoom : Form
@@ -37,6 +37,11 @@ namespace GalleryGUI
                 Queue<string> playerQueue = Program.communicator.transformPlayers(Program.communicator.Receive());
                 room.players = playerQueue;
             }
+            if(this.rooms.Count() == 0)
+            {
+                this.label5.Text = "No rooms";
+                return; 
+            }
             Room tempRoom = this.rooms.Dequeue();
             rooms.Enqueue(tempRoom);
             this.label2.Text = tempRoom.ID.ToString();
@@ -48,6 +53,7 @@ namespace GalleryGUI
             }
             this.label6.Text = players;
             thread = new Thread(updateThread);
+            thread.Start();
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -58,12 +64,22 @@ namespace GalleryGUI
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            Room tempRoom = this.rooms.Dequeue();
+            rooms.Enqueue(tempRoom);
+            this.label2.Text = tempRoom.ID.ToString();
+            this.label5.Text = tempRoom.name;
+            string players = "";
+            foreach (string player in tempRoom.players)
+            {
+                players += player + ",";
+            }
+            this.label6.Text = players;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            thread.Abort();
+            update = false;
+            thread.Join();
             Program.communicator.Send(new joinRoomMessage(int.Parse(this.label2.Text)), 12);
             GenericResponse response = Program.communicator.Receive();
             if (response.ID != 1)
@@ -75,11 +91,12 @@ namespace GalleryGUI
             menu.ShowDialog();
             this.Close();
         }
-        private bool update = true;
+        static private bool update = true;
         private Thread? thread;
         private void updateThread()
         {
-            while(update)
+            
+            while(JoinRoom.update)
             {
                 Thread.Sleep(3000);
                 Program.communicator.Send(new Messages(), 9);
@@ -91,19 +108,23 @@ namespace GalleryGUI
                     room.players = playerQueue;
                 }
                 Room tempRoom = this.rooms.Dequeue();
-                while (tempRoom.isActive != 1)
-                {
-                    tempRoom = this.rooms.Dequeue();
-                }
                 rooms.Enqueue(tempRoom);
-                this.label2.Text = tempRoom.ID.ToString();
-                this.label5.Text = tempRoom.name;
+                
                 string players = "";
                 foreach (string player in tempRoom.players)
                 {
                     players += player + ",";
                 }
-                this.label6.Text = players;
+                if(!JoinRoom.update)
+                {
+                    break;
+                }
+                this.Invoke((MethodInvoker)delegate
+                {
+                    this.label2.Text = tempRoom.ID.ToString();
+                    this.label5.Text = tempRoom.name;
+                    this.label6.Text = players;
+                });
             }
         }
     }

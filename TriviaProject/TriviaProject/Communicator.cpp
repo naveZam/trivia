@@ -51,6 +51,7 @@ void Communicator::startHandleRequests()
 
 	while (true)
 	{
+		
 		// the main thread is only accepting clients 
 		// and add then to the list of handlers
 		std::cout << "Waiting for client connection request..." << std::endl;
@@ -67,10 +68,6 @@ Communicator* Communicator::getInstance()
 	return instancePtr;
 }
 
-std::map<SOCKET, IRequestHandler*> Communicator::getClients()
-{
-	return m_clients;
-}
 
 void Communicator::bindAndListen()
 {
@@ -170,7 +167,6 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		{
 			//reseve the request from the client 
 			std::vector<unsigned char> buffer(4096);
-			std::cout << "new" << std::endl;
 			int iResult = 0;
 			while (iResult == 0)
 			{

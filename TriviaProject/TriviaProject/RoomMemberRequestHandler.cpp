@@ -68,6 +68,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 
 RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
 {
+	this->m_room = RoomManager::getInstance()->getRoomById(m_room.getRoomData().id);
 	RequestResult result;
 	result.newHandler = this;
 	std::string notErrorrRespond = "1";
@@ -76,7 +77,7 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
 	{
 		GetRoomStateResponse GetRoomRes = GetRoomStateResponse();
 		RoomData roomData = m_room.getRoomData();
-		GetRoomRes.status = 1;
+		GetRoomRes.status = m_room.getStatus();
 		GetRoomRes.players = m_room.getAllUsers();
 		GetRoomRes.questionCount = roomData.numOfQuestionsInGame;
 		GetRoomRes.answerTimeOut = roomData.timePerQuestion;

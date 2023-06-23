@@ -67,3 +67,14 @@ Room& RoomManager::getRoom(int ID)
         ID--;
 	}
 }
+
+Room& RoomManager::getRoomById(int ID)
+{
+	for (auto it = m_rooms.begin(); it != m_rooms.end(); it++)
+	{
+		if (it->second.getRoomData().id == ID)
+		{
+			return it->second;
+		}
+	}
+}

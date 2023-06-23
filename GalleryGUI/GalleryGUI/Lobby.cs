@@ -19,6 +19,8 @@ namespace GalleryGUI
 
         private void button1_Click(object sender, EventArgs e)
         {
+            running = false;
+            thread.Join();
             Program.location = this.Location;
             MainMenu menu = new MainMenu();
             Program.communicator.Send(new Messages(), 6);
@@ -34,19 +36,37 @@ namespace GalleryGUI
             Program.communicator.Send(new Messages(), 5);
             roomStateResponse response = Program.communicator.transformState(Program.communicator.Receive());
             this.label6.Text = response.players;
+            thread = new Thread(updateThread);
+            thread.Start();
         }
         private Thread thread;
+        static private bool running = true;
+        
         private void updateThread()
         {
-            Program.communicator.Send(new Messages(), 5);
-            roomStateResponse response = Program.communicator.transformState(Program.communicator.Receive());
-            this.label6.Text = response.players;
-            if (response.status == 0)
+            while (Lobby.running)
             {
-                MainMenu menu = new MainMenu();
-                this.Hide();
-                menu.ShowDialog();
-                this.Close();
+                Thread.Sleep(3000);
+                Program.communicator.Send(new Messages(), 5);
+                roomStateResponse response = Program.communicator.transformState(Program.communicator.Receive());
+                if(!Lobby.running)
+                {
+                    break;
+                }
+                this.Invoke((MethodInvoker)delegate
+                {
+                    this.label6.Text = response.players;
+                });
+                if (response.status == 0)
+                {   
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        MainMenu menu = new MainMenu();
+                        this.Hide();
+                        menu.ShowDialog();
+                        this.Close();
+                    });
+                }
             }
         }
     }

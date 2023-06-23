@@ -1,2 +1,21 @@
-﻿  RoomMemberRequestHandler.cpp
+﻿  Communicator.cpp
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(109,35): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(125,55): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(135,17): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(173,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\Communicator.cpp(206,31): warning C4101: 'e': unreferenced local variable
+  LoginRequestHandler.cpp
+  MenuRequestHandler.cpp
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(132,31): warning C4101: 'e': unreferenced local variable
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(161,31): warning C4101: 'e': unreferenced local variable
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(189,31): warning C4101: 'e': unreferenced local variable
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(215,145): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(210,31): warning C4101: 'e': unreferenced local variable
+C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\TriviaProject\MenuRequestHandler.cpp(236,31): warning C4101: 'e': unreferenced local variable
+  RequestHandlerFactory.cpp
+  RoomAdminRequestHandler.cpp
+  RoomMemberRequestHandler.cpp
+  Server.cpp
+  Source.cpp
+  Generating Code...
   TriviaProject.vcxproj -> C:\Users\test0\OneDrive\שולחן העבודה\trivia_group2\TriviaProject\x64\Debug\TriviaProject.exe
