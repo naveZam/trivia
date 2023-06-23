@@ -47,7 +47,7 @@ namespace GalleryGUI
                 players += player + ",";
             }
             this.label6.Text = players;
-
+            thread = new Thread(updateThread);
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -63,6 +63,7 @@ namespace GalleryGUI
 
         private void button2_Click(object sender, EventArgs e)
         {
+            thread.Abort();
             Program.communicator.Send(new joinRoomMessage(int.Parse(this.label2.Text)), 12);
             GenericResponse response = Program.communicator.Receive();
             if (response.ID != 1)
@@ -73,6 +74,37 @@ namespace GalleryGUI
             this.Hide();
             menu.ShowDialog();
             this.Close();
+        }
+        private bool update = true;
+        private Thread? thread;
+        private void updateThread()
+        {
+            while(update)
+            {
+                Thread.Sleep(3000);
+                Program.communicator.Send(new Messages(), 9);
+                this.rooms = Program.communicator.transform(Program.communicator.Receive());
+                foreach (Room room in this.rooms)
+                {
+                    Program.communicator.Send(new PlayersMessage(room.ID), 10);
+                    Queue<string> playerQueue = Program.communicator.transformPlayers(Program.communicator.Receive());
+                    room.players = playerQueue;
+                }
+                Room tempRoom = this.rooms.Dequeue();
+                while (tempRoom.isActive != 1)
+                {
+                    tempRoom = this.rooms.Dequeue();
+                }
+                rooms.Enqueue(tempRoom);
+                this.label2.Text = tempRoom.ID.ToString();
+                this.label5.Text = tempRoom.name;
+                string players = "";
+                foreach (string player in tempRoom.players)
+                {
+                    players += player + ",";
+                }
+                this.label6.Text = players;
+            }
         }
     }
 }

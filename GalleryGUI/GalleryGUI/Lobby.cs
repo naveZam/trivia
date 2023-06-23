@@ -35,5 +35,19 @@ namespace GalleryGUI
             roomStateResponse response = Program.communicator.transformState(Program.communicator.Receive());
             this.label6.Text = response.players;
         }
+        private Thread thread;
+        private void updateThread()
+        {
+            Program.communicator.Send(new Messages(), 5);
+            roomStateResponse response = Program.communicator.transformState(Program.communicator.Receive());
+            this.label6.Text = response.players;
+            if (response.status == 0)
+            {
+                MainMenu menu = new MainMenu();
+                this.Hide();
+                menu.ShowDialog();
+                this.Close();
+            }
+        }
     }
 }
