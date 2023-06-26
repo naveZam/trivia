@@ -16,7 +16,7 @@ namespace GalleryGUI
         {
             InitializeComponent();
         }
-
+        //on exit of the menu
         private void button1_Click(object sender, EventArgs e)
         {
             Program.location = this.Location;
@@ -25,7 +25,7 @@ namespace GalleryGUI
             menu.ShowDialog();
             this.Close();
         }
-
+        //on load of the menu
         private void JoinRoom_Load(object sender, EventArgs e)
         {
             this.Location = Program.location;
@@ -61,7 +61,7 @@ namespace GalleryGUI
 
         }
         private Queue<Room>? rooms;
-
+        //on cycling a room
         private void button3_Click(object sender, EventArgs e)
         {
             Room tempRoom = this.rooms.Dequeue();
@@ -75,7 +75,7 @@ namespace GalleryGUI
             }
             this.label6.Text = players;
         }
-
+        //on joining a room
         private void button2_Click(object sender, EventArgs e)
         {
             update = false;

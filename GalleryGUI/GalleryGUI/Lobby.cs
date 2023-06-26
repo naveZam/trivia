@@ -16,7 +16,7 @@ namespace GalleryGUI
         {
             InitializeComponent();
         }
-
+        //on exit of the lobby
         private void button1_Click(object sender, EventArgs e)
         {
             running = false;
@@ -29,7 +29,7 @@ namespace GalleryGUI
             menu.ShowDialog();
             this.Close();
         }
-
+        //on load of the menu
         private void Lobby_Load(object sender, EventArgs e)
         {
             this.Location = Program.location;

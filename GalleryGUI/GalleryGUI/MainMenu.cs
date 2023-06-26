@@ -22,23 +22,14 @@ namespace GalleryGUI
         {
 
         }
-
+        //on load of main menu
         private void MainMenu_Load(object sender, EventArgs e)
         {
             this.Location = Program.location;
 
             this.label1.Text = "Welcome " + Program.name;
-            //if (!isSongLoaded)
-            //{
-            //    using (player = new System.Media.SoundPlayer("C:\\Users\\test0\\OneDrive\\שולחן העבודה\\projects c++\\GalleryGUI\\resources\\songs\\xina.wav"))
-            //    {
-
-            //        isSongLoaded = true;
-            //        player.Play();
-            //        player.PlayLooping();
-            //    }
-            //}
         }
+        //on enter of the create room menu
         private void button1_Click_1(object sender, EventArgs e)
         {
             Program.location = this.Location;
@@ -47,7 +38,7 @@ namespace GalleryGUI
             CreateRoom.ShowDialog();
             this.Close();
         }
-
+        //on enter of the join room menu
         private void button2_Click(object sender, EventArgs e)
         {
             Program.location = this.Location;
@@ -56,7 +47,7 @@ namespace GalleryGUI
             joinRoom.ShowDialog();
             this.Close();
         }
-
+        //on enter of the stats menu
         private void button3_Click(object sender, EventArgs e)
         {
             Program.location = this.Location;
@@ -65,7 +56,7 @@ namespace GalleryGUI
             stats.ShowDialog();
             this.Close();
         }
-
+        //on exit of the main menu
         private void button4_Click(object sender, EventArgs e)
         {
             Program.communicator.Send(new Messages(), 8);

@@ -21,12 +21,16 @@ namespace GalleryGUI
         {
 
         }
-
+        //on login
         private void button1_Click(object sender, EventArgs e)
         {
             Program.location = this.Location;
             Program.name = this.textBox1.Text;
             string password = this.textBox2.Text;
+            if (Program.name == "" || password == "")
+            {
+                MessageBox.Show("Please fill in all fields");
+            }
             LoginMessage message = new LoginMessage(Program.name, password);
             Program.communicator.Send(message, 1);
             GenericResponse response = Program.communicator.Receive();

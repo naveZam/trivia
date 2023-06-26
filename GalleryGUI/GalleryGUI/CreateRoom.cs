@@ -16,7 +16,7 @@ namespace GalleryGUI
         {
             InitializeComponent();
         }
-
+        //on exit
         private void button2_Click(object sender, EventArgs e)
         {
             Program.location = this.Location;
@@ -25,12 +25,12 @@ namespace GalleryGUI
             menu.ShowDialog();
             this.Close();
         }
-
+        //on load
         private void CreateRoom_Load(object sender, EventArgs e)
         {
             this.Location = Program.location;
         }
-
+        //on creation of room
         private void button1_Click(object sender, EventArgs e)
         {
             createRoom room = new createRoom(textBox1.Text, uint.Parse(textBox2.Text), uint.Parse(textBox3.Text), uint.Parse(textBox4.Text));
